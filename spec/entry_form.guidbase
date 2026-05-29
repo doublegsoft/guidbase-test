@@ -1,7 +1,22 @@
-form_demo:page<
-  demo_entry:entry_form(object:"demo")<
-    date1:date(text:"日期"),
-    text1:date(text:"文本"),
-    longtext1:longtext(text:"长文本")
+form/entry_form_page:page(title:"输入表单")<
+  demo:entry_form(object:"demo")<
+    group1:group(title:"分组")<
+      date1:date(title:"日期"),
+      text1:text(title:"文本"),
+      num1:number(title:"数字"),
+      longtext1:longtext(title:"长文本")
+    >,
+    group2:group(title:"分组2")<
+      date2:date(title:"日期"),
+      text2:text(title:"文本"),
+      num2:number(title:"数字"),
+      longtext2:longtext(title:"长文本")
+    >,
+    group3:group(title:"分组3")<
+      date3:date(title:"日期"),
+      text3:text(title:"文本"),
+      num3:number(title:"数字"),
+      longtext3:longtext(title:"长文本")
+    >
   >
 >

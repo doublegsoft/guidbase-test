@@ -7,7 +7,7 @@ export OUTPUT_ROOT=out
 
 export SPEC=entry_form
 export APPNAME=entry_form
-export NAMESPACE=biz.doublegsoft
+export NAMESPACE=ef
 export MOBELBASE_MODEL=
 export GUIDBASE_MODEL=spec/$SPEC.guidbase
 export PROJECT_ROOT=$OUTPUT_ROOT/"$SPEC"-1.x
@@ -16,7 +16,8 @@ export PROJECT_ROOT=$OUTPUT_ROOT/"$SPEC"-1.x
 ##                                     VUE3                                   ##
 ##                                                                            ##
 ################################################################################
-REPOS=("javascript-universal@vue3-1.x")
+REPOS=("javascript-desktop@vue3-1.x" \
+       "../html/html-desktop@bnrlike#vue3-1.x" "../tebot/tebot-universal@bnrlike@vue3-1.x")
 
 for repo in "${REPOS[@]}"
 do
@@ -35,13 +36,15 @@ java -jar $GUIDBASE_JAR \
 \"artifact\":\"$APPNAME\",\
 \"version\":\"1.0.0\",\
 \"description\":\"\",\
-\"naming\":\"com.doublegsoft.jcommons.programming.java.JavaConventions\",\
-\"globalNamingConvention\":\"com.doublegsoft.jcommons.programming.java.JavaNamingConvention\",\
-\"language\":\"java\",\
+\"naming\":\"com.doublegsoft.jcommons.programming.javascript.JavaScriptConventions\",\
+\"globalNamingConvention\":\"com.doublegsoft.jcommons.programming.javascript.JavaScriptNamingConvention\",\
+\"language\":\"javascript\",\
 \"imports\":\
 \[\],\
 \"dependencies\":\
-\[\]\
+\[\],\
+\"modules\":\
+\{\"form\":\"表单\"\}\
 \} 2>&1
 done
 
@@ -59,6 +62,7 @@ java -jar $PROJBASE_JAR \
 --globals=\
 \{\
 \"application\":\"$APPNAME\",\
+\"apptitle\":\"表单示例\",\
 \"namespace\":\"$NAMESPACE\",\
 \"artifact\":\"$APPNAME\",\
 \"version\":\"1.0.0\",\

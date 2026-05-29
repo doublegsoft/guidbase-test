@@ -1,9 +1,1 @@
-script/java/2.x/gen-aggregatelike.sh
-script/java/2.x/gen-extension-details.sh
-script/java/2.x/gen-extension-master.sh
-script/java/2.x/gen-graph.sh
-script/java/2.x/gen-match.sh
-script/java/2.x/gen-meta_.sh
-script/java/2.x/gen-meta_full.sh
-script/java/2.x/gen-pivot.sh
-script/java/2.x/gen-simple_.sh
+script/vue3/1.x/gen-entry_form.sh
