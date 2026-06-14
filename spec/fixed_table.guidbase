@@ -1,0 +1,37 @@
+table/fixed_table_page:page(title:"数据表格")<
+  demo_criteria:criteria_form(object:"demo")<
+    date1:date(title:"日期"),
+    text1:text(title:"文本", placeholder:"一个文本"),
+    num1:number(title:"数字", placeholder:"一个数字"),
+    sel10:select(title:"下拉框", data:"enum[Y:YES('是'),N:NO('否'),U:UNKNOWN('未知')]"),
+    button(action:"search", title:"搜索", ref:"demo_table"),
+    button(action:"reset", title:"重置")
+  >,
+  demo_table:fixed_table(object:"demo", cols:"3", frozen:"2")<
+    date1:date(title:"日期", fixed:"left"),
+    text1:text(title:"文本", fixed:"left"),
+    num1:number(title:"数字", unit:"米/秒"),
+    sel10:select(title:"下拉框"),
+    cas1:cascade(title:"级联选择", span:"2"),
+    mul1:multiselect(title:"多选框", span:"2"),
+    time1:time(title:"时间"),
+    tags1:tags(title:"标签", span:"3"),
+    
+    date2:date(title:"日期2"),
+    text2:text(title:"文本2"),
+    num2:number(title:"只读数字2", unit:"%/天", readonly:"true"),
+    cas2:cascade(title:"级联选择2", span:"2"),
+    sel2:select(title:"下拉框2"),
+
+    date3:date(title:"日期3"),
+    text3:text(title:"只读文本3", readonly:"true"),
+    num3:number(title:"数字3", unit:"千瓦时"),
+    sel30:select(title:"下拉框3"),
+    sel31:select(title:"下拉框31"),
+    
+    buttons(title:"操作",width:"180")<
+      button(action:"edit", title:"编辑", ref:"demo_table"),
+      button(action:"delete", title:"删除", ref:"demo_table")
+    >
+  >
+>

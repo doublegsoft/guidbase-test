@@ -1,5 +1,5 @@
-form/entry_form_page:page(title:"输入表单页面")<
-  demo_entry:entry_form(title:"输入表单",object:"demo", cols:"3")<
+form/official_form_page:page(title:"公文表单页面")<
+  demo_entry:official_form(title:"公文表单",object:"demo_entry_object", cols:"3")<
     date1:date(title:"日期", required:"true", group:"分组1"),
     text1:text(title:"文本", required:"true", group:"分组1"),
     num1:number(title:"数字", required:"true", group:"分组1", unit:"米/秒"),
@@ -23,9 +23,5 @@ form/entry_form_page:page(title:"输入表单页面")<
     sel30:select(title:"下拉框", group:"分组3"),
     sel31:select(title:"下拉框", data:"enum[Y:YES('大瓜'),N:NO('二瓜'),U:UNKNOWN('三瓜')]", group:"分组3", span:"2"),
     longtext3:longtext(title:"长文本", group:"分组3", span:"3")
-  >,
-  buttons(placement:"bottom",title:"按钮")<
-    button(action:"save", title:"保存", ref:"demo_entry"),
-    button(action:"reset", title:"重置", ref:"demo_entry")
   >
 >

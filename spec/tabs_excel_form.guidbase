@@ -1,0 +1,40 @@
+tabs/tabs_excel_form_page:page(title:"分页和编辑列表页面")<
+  demo_entry:entry_form(title:"输入表单",object:"demo", cols:"3")<
+    date1:date(title:"日期", required:"true", group:"分组1"),
+    text1:text(title:"文本", required:"true", group:"分组1"),
+    num1:number(title:"数字", required:"true", group:"分组1", unit:"米/秒"),
+    sel10:select(title:"下拉框", required:"true", data:"enum[Y:YES('是'),N:NO('否'),U:UNKNOWN('未知')]", group:"分组1"),
+    cas1:cascade(title:"级联选择", group:"分组1", span:"2"),
+    mul1:multiselect(title:"多选框", group:"分组1", span:"2"),
+    time1:time(title:"时间", group:"分组1"),
+    tags1:tags(title:"标签", required:"true", group:"分组1", span:"3"),
+    longtext1:longtext(title:"长文本", group:"分组1", span:"3")
+  >,
+  demo_tabs:tabs(title:"")<
+    basic_tab:tab(title:"统计图表")<
+      card(title:"饼状图")<
+        pie_demo:chart(chart:"pie", title:"饼状图", object:"pie_item")
+      >,
+      card(title:"折线图")<
+        line_demo:chart(chart:"line", title:"折线图", object:"line_item")
+      >
+    >,
+    customer_tab:tab(title:"客户列表")<
+      customer_list:excel_form(title:"", object:"customer")<
+        customer_name:text(title:"客户姓名"),
+        join_date:date(title:"加入日期"),
+        phone:text(title:"电话"),
+        deposite:number(title:"押金金额", required:"true")
+      >,
+      buttons<
+        add_customer:button(action:"add", title:"新增", ref:"customer_list"),
+        del_customer:button(action:"delete", title:"删除", ref:"customer_list")
+      >
+    >,
+    company_tab:tab(title:"公司列表")
+  >,
+  buttons<
+    save:button(action:"save", title:"保存", ref:"demo_entry"),
+    reset:button(action:"reset", title:"重置", ref:"demo_entry")
+  >
+>
