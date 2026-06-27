@@ -8,7 +8,8 @@ tabs/tabs_excel_form_page:page(title:"分页和编辑列表页面")<
     mul1:multiselect(title:"多选框", group:"分组1", span:"2"),
     time1:time(title:"时间", group:"分组1"),
     tags1:tags(title:"标签", required:"true", group:"分组1", span:"3"),
-    longtext1:longtext(title:"长文本", group:"分组1", span:"3")
+    longtext1:longtext(title:"长文本", group:"分组1", span:"3"),
+    hello:button(action:"hello", title:"你好呀", ref:"demo_entry")
   >,
   demo_tabs:tabs(title:"")<
     basic_tab:tab(title:"统计图表")<

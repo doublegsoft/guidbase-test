@@ -1,0 +1,24 @@
+team/schedule:page(title: "球队另一种日程")<
+  schedule_type:segment(data:"enum[A:ALL('全部'),M:MATCH('比赛'),T:TRAINING('训练')]",
+                        placement:"top", variable:"schedule_type"),
+  schedule_criteria:criteria_form(
+    title: "日程查询条件",
+    variable: "{schedule_criteria}"
+  )<
+    event_date:date(title:"日期"),
+    event_type:select(title:"类型", data:"enum[Y:YES('大瓜'),N:NO('二瓜'),U:UNKNOWN('三瓜')]"),
+    reset:button(action:"reset", title:"重置"),
+    search:button(action:"search", title:"搜索", ref:"event_list")
+  >,
+  event_list:list_view(
+    data: "schedule_event?{schedule_criteria}",
+    page: "$team/event",
+    title: "日程安排"
+  )<
+    eventType:select(property:"status"),
+    title:text(property:"primary"),
+    opponent:text(property:"secondary"),
+    time:text(property:"start_date"),
+    location:text(property:"tertiary")
+  >
+>

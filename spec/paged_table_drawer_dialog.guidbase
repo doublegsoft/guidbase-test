@@ -1,0 +1,48 @@
+table/paged_table_page:page(title:"数据表格")<
+  demo_criteria:criteria_form(object:"demo")<
+    date1:date(title:"日期"),
+    text1:text(title:"文本", placeholder:"一个文本"),
+    num1:number(title:"数字", placeholder:"一个数字"),
+    sel10:select(title:"下拉框", data:"enum[Y:YES('是'),N:NO('否'),U:UNKNOWN('未知')]"),
+    button(action:"search", title:"搜索", ref:"demo_table"),
+    button(action:"reset", title:"重置")
+  >,
+  demo_table:paged_table(object:"demo", cols:"3")<
+    date1:date(title:"日期"),
+    text1:text(title:"文本"),
+    num1:number(title:"数字", unit:"米/秒"),
+    mul1:multiselect(title:"多选框", span:"2"),
+    time1:time(title:"时间"),
+    tags1:tags(title:"标签", span:"3"),
+    
+    buttons(title:"操作",width:"180")<
+      button(action:"edit", title:"编辑", ref:"demo_dialog"),
+      button(action:"view", title:"查看", ref:"demo_drawer"),
+      button(action:"delete", title:"删除")
+    >
+  >,
+  demo_dialog:dialog(title:"弹出窗框中的编辑表单")<
+    demo_entry:entry_form(title:"弹出窗框中的编辑表单")<
+      date1:date(title:"日期"),
+      text1:text(title:"文本"),
+      num1:number(title:"数字", unit:"米/秒"),
+      sel10:select(title:"下拉框"),
+      cas1:cascade(title:"级联选择", span:"2"),
+      mul1:multiselect(title:"多选框", span:"2"),
+      time1:time(title:"时间"),
+      tags1:tags(title:"标签", span:"3")
+    >
+  >,
+  demo_drawer:drawer(title:"滑动抽屉中的只读表单")<
+    demo_display:display_form(title:"滑动抽屉中的只读表单",cols:"1")<
+      date1:date(title:"日期"),
+      text1:text(title:"文本"),
+      num1:number(title:"数字", unit:"米/秒"),
+      sel10:select(title:"下拉框"),
+      cas1:cascade(title:"级联选择", span:"2"),
+      mul1:multiselect(title:"多选框", span:"2"),
+      time1:time(title:"时间"),
+      tags1:tags(title:"标签", span:"3")
+    >
+  >
+>

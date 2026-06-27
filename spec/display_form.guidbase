@@ -1,5 +1,5 @@
-form/entry_form_page:page(title:"输入表单页面")<
-  demo_entry:display_form(title:"输入表单",object:"demo", cols:"3")<
+form/display_form_page:page(title:"只读表单页面")<
+  demo_entry:display_form(title:"只读表单",data:"demo", cols:"3")<
     date1:date(title:"日期", required:"true", group:"分组1"),
     text1:text(title:"文本", required:"true", group:"分组1"),
     num1:number(title:"数字", required:"true", group:"分组1", unit:"米/秒"),

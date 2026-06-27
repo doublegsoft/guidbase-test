@@ -1,0 +1,20 @@
+team/schedule:page(title: "球队日程")<
+  cal_view:calendar(
+    placement: "top",
+    variable: "selected_date",
+    data: "schedule_event?event_date>=event_date.first_day_of_week&event_date<=event_date.last_day_of_week",
+    view: "week"
+  ),
+  event_list:list_view(
+    data: "schedule_event?event_date=selected_date",
+    page: "$team/event",
+    title: "$selected_date"
+  )<
+    eventId!!: hidden,
+    eventType: dict(property:"status"),
+    title: text(property:"primary"),
+    vsTeam: text(property:"secondary"),
+    time: text(property:"start_date"),
+    location: text(property:"tertiary")
+  >
+>

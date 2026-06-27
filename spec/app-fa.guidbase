@@ -1,0 +1,478 @@
+dashboard_page:page(module: "fa", title: "仪表盘")<
+
+  today_training_table:paged_table(title: "今日训练", object: "training_session", viewport: "drawer")<
+    training_date:date(title: "日期"),
+    start_time:time(title: "开始"),
+    team:text(title: "队伍"),
+    coach:text(title: "教练"),
+    topic:text(title: "主题"),
+    venue:text(title: "场地"),
+    status:select(title: "状态")
+  >,
+
+  recent_match_table:paged_table(title: "近期比赛", object: "match", viewport: "drawer")<
+    match_date:date(title: "日期"),
+    team:text(title: "队伍"),
+    opponent:text(title: "对手"),
+    result:select(title: "结果"),
+    match_type:select(title: "类型")
+  >
+>
+
+student_list_page:page(module: "fa", title: "学员管理")<
+
+  student_criteria:criteria_form(title: "学员查询", object: "student", cols: "4")<
+    name:text(title: "姓名"),
+    student_no:text(title: "学员编号"),
+    team:select(title: "所属队伍"),
+    status:select(title: "状态"),
+    position:select(title: "场上位置"),
+    enroll_date_start:date(title: "入训从"),
+    enroll_date_end:date(title: "入训至")
+  >,
+
+  student_table:paged_table(title: "学员列表", object: "student", viewport: "drawer")<
+    avatar:avatar(title: "头像"),
+    student_no:text(title: "学员编号"),
+    name:text(title: "姓名"),
+    gender:select(title: "性别"),
+    team:text(title: "队伍"),
+    position:select(title: "位置"),
+    enroll_date:date(title: "入训日期"),
+    status:select(title: "状态")
+  >,
+
+  student_form:entry_form(title: "学员信息", object: "student", viewport: "dialog", cols: "3")<
+    avatar:avatar(title: "头像", size: "(88,88)"),
+    name:text(title: "姓名", span: "2"),
+    student_no:text(title: "学员编号"),
+    gender:select(title: "性别"),
+    birth_date:date(title: "出生日期"),
+    phone:text(title: "联系电话"),
+    position:select(title: "场上位置"),
+    team:select(title: "所属队伍"),
+    height:text(title: "身高(cm)"),
+    weight:text(title: "体重(kg)"),
+    school:text(title: "就读学校"),
+    enroll_date:date(title: "入训日期"),
+    status:select(title: "状态"),
+    guardian:select(title: "监护人"),
+    note:longtext(title: "备注", span: "3")
+  >
+>
+
+student_detail_page:page(module: "fa", title: "学员详情")<
+
+  student_detail:display_form(title: "基本信息", object: "student", viewport: "drawer", cols: "3")<
+    avatar:avatar(title: "头像", size: "(110,110)"),
+    name:text(title: "姓名", span: "2"),
+    student_no:text(title: "学员编号"),
+    gender:select(title: "性别"),
+    birth_date:date(title: "出生日期"),
+    phone:text(title: "联系电话"),
+    position:select(title: "位置"),
+    team:text(title: "所属队伍"),
+    height:text(title: "身高(cm)"),
+    weight:text(title: "体重(kg)"),
+    school:text(title: "就读学校"),
+    enroll_date:date(title: "入训日期"),
+    status:select(title: "状态"),
+    guardian:text(title: "监护人"),
+    note:longtext(title: "备注", span: "3")
+  >,
+
+  student_detail_tabs:tabs(title: "历史记录")<
+    attendance_tab:tab(title: "出勤记录")<
+      student_attendance_table:paged_table(title: "出勤记录", object: "attendance", viewport: "drawer")<
+        training_session:text(title: "训练课"),
+        training_date:date(title: "日期"),
+        status:select(title: "出勤"),
+        rating:text(title: "评分"),
+        note:text(title: "备注")
+      >
+    >,
+
+    match_tab:tab(title: "比赛记录")<
+      student_match_table:paged_table(title: "比赛记录", object: "match_player", viewport: "drawer")<
+        match:text(title: "比赛"),
+        match_date:date(title: "日期"),
+        jersey_number:text(title: "球衣号"),
+        position:select(title: "位置"),
+        goals:text(title: "进球"),
+        assists:text(title: "助攻"),
+        minutes_played:text(title: "出场时间"),
+        status:select(title: "出场")
+      >
+    >
+  >
+>
+
+coach_page:page(module: "fa", title: "教练管理")<
+
+  coach_criteria:criteria_form(title: "教练查询", object: "coach", cols: "4")<
+    name:text(title: "姓名"),
+    license_level:select(title: "教练资质"),
+    role:select(title: "教练角色"),
+    status:select(title: "状态")
+  >,
+
+  coach_table:paged_table(title: "教练列表", object: "coach", viewport: "drawer")<
+    avatar:avatar(title: "头像"),
+    name:text(title: "姓名"),
+    phone:text(title: "联系电话"),
+    license_level:select(title: "教练资质"),
+    role:select(title: "角色"),
+    years_active:text(title: "执教年限"),
+    status:select(title: "状态")
+  >,
+
+  coach_detail:display_form(title: "教练详情", object: "coach", viewport: "drawer", cols: "2")<
+    avatar:avatar(title: "头像", size: "(110,110)"),
+    name:text(title: "姓名"),
+    gender:select(title: "性别"),
+    phone:text(title: "联系电话"),
+    license_level:select(title: "教练资质"),
+    role:select(title: "角色"),
+    years_active:text(title: "执教年限"),
+    status:select(title: "状态"),
+    note:longtext(title: "备注", span: "2")
+  >,
+
+  coach_form:entry_form(title: "教练信息", object: "coach", viewport: "dialog", cols: "2")<
+    avatar:avatar(title: "头像", size: "(88,88)"),
+    name:text(title: "姓名"),
+    gender:select(title: "性别"),
+    phone:text(title: "联系电话"),
+    license_level:select(title: "教练资质"),
+    role:select(title: "教练角色"),
+    years_active:text(title: "执教年限"),
+    status:select(title: "状态"),
+    note:longtext(title: "备注", span: "2")
+  >
+>
+
+
+team_list_page:page(module: "fa", title: "队伍管理")<
+
+  team_criteria:criteria_form(title: "队伍查询", object: "team", cols: "3")<
+    name:text(title: "队伍名称"),
+    age_group:text(title: "年龄段"),
+    status:select(title: "状态")
+  >,
+
+  team_table:paged_table(title: "队伍列表", object: "team", viewport: "drawer")<
+    name:text(title: "队伍名称"),
+    age_group:text(title: "年龄段"),
+    head_coach:text(title: "主教练"),
+    venue:text(title: "训练场地"),
+    status:select(title: "状态")
+  >,
+
+  team_form:entry_form(title: "队伍信息", object: "team", viewport: "dialog", cols: "2")<
+    name:text(title: "队伍名称"),
+    age_group:text(title: "年龄段"),
+    head_coach:select(title: "主教练"),
+    venue:select(title: "训练场地"),
+    founded_date:date(title: "成立日期"),
+    status:select(title: "状态"),
+    note:longtext(title: "备注", span: "2")
+  >
+>
+
+team_detail_page:page(module: "fa", title: "队伍详情")<
+
+  team_detail:display_form(title: "基本信息", object: "team", viewport: "drawer", cols: "2")<
+    name:text(title: "队伍名称"),
+    age_group:text(title: "年龄段"),
+    head_coach:text(title: "主教练"),
+    venue:text(title: "训练场地"),
+    founded_date:date(title: "成立日期"),
+    status:select(title: "状态"),
+    note:longtext(title: "备注", span: "2")
+  >,
+
+  team_member_form:excel_form(title: "队伍成员", object: "team_member", viewport: "drawer")<
+    student:select(title: "学员"),
+    joined_date:date(title: "入队日期"),
+    left_date:date(title: "离队日期")
+  >
+>
+
+training_list_page:page(module: "fa", title: "训练安排")<
+
+  training_criteria:criteria_form(title: "训练查询", object: "training_session", cols: "4")<
+    team:select(title: "队伍"),
+    coach:select(title: "教练"),
+    training_date_start:date(title: "日期从"),
+    training_date_end:date(title: "日期至"),
+    status:select(title: "状态")
+  >,
+
+  training_table:paged_table(title: "训练列表", object: "training_session", viewport: "drawer")<
+    training_date:date(title: "日期"),
+    start_time:time(title: "开始"),
+    end_time:time(title: "结束"),
+    team:text(title: "队伍"),
+    coach:text(title: "教练"),
+    topic:text(title: "主题"),
+    venue:text(title: "场地"),
+    status:select(title: "状态")
+  >,
+
+  training_form:entry_form(title: "训练信息", object: "training_session", viewport: "dialog", cols: "2")<
+    team:select(title: "参训队伍"),
+    coach:select(title: "负责教练"),
+    training_date:date(title: "训练日期"),
+    start_time:time(title: "开始时间"),
+    end_time:time(title: "结束时间"),
+    venue:select(title: "训练场地"),
+    topic:text(title: "训练主题", span: "2"),
+    note:longtext(title: "备注", span: "2")
+  >
+>
+
+training_detail_page:page(module: "fa", title: "训练详情")<
+
+  training_detail:display_form(title: "训练信息", object: "training_session", viewport: "drawer", cols: "2")<
+    team:text(title: "参训队伍"),
+    coach:text(title: "负责教练"),
+    training_date:date(title: "训练日期"),
+    start_time:time(title: "开始时间"),
+    end_time:time(title: "结束时间"),
+    venue:text(title: "训练场地"),
+    topic:text(title: "训练主题", span: "2"),
+    status:select(title: "状态"),
+    note:longtext(title: "备注", span: "2")
+  >,
+
+  attendance_form:excel_form(title: "出勤登记", object: "attendance", viewport: "drawer")<
+    student:select(title: "学员"),
+    status:select(title: "出勤"),
+    rating:text(title: "评分"),
+    note:text(title: "备注")
+  >
+>
+
+match_list_page:page(module: "fa", title: "比赛管理")<
+
+  match_criteria:criteria_form(title: "比赛查询", object: "match", cols: "4")<
+    team:select(title: "队伍"),
+    opponent:text(title: "对手"),
+    match_date_start:date(title: "日期从"),
+    match_date_end:date(title: "日期至"),
+    match_type:select(title: "类型"),
+    result:select(title: "结果")
+  >,
+
+  match_table:paged_table(title: "比赛列表", object: "match", viewport: "drawer")<
+    match_date:date(title: "日期"),
+    team:text(title: "队伍"),
+    opponent:text(title: "对手"),
+    home_away:select(title: "主客"),
+    score_home:text(title: "进球"),
+    score_away:text(title: "失球"),
+    result:select(title: "结果"),
+    match_type:select(title: "类型")
+  >,
+
+  match_form:entry_form(title: "比赛信息", object: "match", viewport: "dialog", cols: "2")<
+    team:select(title: "参赛队伍"),
+    opponent:text(title: "对手"),
+    match_date:date(title: "比赛日期"),
+    match_type:select(title: "比赛类型"),
+    home_away:select(title: "主客场"),
+    venue:select(title: "比赛场地"),
+    note:longtext(title: "备注", span: "2")
+  >,
+
+  match_result_form:entry_form(title: "比赛结果", object: "match", viewport: "dialog", cols: "2")<
+    score_home:text(title: "本方进球"),
+    score_away:text(title: "对方进球"),
+    result:select(title: "比赛结果")
+  >
+>
+
+match_detail_page:page(module: "fa", title: "比赛详情")<
+
+  match_detail:display_form(title: "比赛信息", object: "match", viewport: "drawer", cols: "2")<
+    team:text(title: "参赛队伍"),
+    opponent:text(title: "对手"),
+    match_date:date(title: "比赛日期"),
+    match_type:select(title: "比赛类型"),
+    home_away:select(title: "主客场"),
+    venue:text(title: "比赛场地"),
+    score_home:text(title: "本方进球"),
+    score_away:text(title: "对方进球"),
+    result:select(title: "比赛结果"),
+    note:longtext(title: "备注", span: "2")
+  >,
+
+  match_player_form:excel_form(title: "参赛球员", object: "match_player", viewport: "drawer")<
+    student:select(title: "学员"),
+    jersey_number:text(title: "球衣号码"),
+    position:select(title: "比赛位置"),
+    status:select(title: "出场状态"),
+    goals:text(title: "进球"),
+    assists:text(title: "助攻"),
+    minutes_played:text(title: "出场时间")
+  >
+>
+
+lesson_plan_list_page:page(module: "fa", title: "教案管理")<
+
+  lesson_plan_criteria:criteria_form(title: "教案查询", object: "lesson_plan", cols: "3")<
+    name:text(title: "教案名称"),
+    coach:select(title: "教练"),
+    status:select(title: "状态")
+  >,
+
+  lesson_plan_table:paged_table(title: "教案列表", object: "lesson_plan", viewport: "drawer")<
+    name:text(title: "教案名称"),
+    coach:text(title: "教练"),
+    training_session:text(title: "关联训练"),
+    duration:text(title: "时长(分)"),
+    status:select(title: "状态")
+  >,
+
+  lesson_plan_form:entry_form(title: "教案信息", object: "lesson_plan", viewport: "dialog", cols: "2")<
+    name:text(title: "教案名称"),
+    training_session:select(title: "关联训练"),
+    coach:select(title: "制定教练"),
+    duration:text(title: "时长(分钟)")
+  >,
+
+  lesson_plan_editor:entry_form(title: "教案内容", object: "lesson_plan", viewport: "dialog", cols: "1")<
+    warmup:longtext(title: "热身环节", size: "(800,120)"),
+    technical:longtext(title: "技术环节", size: "(800,120)"),
+    tactical:longtext(title: "战术环节", size: "(800,120)"),
+    cooldown:longtext(title: "整理环节", size: "(800,120)"),
+    equipment:text(title: "所需器材"),
+    note:longtext(title: "备注", size: "(800,80)")
+  >
+>
+
+lesson_plan_detail_page:page(module: "fa", title: "教案详情")<
+
+  lesson_plan_detail:display_form(title: "基本信息", object: "lesson_plan", viewport: "drawer", cols: "2")<
+    name:text(title: "教案名称"),
+    training_session:text(title: "关联训练"),
+    coach:text(title: "制定教练"),
+    duration:text(title: "时长(分钟)"),
+    status:select(title: "状态")
+  >
+>
+
+guardian_page:page(module: "fa", title: "监护人管理")<
+
+  guardian_criteria:criteria_form(title: "监护人查询", object: "guardian", cols: "3")<
+    name:text(title: "姓名"),
+    phone:text(title: "联系电话"),
+    relation:select(title: "亲属关系")
+  >,
+
+  guardian_table:paged_table(title: "监护人列表", object: "guardian", viewport: "drawer")<
+    name:text(title: "姓名"),
+    phone:text(title: "联系电话"),
+    relation:select(title: "关系"),
+    is_emergency:select(title: "紧急联系人"),
+    note:text(title: "备注")
+  >,
+
+  guardian_detail:display_form(title: "监护人详情", object: "guardian", viewport: "drawer", cols: "2")<
+    name:text(title: "姓名"),
+    phone:text(title: "联系电话"),
+    relation:select(title: "亲属关系"),
+    is_emergency:select(title: "紧急联系人"),
+    note:longtext(title: "备注", span: "2")
+  >,
+
+  guardian_form:entry_form(title: "监护人信息", object: "guardian", viewport: "dialog", cols: "2")<
+    name:text(title: "姓名"),
+    phone:text(title: "联系电话"),
+    relation:select(title: "亲属关系"),
+    is_emergency:select(title: "紧急联系人"),
+    note:longtext(title: "备注", span: "2")
+  >
+>
+
+
+venue_page:page(module: "fa", title: "场地管理")<
+
+  venue_criteria:criteria_form(title: "场地查询", object: "venue", cols: "3")<
+    name:text(title: "场地名称"),
+    type:select(title: "场地类型"),
+    status:select(title: "状态")
+  >,
+
+  venue_table:paged_table(title: "场地列表", object: "venue", viewport: "drawer")<
+    name:text(title: "场地名称"),
+    type:select(title: "类型"),
+    surface:select(title: "材质"),
+    capacity:text(title: "容纳人数"),
+    status:select(title: "状态")
+  >,
+
+  venue_detail:display_form(title: "场地详情", object: "venue", viewport: "drawer", cols: "2")<
+    name:text(title: "场地名称"),
+    type:select(title: "场地类型"),
+    surface:select(title: "场地材质"),
+    capacity:text(title: "容纳人数"),
+    status:select(title: "状态"),
+    note:longtext(title: "备注", span: "2")
+  >,
+
+  venue_form:entry_form(title: "场地信息", object: "venue", viewport: "dialog", cols: "2")<
+    name:text(title: "场地名称"),
+    type:select(title: "场地类型"),
+    surface:select(title: "场地材质"),
+    capacity:text(title: "容纳人数"),
+    status:select(title: "状态"),
+    note:longtext(title: "备注", span: "2")
+  >
+>
+
+statistics_page:page(module: "fa", title: "数据统计")<
+
+  statistics_tabs:tabs(title: "统计报表")<
+    team_tab:tab(title: "队伍统计")<
+      team_attendance_table:paged_table(title: "各队出勤率", object: "team", viewport: "drawer")<
+        name:text(title: "队伍"),
+        age_group:text(title: "年龄段"),
+        attendance_rate:text(title: "出勤率")
+      >,
+
+      team_match_table:paged_table(title: "各队战绩", object: "team", viewport: "drawer")<
+        name:text(title: "队伍"),
+        win_count:text(title: "胜"),
+        draw_count:text(title: "平"),
+        lose_count:text(title: "负"),
+        win_rate:text(title: "胜率")
+      >
+    >,
+
+    player_tab:tab(title: "学员排行")<
+      player_attendance_table:paged_table(title: "出勤排行", object: "student", viewport: "drawer")<
+        name:text(title: "姓名"),
+        team:text(title: "队伍"),
+        attendance_rate:text(title: "出勤率"),
+        avg_rating:text(title: "平均评分")
+      >,
+
+      player_match_table:paged_table(title: "比赛数据排行", object: "student", viewport: "drawer")<
+        name:text(title: "姓名"),
+        team:text(title: "队伍"),
+        total_goals:text(title: "总进球"),
+        total_assists:text(title: "总助攻"),
+        total_matches:text(title: "出场次数")
+      >
+    >,
+
+    training_tab:tab(title: "训练统计")<
+      monthly_training_table:paged_table(title: "月度训练", object: "training_session", viewport: "drawer")<
+        month:text(title: "月份"),
+        total_count:text(title: "训练次数"),
+        avg_attendance:text(title: "平均出勤率")
+      >
+    >
+  >
+>

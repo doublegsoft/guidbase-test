@@ -1,0 +1,10 @@
+calendar/week_grid_page:page(title:"单周视图")<
+  demo_grid:week_grid(title:"本周安排",object:"demo")<
+    start_time:time(title:"开始时间"),
+    title:text(title:"标题"),
+    buttons(placement:"bottom",title:"按钮")<
+      button(action:"save", title:"新增", ref:"demo_grid"),
+      button(action:"reset", title:"刷新", ref:"demo_grid")
+    >
+  >
+>

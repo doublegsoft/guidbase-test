@@ -1,5 +1,6 @@
 form/entry_form_page:page(title:"输入表单页面")<
-  demo_entry:entry_form(title:"输入表单",object:"demo", cols:"3")<
+  demo_entry:entry_form(title:"输入表单",data:"demo", cols:"3")<
+    avatar:avatar(title:"头像", group:"分组1", span:"3"),
     date1:date(title:"日期", required:"true", group:"分组1"),
     text1:text(title:"文本", required:"true", group:"分组1"),
     num1:number(title:"数字", required:"true", group:"分组1", unit:"米/秒"),
@@ -9,6 +10,9 @@ form/entry_form_page:page(title:"输入表单页面")<
     time1:time(title:"时间", group:"分组1"),
     tags1:tags(title:"标签", required:"true", group:"分组1", span:"3"),
     longtext1:longtext(title:"长文本", group:"分组1", span:"3"),
+    images:images(title:"图片", group:"分组1", span:"3"),
+    videos:videos(title:"视频", group:"分组1", span:"3"),
+    files:files(title:"文件", group:"分组1", span:"3"),
     
     date2:date(title:"日期", group:"分组2"),
     text2:text(title:"文本", group:"分组2"),

@@ -7,19 +7,19 @@ export TATABASE_JAR=/Users/christian/export/opt/tatabase/protosys-plugin-tatabas
 
 export OUTPUT_ROOT=out
 
-export SPEC=tabs_excel_form
-export APPNAME=tabs_excel_form
-export NAMESPACE=tef
+export SPEC=week_grid
+export APPNAME=week_grid
+export NAMESPACE=wg
 export MOBELBASE_MODEL=
 export GUIDBASE_MODEL=spec/$SPEC.guidbase
-export PROJECT_ROOT=$OUTPUT_ROOT/"$SPEC"-1.x
+export PROJECT_ROOT=$OUTPUT_ROOT/"$SPEC"@navypitch-1.x
 ################################################################################
 ##                                                                            ##
 ##                                     VUE3                                   ##
 ##                                                                            ##
 ################################################################################
 REPOS=("javascript-desktop@vue3-1.x" "javascript-sdk@vanilla-1.x" \
-       "../html/html-desktop@bnrlike#vue3-1.x" "../html/html-desktop@govlike#vue3-1.x")
+       "../html/html-desktop@navypitch#vue3-1.x")
 
 for repo in "${REPOS[@]}"
 do
@@ -45,8 +45,9 @@ java -jar $GUIDBASE_JAR \
 \[\],\
 \"dependencies\":\
 \[\],\
+\"designSystem\":\"navypitch\",\
 \"modules\":\
-\{\"tabs\":\"分页标签\"\}\
+\{\"calendar\":\日历\"\}\
 \} 2>&1
 done
 

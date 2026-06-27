@@ -1,5 +1,5 @@
 table/fixed_table_page:page(title:"数据表格")<
-  demo_criteria:criteria_form(object:"demo")<
+  demo_criteria:criteria_form(variable:"{demo_criteria}")<
     date1:date(title:"日期"),
     text1:text(title:"文本", placeholder:"一个文本"),
     num1:number(title:"数字", placeholder:"一个数字"),
@@ -7,7 +7,7 @@ table/fixed_table_page:page(title:"数据表格")<
     button(action:"search", title:"搜索", ref:"demo_table"),
     button(action:"reset", title:"重置")
   >,
-  demo_table:fixed_table(object:"demo", cols:"3", frozen:"2")<
+  demo_table:fixed_table(data:"demo?{demo_criteria}", cols:"3", frozen:"2")<
     date1:date(title:"日期", fixed:"left"),
     text1:text(title:"文本", fixed:"left"),
     num1:number(title:"数字", unit:"米/秒"),

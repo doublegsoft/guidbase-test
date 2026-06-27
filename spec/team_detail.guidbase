@@ -1,0 +1,71 @@
+team/detail:page(title:"球队详情")<
+
+  team_display:display_form(title:"基础信息", cols:"3")<
+    team_name:text(title:"队名"),
+    age_group:text(title:"年龄段"),
+    coach_name:text(title:"教练", page:"person/coach_profile")
+  >,
+
+  team_tabs:tabs(title:"")<
+    player_tab:tab(title:"球员")<
+      player_table:paged_table(title:"球员列表")<
+        student_name:text(title:"姓名"),
+        birthdate:date(title:"生日"),
+        age:number(title:"年龄"),
+        position:text(title:"位置"),
+        buttons(title:"操作",width:"180")<
+          edit:button(title:"编辑", action:"edit", ref:"player_edit"),
+          view:button(title:"查看", action:"view", ref:"player_profile"),
+          remove:button(title:"删除", action:"delete")
+        >
+      >,
+      add_player:button(title:"新增", action:"add", ref:"player_edit")
+    >,
+    match_tab:tab(title:"比赛")<
+      match_table:paged_table(title:"球员列表")<
+        match_name:text(title:"比赛名称"),
+        opponent:text(title:"对手名称"),
+        match_result:text(title:"比赛结果"),
+        buttons(title:"操作",width:"180")<
+          edit_match:button(title:"编辑", action:"edit", ref:"match_edit"),
+          remove_match:button(title:"删除", action:"delete")
+        >
+      >,
+      add_match:button(title:"新增", action:"add", ref:"match_edit")
+    >
+  >,
+
+  player_edit:dialog(title:"编辑球员信息")<
+    player_entry:entry_form(title:"编辑球员信息")<
+      student_name:text(title:"姓名"),
+      birthdate:date(title:"生日"),
+      save_player:button(title:"保存", action:"save"),
+      reset_player:button(title:"重置", action:"reset")
+    >
+  >,
+
+  match_edit:dialog(title:"编辑比赛信息")<
+    match_entry:entry_form(title:"编辑比赛信息")<
+      match_name:text(title:"比赛名称"),
+      opponent:text(title:"对手名称"),
+      match_result:text(title:"比赛结果"),
+      save_match:button(title:"保存", action:"save"),
+      reset_match:button(title:"重置", action:"reset")
+    >
+  >,
+  player_profile:drawer(title:"球员档案", page:"person/player_profile")
+>
+
+person/player_profile:page(title:"球员档案")<
+  base_info:display_form(title:"基本信息", cols:"2")<
+    student_name:text(title:"姓名"),
+    birthdate:date(title:"生日"),
+    team_number:number(title:"球衣号码")
+  >,
+  player_ability_chart:chart(title:"能力", chart:"pie"),
+  training_performance:list_view(title:"近期表现")<
+    training_time:date(title:"训练时间", property:"start_time"),
+    score:number(title:"训练时间", property:"primary"),
+    status:number(title:"训练时间", property:"status")
+  >
+>
