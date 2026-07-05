@@ -1,5 +1,6 @@
 form/entry_form_page:page(title:"输入表单页面")<
-  demo_entry:entry_form(title:"输入表单",data:"demo", cols:"3")<
+  demo_entry:entry_form(title:"输入表单", data:"demo", cols:"3", init:"demo?person_id")<
+    person_id:hidden,
     avatar:avatar(title:"头像", group:"分组1", span:"3"),
     date1:date(title:"日期", required:"true", group:"分组1"),
     text1:text(title:"文本", required:"true", group:"分组1"),
@@ -29,7 +30,7 @@ form/entry_form_page:page(title:"输入表单页面")<
     longtext3:longtext(title:"长文本", group:"分组3", span:"3")
   >,
   buttons(placement:"bottom",title:"按钮")<
-    button(action:"save", title:"保存", ref:"demo_entry"),
-    button(action:"reset", title:"重置", ref:"demo_entry")
+    demo_entry_save:button(action:"@demo_entry.save", title:"保存"),
+    demo_entry_reset:button(action:"@demo_entry.reset", title:"重置")
   >
 >

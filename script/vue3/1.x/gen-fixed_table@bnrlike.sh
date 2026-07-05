@@ -7,20 +7,19 @@ export TATABASE_JAR=/Users/christian/export/opt/tatabase/protosys-plugin-tatabas
 
 export OUTPUT_ROOT=out
 
-export SPEC=calendar_schedule
-export APPNAME=calendar_schedule
-export NAMESPACE=df
+export SPEC=fixed_table
+export APPNAME=fixed_table
+export NAMESPACE=pt
 export MOBELBASE_MODEL=
 export GUIDBASE_MODEL=spec/$SPEC.guidbase
-export PROJECT_NAME="$SPEC"@navypitch"#"wechat-1.x
-export PROJECT_ROOT=$OUTPUT_ROOT/$PROJECT_NAME
+export PROJECT_ROOT=$OUTPUT_ROOT/"$SPEC"@bnrlike-1.x
 ################################################################################
 ##                                                                            ##
-##                             WECHAT MINI PROGRAM                            ##
+##                                     VUE3                                   ##
 ##                                                                            ##
 ################################################################################
-REPOS=("javascript-miniprogram@wechat-1.x" "javascript-sdk@vanilla-1.x" \
-       "../html/html-miniprogram@navypitch#wechat-1.x")
+REPOS=("javascript-desktop@vue3-1.x" "javascript-sdk@vanilla-1.x" \
+       "../html/html-desktop@bnrlike#vue3-1.x")
 
 for repo in "${REPOS[@]}"
 do
@@ -46,18 +45,17 @@ java -jar $GUIDBASE_JAR \
 \[\],\
 \"dependencies\":\
 \[\],\
-\"designSystem\":\"navypitch\",\
 \"modules\":\
-\{\"form\":\"表单\"\}\
+\{\"table\":\"表格\"\}\
 \} 2>&1
 done
 
 ################################################################################
 ##                                                                            ##
-##                             WECHAT MINI PROGRAM                            ##
+##                                     VUE3                                   ##
 ##                                                                            ##
 ################################################################################
-export TEMPLATE_ROOT=$PROJBASE_DATA_ROOT/javascript/javascript-miniprogram@wechat-1.x
+export TEMPLATE_ROOT=$PROJBASE_DATA_ROOT/javascript/javascript-desktop@vue3-1.x
 
 java -jar $PROJBASE_JAR \
 --template-root=$TEMPLATE_ROOT \
@@ -85,7 +83,7 @@ java -jar $PROJBASE_JAR \
 ##                                    TEST                                    ##
 ##                                                                            ##
 ################################################################################
-REPOS=("markdown/markdown-dataspec@llm-1.x" \
+REPOS=("markdown/markdown-dataspec@llm-1.x" "tebot/tebot-bnrlike@selenium-1.x" \
        "javascript/javascript-sdk@vanilla-1.x")
 
 for repo in "${REPOS[@]}"
@@ -116,15 +114,4 @@ java -jar $TATABASE_JAR \
 \} 2>&1
 done
 
-
-mkdir -p $PROJECT_ROOT/utils
-rm -rf $PROJECT_ROOT/sdk
-mv $PROJECT_ROOT/src/sdk $PROJECT_ROOT
-rm -rf $PROJECT_ROOT/src
-
-#export DYLD_LIBRARY_PATH=~/export/opt/goolib
-#~/export/opt/goolib/goo-sftp-upload \
-#--server=10.12.100.82 --port=22 \
-#--username=christian --password=ganguo \
-#-l $PROJECT_ROOT \
-#-r /home/christian/projs/wechat-miniprogram-gen/$PROJECT_NAME
+cd $PROJECT_ROOT && yarn install && yarn run build && cd ../..

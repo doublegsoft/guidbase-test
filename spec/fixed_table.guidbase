@@ -4,8 +4,8 @@ table/fixed_table_page:page(title:"数据表格")<
     text1:text(title:"文本", placeholder:"一个文本"),
     num1:number(title:"数字", placeholder:"一个数字"),
     sel10:select(title:"下拉框", data:"enum[Y:YES('是'),N:NO('否'),U:UNKNOWN('未知')]"),
-    button(action:"search", title:"搜索", ref:"demo_table"),
-    button(action:"reset", title:"重置")
+    criteria_search:button(action:"@demo_table.search", title:"搜索"),
+    criteria_reset:button(action:"@demo_criteria.reset", title:"重置")
   >,
   demo_table:fixed_table(data:"demo?{demo_criteria}", cols:"3", frozen:"2")<
     date1:date(title:"日期", fixed:"left"),
@@ -30,8 +30,8 @@ table/fixed_table_page:page(title:"数据表格")<
     sel31:select(title:"下拉框31"),
     
     buttons(title:"操作",width:"180")<
-      button(action:"edit", title:"编辑", ref:"demo_table"),
-      button(action:"delete", title:"删除", ref:"demo_table")
+      demo_table_edit:button(action:"@demo_table.edit", title:"编辑"),
+      demo_table_remove:button(action:"@demo_table.delete", title:"删除")
     >
   >
 >

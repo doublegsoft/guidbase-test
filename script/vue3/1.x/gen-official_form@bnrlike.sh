@@ -12,7 +12,7 @@ export APPNAME=official_form
 export NAMESPACE=oof
 export MOBELBASE_MODEL=
 export GUIDBASE_MODEL=spec/$SPEC.guidbase
-export PROJECT_ROOT=$OUTPUT_ROOT/"$SPEC"-1.x
+export PROJECT_ROOT=$OUTPUT_ROOT/"$SPEC"@bnrlike-1.x
 ################################################################################
 ##                                                                            ##
 ##                                     VUE3                                   ##

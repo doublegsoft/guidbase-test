@@ -7,11 +7,12 @@ team/schedule:page(title: "球队另一种日程")<
   )<
     event_date:date(title:"日期"),
     event_type:select(title:"类型", data:"enum[Y:YES('大瓜'),N:NO('二瓜'),U:UNKNOWN('三瓜')]"),
-    reset:button(action:"reset", title:"重置"),
-    search:button(action:"search", title:"搜索", ref:"event_list")
+    reset:button(action:"@schedule_criteria.reset", title:"重置"),
+    search:button(action:"@event_list.search", title:"搜索")
   >,
   event_list:list_view(
     data: "schedule_event?{schedule_criteria}",
+    init: "schedule_event?event_date=event_date",
     page: "$team/event",
     title: "日程安排"
   )<

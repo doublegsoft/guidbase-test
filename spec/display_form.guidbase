@@ -1,5 +1,6 @@
-form/display_form_page:page(title:"只读表单页面")<
-  demo_entry:display_form(title:"只读表单",data:"demo", cols:"3")<
+form/display_form_page:page(title:"只读表单页面",params:"demo_id")<
+  demo_entry:display_form(title:"只读表单",data:"demo", cols:"3", init:"demo?person_id")<
+    person_id:hidden,
     date1:date(title:"日期", required:"true", group:"分组1"),
     text1:text(title:"文本", required:"true", group:"分组1"),
     num1:number(title:"数字", required:"true", group:"分组1", unit:"米/秒"),
@@ -20,7 +21,7 @@ form/display_form_page:page(title:"只读表单页面")<
     date3:date(title:"日期", group:"分组3"),
     text3:text(title:"只读文本", group:"分组3", readonly:"true"),
     num3:number(title:"数字", group:"分组3", unit:"千瓦时"),
-    sel30:select(title:"下拉框", group:"分组3"),
+    sel30:select(title:"下拉框", group:"分组3",data:"sel30table",label:"name",value:"id"),
     sel31:select(title:"下拉框", data:"enum[Y:YES('大瓜'),N:NO('二瓜'),U:UNKNOWN('三瓜')]", group:"分组3", span:"2"),
     longtext3:longtext(title:"长文本", group:"分组3", span:"3")
   >

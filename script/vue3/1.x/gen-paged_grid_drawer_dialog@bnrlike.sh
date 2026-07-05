@@ -46,7 +46,7 @@ java -jar $GUIDBASE_JAR \
 \"dependencies\":\
 \[\],\
 \"modules\":\
-\{\"grid\":\"网格\"\}\
+\{\"grid\":\"网格\",\"form\":\"表单\"\}\
 \} 2>&1
 done
 
