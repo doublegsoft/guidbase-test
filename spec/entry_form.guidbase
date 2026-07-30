@@ -7,7 +7,7 @@ form/entry_form_page:page(title:"输入表单页面")<
     num1:number(title:"数字", required:"true", group:"分组1", unit:"米/秒"),
     sel10:select(title:"下拉框", required:"true", data:"enum[Y:YES('是'),N:NO('否'),U:UNKNOWN('未知')]", group:"分组1"),
     cas1:cascade(title:"级联选择", group:"分组1", span:"2"),
-    mul1:multiselect(title:"多选框", group:"分组1", span:"2"),
+    mul1:multiselect(title:"多选框", group:"分组1", span:"2", data:"enum[Y:YES('大瓜'),N:NO('二瓜'),U:UNKNOWN('三瓜'),T:TRUE('四瓜'),F:FALSE('五瓜')]"),
     time1:time(title:"时间", group:"分组1"),
     tags1:tags(title:"标签", required:"true", group:"分组1", span:"3"),
     longtext1:longtext(title:"长文本", group:"分组1", span:"3"),
@@ -25,8 +25,8 @@ form/entry_form_page:page(title:"输入表单页面")<
     date3:date(title:"日期", group:"分组3"),
     text3:text(title:"只读文本", group:"分组3", readonly:"true"),
     num3:number(title:"数字", group:"分组3", unit:"千瓦时"),
-    sel30:select(title:"下拉框", group:"分组3"),
-    sel31:select(title:"下拉框", data:"enum[Y:YES('大瓜'),N:NO('二瓜'),U:UNKNOWN('三瓜')]", group:"分组3", span:"2"),
+    sel30_id:select(title:"下拉框A", group:"分组3", data:"sel30table", value:"sel30table_id", label: "sel30table_name"),
+    sel31:select(title:"下拉框B", data:"enum[Y:YES('大瓜'),N:NO('二瓜'),U:UNKNOWN('三瓜')]", group:"分组3", span:"2"),
     longtext3:longtext(title:"长文本", group:"分组3", span:"3")
   >,
   buttons(placement:"bottom",title:"按钮")<

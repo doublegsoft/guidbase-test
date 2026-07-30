@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>小狮子足球 · 家长端首页</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest-deep:#0f2e20;
+    --forest:#1a4a34;
+    --forest-mid:#245c42;
+    --grass:#5fd88a;
+    --grass-deep:#2fae63;
+    --gold:#f3b23c;
+    --coral:#ef7a5f;
+    --paper:#f6f2e8;
+    --card:#ffffff;
+    --ink:#132419;
+    --ink-soft:#5c6c62;
+    --line:#e7e1d2;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;background:#d9d3c2;font-family:'Manrope','PingFang SC','Microsoft YaHei',sans-serif;color:var(--ink);}
+  .display{font-family:'Baloo 2','PingFang SC',sans-serif;}
+
+  #stage{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px 12px;}
+  #phone{
+    width:390px;height:844px;background:var(--paper);border-radius:44px;overflow:hidden;position:relative;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,.45), 0 0 0 10px #17140f, 0 0 0 11px #3a352b;
+  }
+  #notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:150px;height:26px;background:#17140f;border-radius:0 0 16px 16px;z-index:50;}
+  #scroll{height:100%;overflow-y:auto;padding-bottom:96px;scrollbar-width:none;}
+  #scroll::-webkit-scrollbar{display:none;}
+  .statusbar{display:flex;justify-content:space-between;align-items:center;padding:16px 22px 4px;font-size:13px;font-weight:700;color:#fff;}
+
+  /* ---- hero ---- */
+  .hero{position:relative;background:radial-gradient(120% 100% at 15% 0%, var(--forest-mid), var(--forest-deep) 65%);padding:6px 20px 30px;}
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin:10px 0 16px;}
+  .greet .hi{font-size:12.5px;color:#bfe3cd;font-weight:600;letter-spacing:.3px;}
+  .greet .name{font-size:21px;font-weight:800;color:#fff;margin-top:2px;}
+  .bell{width:38px;height:38px;border-radius:12px;background:#ffffff17;display:flex;align-items:center;justify-content:center;position:relative;}
+  .bell .dot{position:absolute;top:8px;right:8px;width:7px;height:7px;background:var(--gold);border-radius:50%;}
+
+  /* child switcher */
+  .child-switch{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;margin-bottom:16px;}
+  .child-switch::-webkit-scrollbar{display:none;}
+  .child-pill{
+    display:flex;align-items:center;gap:7px;flex-shrink:0;padding:6px 12px 6px 6px;border-radius:999px;
+    background:#ffffff14;border:1.5px solid #ffffff22;
+  }
+  .child-pill.active{background:#ffffff;border-color:#fff;}
+  .child-pill .av{width:26px;height:26px;border-radius:50%;background:linear-gradient(145deg,#8fd6ac,#3f9c68);display:flex;align-items:center;justify-content:center;font-size:12px;color:#0f2e20;font-weight:800;}
+  .child-pill span{font-size:12px;font-weight:700;color:#fff;}
+  .child-pill.active span{color:var(--forest-deep);}
+  .child-pill.add{background:transparent;border-style:dashed;justify-content:center;padding:6px 14px;}
+  .child-pill.add span{color:#bfe3cd;}
+
+  .session-card{
+    position:relative;border-radius:22px;padding:18px;
+    background:linear-gradient(160deg,var(--grass-deep),#1f7a4c 55%, #14603b);
+    box-shadow:0 14px 30px -12px rgba(0,0,0,.55);
+  }
+  .session-top{display:flex;justify-content:space-between;align-items:flex-start;}
+  .session-tag{display:inline-flex;align-items:center;gap:5px;background:#ffffff26;color:#fff;font-size:11px;font-weight:700;padding:5px 10px;border-radius:999px;letter-spacing:.4px;}
+  .session-tag .pulse{width:6px;height:6px;border-radius:50%;background:var(--gold);}
+  .countdown{color:#fff;font-size:12px;font-weight:700;background:#00000030;padding:5px 10px;border-radius:999px;}
+  .session-title{color:#fff;font-size:20px;font-weight:800;margin-top:14px;}
+  .session-meta{display:flex;gap:16px;margin-top:8px;}
+  .session-meta span{color:#dff3e6;font-size:12.5px;font-weight:600;}
+  .session-foot{display:flex;align-items:center;justify-content:space-between;margin-top:18px;}
+  .coach-mini{display:flex;align-items:center;gap:8px;}
+  .coach-mini .pic{width:30px;height:30px;border-radius:9px;background:#ffffff30;border:1.5px solid #ffffff55;}
+  .coach-mini .txt{color:#eafff2;font-size:11.5px;font-weight:600;line-height:1.3;}
+  .coach-mini .txt b{display:block;color:#fff;font-size:13px;}
+  .cta-btn{background:var(--gold);color:#452d05;font-weight:800;font-size:13px;padding:10px 18px;border-radius:12px;border:none;box-shadow:0 6px 14px -4px rgba(0,0,0,.4);}
+
+  .stats-row{display:flex;gap:10px;padding:16px 20px 4px;margin-top:-14px;position:relative;z-index:2;}
+  .stat-chip{flex:1;background:var(--card);border-radius:16px;padding:12px 10px;box-shadow:0 8px 20px -12px rgba(20,40,30,.35);text-align:center;}
+  .stat-chip .num{font-family:'Baloo 2';font-size:19px;font-weight:800;color:var(--forest);}
+  .stat-chip .num small{font-size:11px;font-weight:700;color:var(--ink-soft);}
+  .stat-chip .lbl{font-size:11px;color:var(--ink-soft);font-weight:600;margin-top:2px;}
+
+  .section{padding:22px 20px 0;}
+  .section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .section-head h2{font-size:16px;font-weight:800;margin:0;display:flex;align-items:center;gap:6px;}
+  .section-head .more{font-size:12px;color:var(--grass-deep);font-weight:700;}
+
+  /* coach feedback */
+  .feedback-card{background:var(--card);border-radius:18px;padding:14px;box-shadow:0 8px 20px -14px rgba(20,40,30,.4);}
+  .feedback-head{display:flex;align-items:center;gap:10px;}
+  .feedback-head .pic{width:34px;height:34px;border-radius:10px;background:#cfe9d8;flex-shrink:0;}
+  .feedback-head .nm{font-size:13px;font-weight:800;}
+  .feedback-head .dt{font-size:10.5px;color:var(--ink-soft);font-weight:600;}
+  .feedback-body{font-size:12.5px;color:var(--ink);line-height:1.6;margin-top:10px;background:#f6f2e8;padding:10px 12px;border-radius:12px;}
+  .feedback-tags{display:flex;gap:6px;margin-top:10px;}
+  .feedback-tags span{background:#e4f5ea;color:var(--forest);font-size:10.5px;font-weight:700;padding:4px 9px;border-radius:999px;}
+
+  /* growth radar mini */
+  .growth-card{background:var(--card);border-radius:18px;padding:16px;box-shadow:0 8px 20px -14px rgba(20,40,30,.4);display:flex;align-items:center;gap:16px;}
+  .growth-card svg{flex-shrink:0;}
+  .growth-legend{flex:1;}
+  .growth-legend .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:12px;}
+  .growth-legend .row .dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;}
+  .growth-legend .row b{font-family:'Baloo 2';color:var(--forest);}
+
+  .h-scroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none;}
+  .h-scroll::-webkit-scrollbar{display:none;}
+  .moment-card{min-width:118px;}
+  .moment-card .pic{height:118px;border-radius:14px;background:linear-gradient(150deg,#cfe9d8,#a9d3b9);display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:6px;}
+  .moment-card .nm{font-size:11.5px;font-weight:700;color:var(--ink-soft);}
+
+  .pay-banner{
+    margin:22px 20px 0;border-radius:20px;padding:18px;
+    background:linear-gradient(120deg,#f3b23c,#e08d1f);
+    display:flex;align-items:center;gap:14px;
+    box-shadow:0 12px 26px -14px rgba(180,110,10,.55);
+  }
+  .pay-banner .ic{width:52px;height:52px;border-radius:14px;background:#ffffff35;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+  .pay-banner .tt{color:#3e2705;font-weight:800;font-size:14px;}
+  .pay-banner .sb{color:#5c3d08;font-size:11.5px;font-weight:600;margin-top:2px;}
+  .pay-banner button{margin-left:auto;background:#3e2705;color:#fff;border:none;font-weight:800;font-size:12px;padding:9px 14px;border-radius:10px;}
+
+  .contact-strip{margin:20px 20px 26px;display:flex;gap:12px;}
+  .contact-btn{
+    flex:1;background:var(--card);border-radius:16px;padding:14px;text-align:center;
+    box-shadow:0 8px 18px -14px rgba(20,40,30,.35);
+  }
+  .contact-btn .ic{font-size:20px;margin-bottom:6px;}
+  .contact-btn .lbl{font-size:11.5px;font-weight:700;}
+
+  #tabbar{position:absolute;left:0;right:0;bottom:0;height:82px;background:#ffffffee;backdrop-filter:blur(10px);display:flex;padding-top:10px;border-top:1px solid var(--line);}
+  .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;color:#9aa79f;}
+  .tab .ic{font-size:19px;}
+  .tab span{font-size:10.5px;font-weight:700;}
+  .tab.active{color:var(--forest);}
+  .tab.active .ic{color:var(--grass-deep);}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="phone">
+    <div id="notch"></div>
+    <div id="scroll">
+
+      <div class="hero">
+        <div class="statusbar"><span>9:41</span><span>●●●●  Wi‑Fi  100%</span></div>
+        <div class="topbar">
+          <div class="greet">
+            <div class="hi">早上好，明明妈妈</div>
+            <div class="name display">今天也要加油哦 👏</div>
+          </div>
+          <div class="bell">🔔<span class="dot"></span></div>
+        </div>
+
+        <div class="child-switch">
+          <div class="child-pill active"><div class="av display">明</div><span>小明</span></div>
+          <div class="child-pill"><div class="av display">悦</div><span>小悦</span></div>
+          <div class="child-pill add"><span>+ 添加孩子</span></div>
+        </div>
+
+        <div class="session-card">
+          <div class="session-top">
+            <span class="session-tag"><span class="pulse"></span>孩子今日训练</span>
+            <span class="countdown">距开始 45 分钟</span>
+          </div>
+          <div class="session-title display">U10 传控基础 · 技战术课</div>
+          <div class="session-meta">
+            <span>📍 一号天然草场</span>
+            <span>🕒 16:30–18:00</span>
+          </div>
+          <div class="session-foot">
+            <div class="coach-mini"><div class="pic"></div><div class="txt">主教练<b>王 磊</b></div></div>
+            <button class="cta-btn">查看详情</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-chip"><div class="num display">12<small>天</small></div><div class="lbl">连续打卡</div></div>
+        <div class="stat-chip"><div class="num display">96<small>%</small></div><div class="lbl">出勤率</div></div>
+        <div class="stat-chip"><div class="num display">8<small>课时</small></div><div class="lbl">课时余额</div></div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <h2>💬 教练最新反馈</h2>
+          <span class="more">历史反馈 ›</span>
+        </div>
+        <div class="feedback-card">
+          <div class="feedback-head">
+            <div class="pic"></div>
+            <div>
+              <div class="nm">王磊教练</div>
+              <div class="dt">昨天 18:20 · U8 兴趣启蒙班</div>
+            </div>
+          </div>
+          <div class="feedback-body">小明今天的控球稳定性有明显进步，射门时的支撑脚位置也更准确了，继续保持训练热情！</div>
+          <div class="feedback-tags"><span>控球 ⬆</span><span>专注度高</span><span>团队配合好</span></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <h2>📈 本月成长报告</h2>
+          <span class="more">查看完整报告 ›</span>
+        </div>
+        <div class="growth-card">
+          <svg width="96" height="96" viewBox="0 0 96 96">
+            <polygon points="48,10 80,30 70,72 26,72 16,30" fill="none" stroke="#e7e1d2" stroke-width="1.5"/>
+            <polygon points="48,26 66,38 60,64 36,64 30,38" fill="none" stroke="#e7e1d2" stroke-width="1.5"/>
+            <polygon points="48,16 72,32 63,68 33,68 24,32" fill="#5fd88a" fill-opacity=".35" stroke="#2fae63" stroke-width="2"/>
+          </svg>
+          <div class="growth-legend">
+            <div class="row"><span><span class="dot" style="background:#2fae63"></span>技术</span><b>88</b></div>
+            <div class="row"><span><span class="dot" style="background:#f3b23c"></span>体能</span><b>76</b></div>
+            <div class="row"><span><span class="dot" style="background:#ef7a5f"></span>心理</span><b>82</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <h2>🎬 孩子的精彩瞬间</h2>
+          <span class="more">全部相册 ›</span>
+        </div>
+        <div class="h-scroll">
+          <div class="moment-card"><div class="pic">🏃‍♂️</div><div class="nm">带球训练 · 7月20日</div></div>
+          <div class="moment-card"><div class="pic">⚽</div><div class="nm">射门练习 · 7月18日</div></div>
+          <div class="moment-card"><div class="pic">🏆</div><div class="nm">友谊赛 MVP · 7月14日</div></div>
+        </div>
+      </div>
+
+      <div class="pay-banner">
+        <div class="ic">💳</div>
+        <div>
+          <div class="tt">课时余额不足 10 节</div>
+          <div class="sb">续费即享暑期 9 折优惠</div>
+        </div>
+        <button>去续费</button>
+      </div>
+
+      <div class="contact-strip">
+        <div class="contact-btn"><div class="ic">📞</div><div class="lbl">联系教练</div></div>
+        <div class="contact-btn"><div class="ic">📝</div><div class="lbl">请假申请</div></div>
+        <div class="contact-btn"><div class="ic">🎟️</div><div class="lbl">活动报名</div></div>
+      </div>
+
+    </div>
+
+    <div id="tabbar">
+      <div class="tab active"><div class="ic">🏠</div><span>首页</span></div>
+      <div class="tab"><div class="ic">📅</div><span>课程</span></div>
+      <div class="tab"><div class="ic">📈</div><span>成长</span></div>
+      <div class="tab"><div class="ic">👤</div><span>我的</span></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

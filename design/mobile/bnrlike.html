@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>计费管理 — 首页</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
+
+<style>
+/* ===== Design Tokens ===== */
+:root {
+  /* Surfaces */
+  --surface-0: #F5F6FA;
+  --surface-1: #FFFFFF;
+  --surface-2: #F8F9FC;
+
+  /* Accent — Indigo/Blue */
+  --accent-50:  #EEF2FF;
+  --accent-100: #E0E7FF;
+  --accent-400: #818CF8;
+  --accent-500: #6366F1;
+  --accent-600: #4F46E5;
+  --accent-700: #4338CA;
+  --accent-900: #312E81;
+
+  /* Neutral text */
+  --text-primary:   #111827;
+  --text-secondary: #6B7280;
+  --text-muted:     #9CA3AF;
+  --text-inverse:   #FFFFFF;
+
+  /* Borders */
+  --border:       #E5E7EB;
+  --border-light: #F3F4F6;
+
+  /* Semantic */
+  --red-50:  #FEF2F2;
+  --red-400: #F87171;
+  --red-500: #EF4444;
+  --red-600: #DC2626;
+
+  --amber-50:  #FFFBEB;
+  --amber-400: #FBBF24;
+  --amber-500: #F59E0B;
+  --amber-600: #D97706;
+
+  --green-50:  #ECFDF5;
+  --green-400: #34D399;
+  --green-500: #10B981;
+  --green-600: #059669;
+
+  --teal-50:  #F0FDFA;
+  --teal-500: #14B8A6;
+  --teal-600: #0D9488;
+
+  --purple-50:  #F5F3FF;
+  --purple-500: #8B5CF6;
+  --purple-600: #7C3AED;
+
+  --orange-50:  #FFF7ED;
+  --orange-500: #F97316;
+  --orange-600: #EA580C;
+
+  --rose-50:  #FFF1F2;
+  --rose-500: #F43F5E;
+  --rose-600: #E11D48;
+
+  --blue-50:  #EFF6FF;
+  --blue-500: #3B82F6;
+  --blue-600: #2563EB;
+
+  /* Aliases — matching existing v2 class names */
+  --bg-accent:      var(--accent-50);
+  --text-accent:    var(--accent-600);
+  --fill-accent:    var(--accent-500);
+  --bg-warning:     var(--amber-50);
+  --border-warning: var(--amber-400);
+  --text-warning:   var(--amber-600);
+  --bg-danger:      var(--red-50);
+  --text-danger:    var(--red-600);
+  --bg-success:     var(--green-50);
+  --text-success:   var(--green-600);
+
+  /* Typography */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Helvetica Neue", sans-serif;
+  --font-mono: "SF Mono", "Menlo", monospace;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.06);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,.08);
+
+  /* Radii */
+  --radius-sm:  8px;
+  --radius-md:  12px;
+  --radius-lg:  16px;
+  --radius-xl:  20px;
+}
+
+/* ===== Reset & Base ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  display: flex; justify-content: center; align-items: flex-start;
+  min-height: 100vh; padding: 20px 12px 40px;
+  background: #F0F1F6;
+  font-family: var(--font-sans);
+}
+
+/* ===== Phone Shell ===== */
+.phone {
+  width: 375px; max-width: 100%;
+  background: var(--surface-1);
+  border-radius: 40px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(0,0,0,.04);
+  position: relative;
+}
+
+/* ===== Dynamic Island ===== */
+.dynamic-island {
+  width: 90px; height: 28px;
+  background: #0F0F0F;
+  border-radius: 20px;
+  position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+  z-index: 10;
+}
+
+/* ===== Status Bar ===== */
+.statusbar {
+  height: 50px; display: flex; align-items: flex-end; justify-content: space-between;
+  padding: 0 24px 8px;
+  background: var(--surface-1);
+  font-weight: 600;
+}
+.stime { font-size: 14px; color: var(--text-primary); letter-spacing: -.3px; }
+.sicons { display: flex; align-items: center; gap: 6px; color: var(--text-primary); }
+.sicons i { font-size: 13px; }
+
+/* ===== Screen Container ===== */
+.screen {
+  background: var(--surface-0);
+  min-height: 700px;
+}
+
+/* ===== Header ===== */
+.header {
+  background: var(--surface-1);
+  padding: 10px 20px 14px;
+}
+.hrow { display: flex; align-items: center; justify-content: space-between; }
+.hleft { display: flex; align-items: center; gap: 10px; }
+
+.avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-500), var(--accent-700));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 600; color: #fff;
+  box-shadow: 0 2px 8px rgba(99,102,241,.3);
+}
+
+.hgreeting { font-size: 11px; color: var(--text-muted); }
+.hname   { font-size: 16px; font-weight: 600; color: var(--text-primary); letter-spacing: -.2px; }
+
+.hright { display: flex; gap: 16px; align-items: center; }
+.hbtn {
+  width: 36px; height: 36px; border-radius: 50%; background: var(--surface-2);
+  display: flex; align-items: center; justify-content: center; position: relative;
+  transition: background .15s;
+}
+.hbtn i { font-size: 18px; color: var(--text-secondary); }
+.hbtn:active { background: var(--accent-50); }
+.badge-dot {
+  width: 8px; height: 8px; background: var(--red-500); border-radius: 50%;
+  position: absolute; top: 6px; right: 6px;
+  border: 2px solid #fff;
+}
+
+/* ===== Hero Card ===== */
+.hero {
+  margin: 12px 16px 0;
+  padding: 20px;
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  border-radius: var(--radius-xl);
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(99,102,241,.25);
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: ''; position: absolute; top: -40px; right: -30px;
+  width: 120px; height: 120px; border-radius: 50%;
+  background: rgba(255,255,255,.06);
+}
+.hero-label {
+  font-size: 12px; color: rgba(255,255,255,.7);
+  letter-spacing: .5px; text-transform: uppercase; margin-bottom: 4px;
+  position: relative; z-index: 1;
+}
+.hero-amt-row {
+  display: flex; align-items: baseline; gap: 8px;
+  position: relative; z-index: 1;
+}
+.hero-amt {
+  font-size: 34px; font-weight: 700;
+  letter-spacing: -1px; line-height: 1.15;
+}
+.hero-trend {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 12px; font-weight: 500;
+  background: rgba(255,255,255,.15);
+  padding: 3px 8px; border-radius: 20px;
+}
+.hero-trend i { font-size: 13px; }
+
+.hero-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px;
+  position: relative; z-index: 1;
+}
+.hero-card {
+  background: rgba(255,255,255,.12);
+  backdrop-filter: blur(4px);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+}
+.hc-label { font-size: 11px; color: rgba(255,255,255,.6); margin-bottom: 3px; }
+.hc-val   { font-size: 17px; font-weight: 600; color: #fff; }
+.hc-sub   {
+  font-size: 10px; color: rgba(255,255,255,.55); margin-top: 3px;
+  display: flex; align-items: center; gap: 3px;
+}
+
+/* ===== Overdue Banner ===== */
+.overdue-banner {
+  margin: 12px 16px 0; padding: 10px 14px;
+  background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; gap: 10px;
+  border: 1px solid rgba(217,119,6,.15);
+}
+.ob-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--amber-500);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.ob-icon i { font-size: 18px; color: #fff; }
+.ob-body { flex: 1; min-width: 0; }
+.ob-title { font-size: 12px; font-weight: 600; color: #92400E; }
+.ob-sub   { font-size: 11px; color: #A16207; margin-top: 1px; }
+.ob-arrow { color: #92400E; font-size: 16px; }
+
+/* ===== Section Header ===== */
+.section { padding: 18px 16px 0; }
+.sec-row {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;
+}
+.sec-title { font-size: 15px; font-weight: 600; color: var(--text-primary); letter-spacing: -.2px; }
+.sec-more {
+  font-size: 13px; color: var(--accent-500); font-weight: 500;
+  display: flex; align-items: center; gap: 2px;
+}
+
+/* ===== Quick Actions ===== */
+.actions-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+  padding: 0 16px; margin-top: 6px;
+}
+.action-item {
+  display: flex; flex-direction: column; align-items: center; gap: 7px;
+  padding: 14px 4px 12px;
+  background: var(--surface-1);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: transform .15s, box-shadow .15s;
+  cursor: default;
+}
+.action-item:active { transform: scale(.96); box-shadow: none; }
+
+.action-icon {
+  width: 44px; height: 44px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+}
+.action-label {
+  font-size: 11px; color: var(--text-secondary); text-align: center;
+  line-height: 1.3; font-weight: 500;
+}
+
+/* ===== Bill List ===== */
+.bill-card {
+  margin: 0 16px;
+  background: var(--surface-1);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.bill-item {
+  display: flex; align-items: center; gap: 11px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border-light);
+  transition: background .12s;
+}
+.bill-item:last-child { border-bottom: none; }
+.bill-item:active { background: var(--surface-2); }
+
+.bi-icon {
+  width: 40px; height: 40px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  font-size: 17px;
+}
+.bi-main { flex: 1; min-width: 0; }
+.bi-name {
+  font-size: 13px; font-weight: 600; color: var(--text-primary);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.bi-meta { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.bi-right { text-align: right; flex-shrink: 0; }
+.bi-amt  { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+
+.badge {
+  font-size: 10px; padding: 2px 7px; border-radius: 6px;
+  font-weight: 600; display: inline-block; margin-top: 3px;
+  letter-spacing: .2px;
+}
+.badge-danger  { background: var(--red-50);  color: var(--red-600); }
+.badge-warning { background: var(--amber-50); color: var(--amber-600); }
+.badge-success { background: var(--green-50); color: var(--green-600); }
+
+/* ===== Trend Chart ===== */
+.trend-card {
+  margin: 0 16px; padding: 16px;
+  background: var(--surface-1);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+.trend-header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;
+}
+.trend-stats { display: flex; gap: 16px; }
+.tstat-val { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+.tstat-lbl { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+
+.bar-chart {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  height: 80px; padding-top: 4px;
+}
+.bc-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.bc-bar {
+  width: 22px; border-radius: 6px 6px 2px 2px;
+  background: linear-gradient(180deg, var(--accent-400) 0%, var(--accent-100) 100%);
+  transition: height .3s ease;
+  position: relative;
+}
+.bc-bar.cur {
+  background: linear-gradient(180deg, var(--accent-600) 0%, var(--accent-500) 100%);
+  box-shadow: 0 4px 12px rgba(99,102,241,.3);
+}
+.bc-val {
+  font-size: 10px; color: var(--text-muted); font-weight: 500;
+}
+.bc-lbl {
+  font-size: 10px; color: var(--text-muted);
+}
+
+/* ===== Tab Bar ===== */
+.tabbar {
+  display: flex; background: var(--surface-1);
+  border-top: 1px solid var(--border-light);
+  padding: 6px 0 8px; margin-top: 18px;
+}
+.tab {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  transition: opacity .15s;
+}
+.tab i { font-size: 22px; color: var(--text-muted); }
+.tab.active i { color: var(--accent-500); }
+.tab-lbl { font-size: 10px; color: var(--text-muted); font-weight: 500; }
+.tab.active .tab-lbl { color: var(--accent-500); font-weight: 600; }
+.tab:active { opacity: .6; }
+
+/* ===== Pulse indicator ===== */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .5; }
+}
+.pulse { animation: pulse 2s ease-in-out infinite; }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="dynamic-island"></div>
+
+  <!-- Status Bar -->
+  <div class="statusbar">
+    <div class="stime">9:41</div>
+    <div class="sicons">
+      <i class="ti ti-signal-5g" aria-hidden="true"></i>
+      <i class="ti ti-wifi" aria-hidden="true"></i>
+      <i class="ti ti-battery-4" aria-hidden="true"></i>
+    </div>
+  </div>
+
+  <div class="screen">
+    <!-- Header -->
+    <div class="header">
+      <div class="hrow">
+        <div class="hleft">
+          <div class="avatar">王</div>
+          <div>
+            <div class="hgreeting">早上好 👋</div>
+            <div class="hname">王建国</div>
+          </div>
+        </div>
+        <div class="hright">
+          <div class="hbtn">
+            <i class="ti ti-search" aria-label="搜索"></i>
+          </div>
+          <div class="hbtn">
+            <i class="ti ti-bell" aria-label="通知"></i>
+            <span class="badge-dot pulse"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero — Revenue Overview -->
+    <div class="hero">
+      <div class="hero-label">本月已收款</div>
+      <div class="hero-amt-row">
+        <div class="hero-amt">¥384.3<span style="font-size:20px;font-weight:500">万</span></div>
+        <div class="hero-trend">
+          <i class="ti ti-trending-up"></i> 12.4%
+        </div>
+      </div>
+      <div class="hero-grid">
+        <div class="hero-card">
+          <div class="hc-label">应收账款</div>
+          <div class="hc-val">¥98.6万</div>
+          <div class="hc-sub">
+            <i class="ti ti-alert-circle" style="font-size:11px"></i> 逾期 ¥12.8万
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="hc-label">本月开票</div>
+          <div class="hc-val">147<span style="font-size:12px;font-weight:500"> 张</span></div>
+          <div class="hc-sub">
+            <i class="ti ti-rosette-discount-check" style="font-size:11px"></i> 回款率 91.3%
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Overdue Warning -->
+    <div class="overdue-banner">
+      <div class="ob-icon">
+        <i class="ti ti-clock-exclamation"></i>
+      </div>
+      <div class="ob-body">
+        <div class="ob-title">3 张账单即将逾期</div>
+        <div class="ob-sub">合计 ¥12.8 万 · 请尽快跟进处理</div>
+      </div>
+      <i class="ti ti-chevron-right ob-arrow"></i>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="section" style="padding-top:16px">
+      <div class="sec-row" style="padding:0 0">
+        <div class="sec-title">快捷功能</div>
+        <div class="sec-more">编辑 <i class="ti ti-chevron-right" style="font-size:12px"></i></div>
+      </div>
+    </div>
+    <div class="actions-grid">
+      <div class="action-item">
+        <div class="action-icon" style="background:var(--accent-50); color:var(--accent-500)">
+          <i class="ti ti-file-plus"></i>
+        </div>
+        <div class="action-label">新建账单</div>
+      </div>
+      <div class="action-item">
+        <div class="action-icon" style="background:var(--green-50); color:var(--green-600)">
+          <i class="ti ti-cash-banknote"></i>
+        </div>
+        <div class="action-label">确认收款</div>
+      </div>
+      <div class="action-item">
+        <div class="action-icon" style="background:var(--orange-50); color:var(--orange-600)">
+          <i class="ti ti-file-invoice"></i>
+        </div>
+        <div class="action-label">开具发票</div>
+      </div>
+      <div class="action-item">
+        <div class="action-icon" style="background:var(--purple-50); color:var(--purple-600)">
+          <i class="ti ti-send"></i>
+        </div>
+        <div class="action-label">发送催款</div>
+      </div>
+      <div class="action-item">
+        <div class="action-icon" style="background:var(--red-50); color:var(--red-500)">
+          <i class="ti ti-alert-triangle"></i>
+        </div>
+        <div class="action-label">逾期跟进</div>
+      </div>
+      <div class="action-item">
+        <div class="action-icon" style="background:var(--teal-50); color:var(--teal-600)">
+          <i class="ti ti-building-bank"></i>
+        </div>
+        <div class="action-label">收款记录</div>
+      </div>
+      <div class="action-item">
+        <div class="action-icon" style="background:var(--rose-50); color:var(--rose-500)">
+          <i class="ti ti-chart-bar"></i>
+        </div>
+        <div class="action-label">收入分析</div>
+      </div>
+      <div class="action-item">
+        <div class="action-icon" style="background:var(--surface-2); color:var(--text-muted); border:1px dashed var(--border)">
+          <i class="ti ti-dots-circle-horizontal"></i>
+        </div>
+        <div class="action-label">更多</div>
+      </div>
+    </div>
+
+    <!-- Recent Bills -->
+    <div class="section">
+      <div class="sec-row">
+        <div class="sec-title">近期账单</div>
+        <div class="sec-more">全部 <i class="ti ti-chevron-right" style="font-size:12px"></i></div>
+      </div>
+    </div>
+    <div class="bill-card">
+      <div class="bill-item">
+        <div class="bi-icon" style="background:var(--red-50); color:var(--red-500)">
+          <i class="ti ti-clock-exclamation"></i>
+        </div>
+        <div class="bi-main">
+          <div class="bi-name">北京科技有限公司</div>
+          <div class="bi-meta">INV-0612 · 逾期 15 天</div>
+        </div>
+        <div class="bi-right">
+          <div class="bi-amt">¥58,400</div>
+          <div class="badge badge-danger">已逾期</div>
+        </div>
+      </div>
+      <div class="bill-item">
+        <div class="bi-icon" style="background:var(--amber-50); color:var(--amber-500)">
+          <i class="ti ti-calendar-due"></i>
+        </div>
+        <div class="bi-main">
+          <div class="bi-name">上海贸易股份公司</div>
+          <div class="bi-meta">INV-0634 · 3 天后到期</div>
+        </div>
+        <div class="bi-right">
+          <div class="bi-amt">¥32,000</div>
+          <div class="badge badge-warning">即将到期</div>
+        </div>
+      </div>
+      <div class="bill-item">
+        <div class="bi-icon" style="background:var(--green-50); color:var(--green-500)">
+          <i class="ti ti-circle-check"></i>
+        </div>
+        <div class="bi-main">
+          <div class="bi-name">广州数据服务公司</div>
+          <div class="bi-meta">INV-0638 · 今日到账</div>
+        </div>
+        <div class="bi-right">
+          <div class="bi-amt">¥24,500</div>
+          <div class="badge badge-success">已到账</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Revenue Trend -->
+    <div class="section">
+      <div class="sec-row">
+        <div class="sec-title">近6月收入趋势</div>
+        <div class="sec-more">详情 <i class="ti ti-chevron-right" style="font-size:12px"></i></div>
+      </div>
+    </div>
+    <div class="trend-card">
+      <div class="trend-header">
+        <div class="trend-stats">
+          <div>
+            <div class="tstat-val" style="color:var(--accent-500)">¥384.3万</div>
+            <div class="tstat-lbl">本月收入</div>
+          </div>
+          <div>
+            <div class="tstat-val">+12.4%</div>
+            <div class="tstat-lbl">环比增长</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px">
+          <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text-muted)">
+            <span style="width:8px;height:8px;border-radius:3px;background:var(--accent-500)"></span>本年
+          </span>
+          <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text-muted)">
+            <span style="width:8px;height:8px;border-radius:3px;background:var(--accent-100)"></span>去年
+          </span>
+        </div>
+      </div>
+      <div class="bar-chart" id="chart"></div>
+    </div>
+
+    <!-- Tab Bar -->
+    <div class="tabbar">
+      <div class="tab active">
+        <i class="ti ti-layout-dashboard"></i>
+        <div class="tab-lbl">总览</div>
+      </div>
+      <div class="tab">
+        <i class="ti ti-file-invoice"></i>
+        <div class="tab-lbl">账单</div>
+      </div>
+      <div class="tab">
+        <i class="ti ti-chart-pie"></i>
+        <div class="tab-lbl">收入</div>
+      </div>
+      <div class="tab">
+        <i class="ti ti-users"></i>
+        <div class="tab-lbl">客户</div>
+      </div>
+      <div class="tab">
+        <i class="ti ti-settings"></i>
+        <div class="tab-lbl">设置</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// Bar chart for 6-month trend
+const months = ['1月','2月','3月','4月','5月','6月'];
+const currentYear = [210, 185, 240, 195, 280, 384];  // 本年
+const lastYear    = [160, 150, 190, 170, 210, 240];   // 去年 — shown as reference
+const maxVal = Math.max(...currentYear);
+const container = document.getElementById('chart');
+
+months.forEach((m, i) => {
+  const col = document.createElement('div');
+  col.className = 'bc-col';
+
+  const h = Math.round((currentYear[i] / maxVal) * 60);
+  const hPrev = Math.round((lastYear[i] / maxVal) * 60);
+
+  col.innerHTML =
+    `<div class="bc-bar${i === 5 ? ' cur' : ''}" style="height:${h}px" title="${m}: ${currentYear[i]}万"></div>`
+    + `<div class="bc-bar" style="height:${hPrev}px;background:var(--accent-100);margin-top:2px" title="${m}去年: ${lastYear[i]}万"></div>`
+    + `<div class="bc-val">${currentYear[i]}万</div>`
+    + `<div class="bc-lbl">${m}</div>`;
+
+  container.appendChild(col);
+});
+</script>
+
+</body>
+</html>

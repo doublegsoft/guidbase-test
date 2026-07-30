@@ -9,24 +9,24 @@ export TATABASE_JAR=/Users/christian/export/opt/tatabase/protosys-plugin-tatabas
 
 export OUTPUT_ROOT=out
 
-export SPEC=display_form
-export APPNAME=display_form
-export NAMESPACE=df
-export MOBELBASE_MODEL=
+export SPEC=entry_form
+export APPNAME=entry_form
+export NAMESPACE=com.doublegsoft
+export MOBELBASE_MODEL=spec/modelbase/$SPEC.modelbase
 export GUIDBASE_MODEL=spec/$SPEC.guidbase
-export PROJECT_NAME="$SPEC"@android"#"navypitch-1.x
+export PROJECT_NAME="$SPEC".harmonyos"."govlike-1.x
 export PROJECT_ROOT=$OUTPUT_ROOT/$PROJECT_NAME
 ################################################################################
 ##                                                                            ##
-##                              ANDROID (KOTLIN)                              ##
+##                            HARMONYOS (TYPESCRIPT)                          ##
 ##                                                                            ##
 ################################################################################
-REPOS=("kotlin-mobile@android-1.x" "kotlin-mobile@android#navypitch-1.x" \
-       "kotlin-sdk@http-1.x")
+REPOS=("typescript-mobile@harmonyos-1.x" "typescript-mobile@harmonyos#govlike-1.x" \
+       "typescript-sdk@harmonyos#http-1.x")
 
 for repo in "${REPOS[@]}"
 do
-export TEMPLATE_ROOT=$GUIDBASE_DATA_ROOT/kotlin/$repo
+export TEMPLATE_ROOT=$GUIDBASE_DATA_ROOT/typescript/$repo
 
 java -jar $GUIDBASE_JAR \
 --modelbase-model=$MOBELBASE_MODEL \
@@ -50,16 +50,16 @@ java -jar $GUIDBASE_JAR \
 \[\],\
 \"designSystem\":\"navypitch\",\
 \"modules\":\
-\{\"form\":\"表单\"\}\
+\{\"list\":\"列表\"\}\
 \} 2>&1
 done
 
 ################################################################################
 ##                                                                            ##
-##                              ANDROID (KOTLIN)                              ##
+##                            HARMONYOS (TYPESCRIPT)                          ##
 ##                                                                            ##
 ################################################################################
-export TEMPLATE_ROOT=$PROJBASE_DATA_ROOT/kotlin/kotlin-mobile@android-1.x
+export TEMPLATE_ROOT=$PROJBASE_DATA_ROOT/typescript/typescript-mobile@harmonyos-1.x
 
 java -jar $PROJBASE_JAR \
 --template-root=$TEMPLATE_ROOT \
@@ -87,33 +87,70 @@ java -jar $PROJBASE_JAR \
 ##                                      SDK                                   ##
 ##                                                                            ##
 ################################################################################
-REPOS=("kotlin/kotlin-sdk@dto-1.x" "kotlin/kotlin-poco@gui-1.x")
+#REPOS=("kotlin/kotlin-sdk@dto-1.x" "kotlin/kotlin-poco@gui-1.x")
+#
+#export MOBELBASE_MODEL=spec/modelbase/$SPEC.modelbase
+#
+#for repo in "${REPOS[@]}"
+#do
+#export TEMPLATE_ROOT=$MODELBASE_DATA_ROOT/$repo
+#
+#java -jar $MODELBASE_JAR \
+#--model=$MOBELBASE_MODEL \
+#--template-root=$TEMPLATE_ROOT \
+#--output-root=$PROJECT_ROOT/app \
+#--license=LICENSE \
+#--globals=\
+#\{\
+#\"application\":\"$APPNAME\",\
+#\"namespace\":\"$NAMESPACE\",\
+#\"artifact\":\"$APPNAME\",\
+#\"version\":\"1.0.0\",\
+#\"description\":\"\",\
+#\"naming\":\"com.doublegsoft.jcommons.programming.java.JavaConventions\",\
+#\"globalNamingConvention\":\"com.doublegsoft.jcommons.programming.java.JavaNamingConvention\",\
+#\"language\":\"java\",\
+#\"imports\":\
+#\[\],\
+#\"dependencies\":\
+#\[\]\
+#\} 2>&1
+#done
 
-export MOBELBASE_MODEL=spec/modelbase/$SPEC.modelbase
-
-for repo in "${REPOS[@]}"
-do
-export TEMPLATE_ROOT=$MODELBASE_DATA_ROOT/$repo
-
-java -jar $MODELBASE_JAR \
---model=$MOBELBASE_MODEL \
---template-root=$TEMPLATE_ROOT \
---output-root=$PROJECT_ROOT/app \
---license=LICENSE \
---globals=\
-\{\
-\"application\":\"$APPNAME\",\
-\"namespace\":\"$NAMESPACE\",\
-\"artifact\":\"$APPNAME\",\
-\"version\":\"1.0.0\",\
-\"description\":\"\",\
-\"naming\":\"com.doublegsoft.jcommons.programming.java.JavaConventions\",\
-\"globalNamingConvention\":\"com.doublegsoft.jcommons.programming.java.JavaNamingConvention\",\
-\"language\":\"java\",\
-\"imports\":\
-\[\],\
-\"dependencies\":\
-\[\]\
-\} 2>&1
-done
+################################################################################
+##                                                                            ##
+##                                    TEST                                    ##
+##                                                                            ##
+################################################################################
+#REPOS=("kotlin/kotlin-sdk@memory-1.x")
+#
+#export MOBELBASE_MODEL=spec/modelbase/$SPEC.modelbase
+#
+#for repo in "${REPOS[@]}"
+#do
+#export TEMPLATE_ROOT=$TATABASE_DATA_ROOT/$repo
+#
+#java -jar $TATABASE_JAR \
+#--modelbase-model=$MOBELBASE_MODEL \
+#--guidbase-model=$GUIDBASE_MODEL \
+#--template-root=$TEMPLATE_ROOT \
+#--output-root=$PROJECT_ROOT/app \
+#--license=LICENSE \
+#--globals=\
+#\{\
+#\"projectRoot\":\"$PROJECT_ROOT\",\
+#\"application\":\"$APPNAME\",\
+#\"namespace\":\"$NAMESPACE\",\
+#\"artifact\":\"$APPNAME\",\
+#\"version\":\"1.0.0\",\
+#\"description\":\"\",\
+#\"naming\":\"com.doublegsoft.jcommons.programming.javascript.JavaScriptConventions\",\
+#\"globalNamingConvention\":\"com.doublegsoft.jcommons.programming.javascript.JavaScriptNamingConvention\",\
+#\"language\":\"javascript\",\
+#\"imports\":\
+#\[\],\
+#\"dependencies\":\
+#\[\]\
+#\} 2>&1
+#done
 

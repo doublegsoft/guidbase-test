@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>初芽 · 孕产关怀</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;700&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:           #FAFAFA;
+  --lavender:     #E8E4F4;
+  --lavender-mid: #C9C1E8;
+  --lavender-dk:  #9B8EC4;
+  --purple:       #3D2F5A;
+  --purple-mid:   #6B5A8A;
+  --purple-lt:    #9B8EC4;
+  --pink-bg:      #FFF0F5;
+  --pink:         #F4A8C4;
+  --green:        #6BAE8A;
+  --green-bg:     #EAF5EF;
+  --amber:        #E8A84A;
+  --amber-bg:     #FEF5E7;
+  --white:        #FFFFFF;
+  --shadow-soft:  rgba(61,47,90,0.08);
+  --shadow-card:  rgba(61,47,90,0.12);
+}
+
+body {
+  font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--purple);
+  min-height: 100vh;
+  max-width: 420px;
+  margin: 0 auto;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ── 状态栏 ── */
+.statusbar {
+  padding: 10px 22px 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: transparent;
+  position: relative;
+  z-index: 10;
+}
+.sb-time { font-size: 16px; font-weight: 700; color: var(--purple); }
+.sb-icons { font-size: 14px; color: var(--purple-mid); letter-spacing: 3px; }
+
+/* ── 顶部渐变背景 ── */
+.hero-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 380px;
+  background: linear-gradient(175deg, #EDE9F8 0%, #F9EFF5 55%, #FAFAFA 100%);
+  z-index: 0;
+}
+
+/* ── Header ── */
+.header {
+  position: relative;
+  z-index: 10;
+  padding: 0 22px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.header-left {}
+.app-name {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--purple);
+  letter-spacing: 2px;
+}
+.app-sub {
+  font-size: 12px;
+  color: var(--purple-lt);
+  margin-top: 1px;
+  letter-spacing: 0.5px;
+}
+.header-right {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.icon-btn {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  border: none;
+  background: var(--white);
+  box-shadow: 0 2px 10px var(--shadow-soft);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  position: relative;
+}
+.icon-btn svg { width: 18px; height: 18px; }
+.badge {
+  position: absolute;
+  top: 5px; right: 5px;
+  width: 8px; height: 8px;
+  background: #F06292;
+  border-radius: 50%;
+  border: 1.5px solid white;
+}
+
+/* ── 孕周球（签名元素） ── */
+.week-section {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 0 8px;
+}
+.week-orbit {
+  position: relative;
+  width: 190px;
+  height: 190px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.orbit-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--lavender-mid);
+  opacity: 0.5;
+  animation: breathe 4s ease-in-out infinite;
+}
+.orbit-ring-2 {
+  position: absolute;
+  inset: 12px;
+  border-radius: 50%;
+  border: 1px solid var(--lavender-mid);
+  opacity: 0.35;
+  animation: breathe 4s ease-in-out infinite 0.6s;
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50%       { transform: scale(1.04); opacity: 0.25; }
+}
+.week-ball {
+  width: 148px;
+  height: 148px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 35%, #E8E0F8 0%, #C8B8E8 55%, #A898D0 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 12px 40px rgba(155,142,196,0.35),
+    inset 0 -6px 20px rgba(61,47,90,0.08),
+    inset 0 6px 16px rgba(255,255,255,0.5);
+  position: relative;
+  z-index: 2;
+  animation: ball-breathe 4s ease-in-out infinite;
+}
+@keyframes ball-breathe {
+  0%, 100% { transform: scale(1); box-shadow: 0 12px 40px rgba(155,142,196,0.35), inset 0 -6px 20px rgba(61,47,90,0.08), inset 0 6px 16px rgba(255,255,255,0.5); }
+  50%       { transform: scale(1.025); box-shadow: 0 16px 50px rgba(155,142,196,0.45), inset 0 -6px 20px rgba(61,47,90,0.08), inset 0 6px 16px rgba(255,255,255,0.5); }
+}
+.week-emoji {
+  font-size: 32px;
+  margin-bottom: 2px;
+  filter: drop-shadow(0 2px 4px rgba(61,47,90,0.15));
+}
+.week-num {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--purple);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+.week-label {
+  font-size: 13px;
+  color: var(--purple-mid);
+  font-weight: 500;
+  margin-top: 1px;
+  letter-spacing: 1px;
+}
+/* 轨道装饰点 */
+.orbit-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--pink);
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: orbit-spin 8s linear infinite;
+  transform-origin: 0 87px;
+  box-shadow: 0 2px 6px rgba(244,168,196,0.6);
+}
+@keyframes orbit-spin {
+  from { transform: translateX(-50%) rotate(0deg); }
+  to   { transform: translateX(-50%) rotate(360deg); }
+}
+
+.week-caption {
+  text-align: center;
+  margin-top: 10px;
+}
+.week-caption-main {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--purple);
+}
+.week-caption-sub {
+  font-size: 12px;
+  color: var(--purple-lt);
+  margin-top: 2px;
+  letter-spacing: 0.3px;
+}
+
+/* ── 进度条 ── */
+.progress-wrap {
+  position: relative;
+  z-index: 10;
+  padding: 0 22px;
+  margin-top: 16px;
+}
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--purple-lt);
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
+}
+.progress-track {
+  height: 6px;
+  background: var(--lavender);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  width: 51.4%;  /* 18/35 weeks */
+  background: linear-gradient(90deg, var(--lavender-dk), var(--pink));
+  border-radius: 10px;
+  position: relative;
+}
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 50%;
+  transform: translate(50%, -50%);
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: white;
+  border: 2.5px solid var(--lavender-dk);
+  box-shadow: 0 1px 6px rgba(155,142,196,0.4);
+}
+.progress-milestone {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+.milestone-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.milestone-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--lavender-mid);
+}
+.milestone-dot.passed { background: var(--lavender-dk); }
+.milestone-dot.current { background: var(--pink); box-shadow: 0 0 0 3px rgba(244,168,196,0.3); }
+.milestone-txt {
+  font-size: 10px;
+  color: var(--purple-lt);
+}
+.milestone-txt.current { color: var(--purple-mid); font-weight: 600; }
+
+/* ── 主内容区 ── */
+.content {
+  position: relative;
+  z-index: 10;
+  padding: 18px 16px 110px;
+}
+
+/* ── 今日关怀卡 ── */
+.care-card {
+  background: linear-gradient(135deg, #6BAE8A 0%, #4E9670 100%);
+  border-radius: 22px;
+  padding: 18px 20px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 6px 24px rgba(107,174,138,0.30);
+  cursor: pointer;
+}
+.care-icon-wrap {
+  width: 52px; height: 52px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.22);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  flex-shrink: 0;
+}
+.care-text { flex: 1; }
+.care-eyebrow {
+  font-size: 11px;
+  color: rgba(255,255,255,0.75);
+  letter-spacing: 1px;
+  margin-bottom: 3px;
+  text-transform: uppercase;
+}
+.care-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: white;
+  line-height: 1.25;
+}
+.care-sub {
+  font-size: 12px;
+  color: rgba(255,255,255,0.82);
+  margin-top: 2px;
+}
+.care-arrow {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.care-arrow svg { width: 14px; height: 14px; }
+
+/* ── 检查提醒卡 ── */
+.check-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 18px var(--shadow-card);
+}
+.check-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--purple);
+}
+.card-more {
+  font-size: 12px;
+  color: var(--lavender-dk);
+  cursor: pointer;
+}
+.check-list { display: flex; flex-direction: column; gap: 10px; }
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: var(--lavender);
+  cursor: pointer;
+}
+.check-item.urgent { background: var(--pink-bg); }
+.check-item.done   { background: var(--green-bg); opacity: 0.8; }
+.check-badge {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--lavender-dk);
+}
+.check-badge.urgent { background: var(--pink); box-shadow: 0 0 0 3px rgba(244,168,196,0.3); }
+.check-badge.done   { background: var(--green); }
+.check-info { flex: 1; }
+.check-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--purple);
+}
+.check-name.done { text-decoration: line-through; color: var(--purple-lt); }
+.check-date { font-size: 11px; color: var(--purple-lt); margin-top: 1px; }
+.check-tag {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.check-tag.urgent { background: rgba(244,168,196,0.3); color: #C2507A; }
+.check-tag.soon   { background: var(--lavender); color: var(--purple-mid); }
+.check-tag.done   { background: rgba(107,174,138,0.2); color: var(--green); }
+
+/* ── 快捷功能 ── */
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.quick-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+.quick-icon {
+  width: 60px; height: 60px;
+  border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  box-shadow: 0 3px 12px var(--shadow-soft);
+  transition: transform 0.12s;
+}
+.quick-item:active .quick-icon { transform: scale(0.92); }
+.quick-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--purple-mid);
+  text-align: center;
+  line-height: 1.3;
+}
+.qi-1 { background: #F0EBFB; }
+.qi-2 { background: #FFF0F5; }
+.qi-3 { background: var(--green-bg); }
+.qi-4 { background: var(--amber-bg); }
+.qi-5 { background: #EEF4FB; }
+.qi-6 { background: #FEF8FF; }
+.qi-7 { background: #FFF5EA; }
+.qi-8 { background: #F4F4F8; }
+
+/* ── 宝宝本周 ── */
+.baby-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 18px 18px;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 18px var(--shadow-card);
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  cursor: pointer;
+}
+.baby-left { flex: 1; }
+.baby-eyebrow {
+  font-size: 11px;
+  color: var(--lavender-dk);
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+.baby-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--purple);
+  line-height: 1.25;
+  margin-bottom: 6px;
+}
+.baby-desc {
+  font-size: 13px;
+  color: var(--purple-mid);
+  line-height: 1.6;
+}
+.baby-right {
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #F0EBFB, #E8E0F8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(155,142,196,0.2);
+}
+
+/* ── 情绪打卡 ── */
+.mood-card {
+  background: linear-gradient(135deg, #FCF0FF 0%, #F5EDFB 100%);
+  border-radius: 20px;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(200,184,232,0.4);
+}
+.mood-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.mood-emojis {
+  display: flex;
+  justify-content: space-around;
+}
+.mood-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 8px 6px;
+  border-radius: 14px;
+  transition: background 0.15s;
+  border: none;
+  background: transparent;
+}
+.mood-btn:hover, .mood-btn.active { background: rgba(255,255,255,0.7); }
+.mood-btn.active .mood-face { transform: scale(1.15); }
+.mood-face { font-size: 28px; transition: transform 0.15s; }
+.mood-name { font-size: 11px; color: var(--purple-mid); font-weight: 500; }
+
+/* ── 底部导航 ── */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 100%; max-width: 420px;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(200,184,232,0.3);
+  padding: 10px 0 22px;
+  z-index: 100;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  padding: 4px 16px;
+  border-radius: 12px;
+  border: none;
+  background: transparent;
+}
+.nav-icon { font-size: 22px; }
+.nav-label {
+  font-size: 11px;
+  color: var(--purple-lt);
+  font-weight: 500;
+}
+.nav-item.active .nav-label { color: var(--purple); font-weight: 700; }
+.nav-item.active .nav-icon { position: relative; }
+.nav-center-btn {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--lavender-dk), #8A70C0);
+  border: none;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  box-shadow: 0 4px 18px rgba(155,142,196,0.5);
+  cursor: pointer;
+  margin-top: -18px;
+}
+</style>
+</head>
+<body>
+
+<div class="hero-bg"></div>
+
+<!-- 状态栏 -->
+<div class="statusbar">
+  <div class="sb-time">09:41</div>
+  <div class="sb-icons">▲▲▲ 🔋</div>
+</div>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-left">
+    <div class="app-name">初 芽</div>
+    <div class="app-sub">陪你走过每一天</div>
+  </div>
+  <div class="header-right">
+    <button class="icon-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#6B5A8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+    </button>
+    <button class="icon-btn">
+      <div class="badge"></div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="#6B5A8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- 孕周球（签名元素） -->
+<div class="week-section">
+  <div class="week-orbit">
+    <div class="orbit-ring"></div>
+    <div class="orbit-ring-2"></div>
+    <div class="orbit-dot"></div>
+    <div class="week-ball">
+      <div class="week-emoji">🌸</div>
+      <div class="week-num">18</div>
+      <div class="week-label">孕 周</div>
+    </div>
+  </div>
+  <div class="week-caption">
+    <div class="week-caption-main">距预产期还有 <strong>154</strong> 天</div>
+    <div class="week-caption-sub">宝宝现在像一个小番薯那么大 🍠</div>
+  </div>
+</div>
+
+<!-- 孕期进度条 -->
+<div class="progress-wrap">
+  <div class="progress-labels">
+    <span>孕早期</span>
+    <span>孕中期 · 第18周</span>
+    <span>孕晚期</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill"></div>
+  </div>
+  <div class="progress-milestone">
+    <div class="milestone-item">
+      <div class="milestone-dot passed"></div>
+      <div class="milestone-txt">4周</div>
+    </div>
+    <div class="milestone-item">
+      <div class="milestone-dot passed"></div>
+      <div class="milestone-txt">12周</div>
+    </div>
+    <div class="milestone-item">
+      <div class="milestone-dot current"></div>
+      <div class="milestone-txt current">18周</div>
+    </div>
+    <div class="milestone-item">
+      <div class="milestone-dot"></div>
+      <div class="milestone-txt">28周</div>
+    </div>
+    <div class="milestone-item">
+      <div class="milestone-dot"></div>
+      <div class="milestone-txt">40周</div>
+    </div>
+  </div>
+</div>
+
+<!-- 主内容 -->
+<div class="content">
+
+  <!-- 今日关怀 -->
+  <div class="care-card">
+    <div class="care-icon-wrap">🥗</div>
+    <div class="care-text">
+      <div class="care-eyebrow">今日营养建议</div>
+      <div class="care-title">补充钙质与DHA</div>
+      <div class="care-sub">孕18周是宝宝骨骼发育关键期，多喝牛奶</div>
+    </div>
+    <div class="care-arrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18l6-6-6-6"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- 检查提醒 -->
+  <div class="check-card">
+    <div class="check-header">
+      <div class="card-title">📋 近期产检</div>
+      <div class="card-more">查看全部</div>
+    </div>
+    <div class="check-list">
+      <div class="check-item urgent">
+        <div class="check-badge urgent"></div>
+        <div class="check-info">
+          <div class="check-name">大排畸超声（II级）</div>
+          <div class="check-date">本周四 · 2月22日 上午10:30</div>
+        </div>
+        <div class="check-tag urgent">即将到来</div>
+      </div>
+      <div class="check-item">
+        <div class="check-badge"></div>
+        <div class="check-info">
+          <div class="check-name">血常规 · 唐筛复查</div>
+          <div class="check-date">下周一 · 2月26日</div>
+        </div>
+        <div class="check-tag soon">待完成</div>
+      </div>
+      <div class="check-item done">
+        <div class="check-badge done"></div>
+        <div class="check-info">
+          <div class="check-name done">NT超声筛查</div>
+          <div class="check-date">已完成 · 1月15日</div>
+        </div>
+        <div class="check-tag done">✓ 已完成</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 快捷功能 -->
+  <div class="quick-grid">
+    <div class="quick-item">
+      <div class="quick-icon qi-1">📅</div>
+      <div class="quick-label">产检<br>预约</div>
+    </div>
+    <div class="quick-item">
+      <div class="quick-icon qi-2">💓</div>
+      <div class="quick-label">胎动<br>记录</div>
+    </div>
+    <div class="quick-item">
+      <div class="quick-icon qi-3">⚖️</div>
+      <div class="quick-label">体重<br>管理</div>
+    </div>
+    <div class="quick-item">
+      <div class="quick-icon qi-4">🩺</div>
+      <div class="quick-label">问诊<br>医生</div>
+    </div>
+    <div class="quick-item">
+      <div class="quick-icon qi-5">📖</div>
+      <div class="quick-label">孕期<br>课堂</div>
+    </div>
+    <div class="quick-item">
+      <div class="quick-icon qi-6">🛍️</div>
+      <div class="quick-label">待产<br>清单</div>
+    </div>
+    <div class="quick-item">
+      <div class="quick-icon qi-7">🍎</div>
+      <div class="quick-label">饮食<br>日记</div>
+    </div>
+    <div class="quick-item">
+      <div class="quick-icon qi-8">•••</div>
+      <div class="quick-label">更多</div>
+    </div>
+  </div>
+
+  <!-- 宝宝本周发育 -->
+  <div class="baby-card">
+    <div class="baby-left">
+      <div class="baby-eyebrow">本周宝宝</div>
+      <div class="baby-title">感官开始<br>觉醒了</div>
+      <div class="baby-desc">神经系统飞速发育，宝宝能感受到声音和光线，可以和TA说说话了 💕</div>
+    </div>
+    <div class="baby-right">🐣</div>
+  </div>
+
+  <!-- 情绪打卡 -->
+  <div class="mood-card">
+    <div class="mood-header">
+      <div class="card-title">今天感觉怎么样？</div>
+    </div>
+    <div class="mood-emojis">
+      <button class="mood-btn">
+        <div class="mood-face">😄</div>
+        <div class="mood-name">很好</div>
+      </button>
+      <button class="mood-btn active">
+        <div class="mood-face">🙂</div>
+        <div class="mood-name">还好</div>
+      </button>
+      <button class="mood-btn">
+        <div class="mood-face">😐</div>
+        <div class="mood-name">一般</div>
+      </button>
+      <button class="mood-btn">
+        <div class="mood-face">😔</div>
+        <div class="mood-name">有点累</div>
+      </button>
+      <button class="mood-btn">
+        <div class="mood-face">😢</div>
+        <div class="mood-name">需要安慰</div>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- 底部导航 -->
+<div class="bottom-nav">
+  <button class="nav-item active">
+    <div class="nav-icon">🏠</div>
+    <div class="nav-label">首页</div>
+  </button>
+  <button class="nav-item">
+    <div class="nav-icon">📊</div>
+    <div class="nav-label">健康</div>
+  </button>
+  <button class="nav-center-btn">🌸</button>
+  <button class="nav-item">
+    <div class="nav-icon">💬</div>
+    <div class="nav-label">社区</div>
+  </button>
+  <button class="nav-item">
+    <div class="nav-icon">👤</div>
+    <div class="nav-label">我的</div>
+  </button>
+</div>
+
+<script>
+  // 情绪按钮交互
+  document.querySelectorAll('.mood-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>

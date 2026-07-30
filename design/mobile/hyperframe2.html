@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Canvas 帧序列播放器</title>
+  <style>
+    body { background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; color: #fff; }
+    canvas { border: 1px solid #333; max-width: 100%; height: auto; }
+    .controls { margin-top: 16px; }
+  </style>
+</head>
+<body>
+
+<canvas id="player" width="640" height="360"></canvas>
+<div class="controls">
+  <button onclick="startPlayback()">播放</button>
+  <button onclick="stopPlayback()">暂停</button>
+</div>
+
+<script>
+  const canvas = document.getElementById('player');
+  const ctx = canvas.getContext('2d');
+  
+  const frameImages = [];
+  const totalFrames = 30; // 假设视频序列总共有30帧
+  let currentFrame = 0;
+  let isPlaying = false;
+  let animationFrameId = null;
+
+  // 1. 预加载图片序列到内存（避免播放时闪烁）
+  function preloadFrames() {
+    for (let i = 1; i <= totalFrames; i++) {
+      const img = new Image();
+      // 模拟生成渐变色的占位图作为帧（实际项目中替换为真实图片URL，如 `/assets/frame_${i}.jpg`）
+      img.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360"><rect width="100%" height="100%" fill="hsl(${(i * 12) % 360}, 50%, 30%)"/><text x="50%" y="50%" fill="white" font-size="30" text-anchor="middle">Frame ${i}</text></svg>`;
+      frameImages.push(img);
+    }
+  }
+
+  // 2. 渲染单一帧到 Canvas
+  function renderFrame(index) {
+    if (frameImages[index] && frameImages[index].complete) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(frameImages[index], 0, 0, canvas.width, canvas.height);
+    }
+  }
+
+  // 3. 高帧率播放控制循环
+  let lastTime = 0;
+  const fps = 24; // 设定 24 帧每秒播放
+  const fpsInterval = 1000 / fps;
+
+  function playLoop(timestamp) {
+    if (!isPlaying) return;
+
+    animationFrameId = requestAnimationFrame(playLoop);
+
+    const elapsed = timestamp - lastTime;
+    if (elapsed > fpsInterval) {
+      lastTime = timestamp - (elapsed % fpsInterval);
+      
+      renderFrame(currentFrame);
+      currentFrame = (currentFrame + 1) % totalFrames; // 循环播放
+    }
+  }
+
+  function startPlayback() {
+    if (!isPlaying) {
+      isPlaying = true;
+      lastTime = performance.now();
+      playLoop(lastTime);
+    }
+  }
+
+  function stopPlayback() {
+    isPlaying = false;
+    if (animationFrameId) {
+      cancelAnimationFrame(animationFrameId);
+    }
+  }
+
+  // 初始化
+  preloadFrames();
+  // 默认渲染第一帧
+  setTimeout(() => renderFrame(0), 100);
+</script>
+
+</body>
+</html>

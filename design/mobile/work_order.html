@@ -1,0 +1,671 @@
+--- START OF FILE travel-app-home.html ---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>钢轨 · RailFlow</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-slate:     #F1F5F9; /* 冷钢灰底色 */
+  --ink-dark:     #0F172A; /* 钢板深蓝 900 */
+  --steel-gray:   #64748B; /* 工业钢灰 500 */
+  --border-color: #E2E8F0; /* 边界灰 200 */
+  --tech-blue:    #2563EB; /* 科技蓝（新工单） */
+  --amber-alert:  #D97706; /* 琥珀橙（处理中/警告） */
+  --red-critical: #DC2626; /* 警示红（SLA超时风险） */
+  --green-done:   #059669; /* 森林绿（已完成） */
+  --white:        #FFFFFF;
+  --font-mono:    'JetBrains Mono', monospace;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg-slate);
+  color: var(--ink-dark);
+  min-height: 100vh;
+  max-width: 420px;
+  margin: 0 auto;
+  position: relative;
+  overflow-x: hidden;
+  padding-bottom: 90px;
+}
+
+/* ── 顶部钢结构 Header ── */
+.app-header {
+  background: var(--white);
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0; z-index: 90;
+}
+.header-left h1 {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+.header-left p {
+  font-size: 11px;
+  color: var(--steel-gray);
+}
+.badge-sla {
+  background: rgba(220, 38, 38, 0.1);
+  border: 1px solid rgba(220, 38, 38, 0.2);
+  color: var(--red-critical);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+  animation: blink 1.5s infinite alternate;
+}
+@keyframes blink { from { opacity: 1; } to { opacity: 0.6; } }
+
+/* ── 页面容器切换 ── */
+.app-page {
+  display: none; /* 默认隐藏所有页，由 JS 控制显示 */
+  animation: pageFadeIn 0.2s ease-out;
+}
+.app-page.active {
+  display: block;
+}
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ═════════════════════════════
+   页面 A：数据看板 (DASHBOARD)
+   ═════════════════════════════ */
+.dashboard-container { padding: 16px; }
+
+/* 漏斗指标网格 */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.metric-box {
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 14px 10px;
+  text-align: center;
+}
+.metric-box h3 {
+  font-size: 10px;
+  color: var(--steel-gray);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.metric-num {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* 效率直方图（CSS 模拟数据图表） */
+.chart-card {
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.chart-title { font-size: 12px; font-weight: 700; margin-bottom: 12px; color: var(--steel-gray); }
+.chart-bar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 80px;
+  padding-top: 10px;
+}
+.chart-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 24px;
+}
+.chart-bar {
+  width: 100%;
+  background: var(--ink-dark);
+  border-radius: 4px 4px 0 0;
+  transition: height 0.6s ease;
+}
+.chart-label { font-size: 9px; color: var(--steel-gray); font-weight: 600; }
+
+/* ═════════════════════════════
+   页面 B：工单列表 (TICKET LIST)
+   ═════════════════════════════ */
+.list-container { padding: 16px; }
+
+/* 分类过滤器 */
+.filter-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.filter-btn {
+  flex: 1;
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 8px 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--steel-gray);
+  cursor: pointer;
+}
+.filter-btn.active {
+  background: var(--ink-dark);
+  color: var(--white);
+  border-color: var(--ink-dark);
+}
+
+/* 工单卡片架构 */
+.ticket-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.ticket-card {
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  transition: all 0.25s;
+}
+.ticket-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.ticket-id {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--steel-gray);
+}
+.status-pill {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+.status-new { background: rgba(37, 99, 235, 0.08); color: var(--tech-blue); }
+.status-progress { background: rgba(217, 119, 6, 0.08); color: var(--amber-alert); }
+.status-done { background: rgba(5, 150, 105, 0.08); color: var(--green-done); }
+
+.ticket-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.ticket-desc {
+  font-size: 12px;
+  color: var(--steel-gray);
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.ticket-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(0,0,0,0.04);
+  padding-top: 10px;
+}
+.meta-item {
+  font-size: 11px;
+  color: var(--steel-gray);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.meta-item strong { color: var(--ink-dark); }
+
+/* 操作按钮 */
+.action-btn {
+  background: var(--ink-dark);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.action-btn.btn-disabled {
+  background: var(--bg-slate);
+  color: var(--steel-gray);
+  cursor: default;
+}
+
+/* ═════════════════════════════
+   页面 C：新建工单 (CREATE FORM)
+   ═════════════════════════════ */
+.create-container { padding: 16px; }
+.form-card {
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 20px;
+}
+.form-group {
+  margin-bottom: 16px;
+}
+.form-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--steel-gray);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.form-control {
+  width: 100%;
+  background: var(--bg-slate);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--ink-dark);
+}
+.form-control:focus { outline: none; border-color: var(--ink-dark); }
+
+/* 紧急度选择 */
+.priority-selector {
+  display: flex;
+  gap: 8px;
+}
+.priority-chip {
+  flex: 1;
+  background: var(--bg-slate);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.priority-chip.active[data-val="high"] { background: rgba(220, 38, 38, 0.1); border-color: var(--red-critical); color: var(--red-critical); }
+.priority-chip.active[data-val="medium"] { background: rgba(217, 119, 6, 0.1); border-color: var(--amber-alert); color: var(--amber-alert); }
+.priority-chip.active[data-val="low"] { background: rgba(37, 99, 235, 0.1); border-color: var(--tech-blue); color: var(--tech-blue); }
+
+.submit-btn {
+  width: 100%;
+  background: var(--ink-dark);
+  color: var(--white);
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* ── 底部工业风 Dock 栏 ── */
+.bottom-dock {
+  position: fixed;
+  bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 420px;
+  background: var(--white);
+  border-top: 1px solid var(--border-color);
+  padding: 10px 0 20px;
+  z-index: 100;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.dock-item {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.dock-ico { font-size: 20px; opacity: 0.3; transition: opacity 0.2s; }
+.dock-lbl { font-size: 10px; font-weight: 700; color: var(--steel-gray); }
+
+.dock-item.on .dock-ico { opacity: 1; }
+.dock-item.on .dock-lbl { color: var(--ink-dark); }
+</style>
+</head>
+<body>
+
+<!-- 统一 Header 栏 -->
+<header class="app-header">
+  <div class="header-left">
+    <h1>李工，早安 🛠️</h1>
+    <p>机电维护 · 1 组班长</p>
+  </div>
+  <div class="badge-sla" id="slaAlert">1 项 SLA 即将超时</div>
+</header>
+
+<!-- ==========================================
+     页面 A：数据看板 (DASHBOARD)
+     ========================================== -->
+<div class="app-page active" id="page-dashboard">
+  <div class="dashboard-container">
+    
+    <!-- 核心指标网格 -->
+    <div class="metrics-grid">
+      <div class="metric-box">
+        <h3>未开始</h3>
+        <div class="metric-num" style="color: var(--tech-blue)" id="stat-new">2</div>
+      </div>
+      <div class="metric-box">
+        <h3>处理中</h3>
+        <div class="metric-num" style="color: var(--amber-alert)" id="stat-progress">1</div>
+      </div>
+      <div class="metric-box">
+        <h3>已闭环</h3>
+        <div class="metric-num" style="color: var(--green-done)" id="stat-done">14</div>
+      </div>
+    </div>
+
+    <!-- 效率直方图 -->
+    <div class="chart-card">
+      <div class="chart-title">本周工单闭环效率 (日趋势)</div>
+      <div class="chart-bar-container">
+        <div class="chart-column"><div class="chart-bar" style="height: 40%"></div><span class="chart-label">周一</span></div>
+        <div class="chart-column"><div class="chart-bar" style="height: 60%"></div><span class="chart-label">周二</span></div>
+        <div class="chart-column"><div class="chart-bar" style="height: 85%"></div><span class="chart-label">周三</span></div>
+        <div class="chart-column"><div class="chart-bar" style="height: 50%"></div><span class="chart-label">周四</span></div>
+        <div class="chart-column"><div class="chart-bar" style="height: 95%" id="today-bar"></div><span class="chart-label" style="color:var(--ink-dark)">今日</span></div>
+      </div>
+    </div>
+
+    <!-- 系统通知 -->
+    <div class="chart-card" style="border-left: 4px solid var(--amber-alert);">
+      <div class="chart-title" style="margin-bottom: 4px; color: var(--ink-dark)">⚠️ 安全提醒</div>
+      <p style="font-size: 11px; color: var(--steel-gray); line-height: 1.4;">2 号配电房地面积水清洗工作已开启，请进入区域作业的工单负责人注意穿戴防滑绝缘靴。</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==========================================
+     页面 B：工单列表 (TICKET LIST)
+     ========================================== -->
+<div class="app-page" id="page-list">
+  <div class="list-container">
+    
+    <!-- 分类筛选器 -->
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="filterTickets('all', this)">全部</button>
+      <button class="filter-btn" onclick="filterTickets('new', this)">待处理</button>
+      <button class="filter-btn" onclick="filterTickets('progress', this)">进行中</button>
+      <button class="filter-btn" onclick="filterTickets('done', this)">已归档</button>
+    </div>
+
+    <!-- 动态工单列表 -->
+    <div class="ticket-list-wrapper" id="ticketListWrapper">
+      <!-- 动态数据将通过 JS 渲染在这里 -->
+    </div>
+
+  </div>
+</div>
+
+<!-- ==========================================
+     页面 C：新建工单 (CREATE FORM)
+     ========================================== -->
+<div class="app-page" id="page-create">
+  <div class="create-container">
+    <div class="form-card">
+      <div class="form-group">
+        <label class="form-label">工单主题</label>
+        <input type="text" class="form-control" id="form-title" placeholder="如：3号注塑机无法合模">
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">紧急程度</label>
+        <div class="priority-selector">
+          <div class="priority-chip active" data-val="high" onclick="selectPriority(this)">紧急</div>
+          <div class="priority-chip" data-val="medium" onclick="selectPriority(this)">一般</div>
+          <div class="priority-chip" data-val="low" onclick="selectPriority(this)">次要</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">报修详情与位置描述</label>
+        <textarea class="form-control" id="form-desc" rows="3" placeholder="请详细说明故障现象及具体设备位置"></textarea>
+      </div>
+
+      <button class="submit-btn" onclick="submitTicketForm()">提交并发布工单</button>
+    </div>
+  </div>
+</div>
+
+<!-- 底部导航 Dock 栏 -->
+<nav class="bottom-dock">
+  <button class="dock-item on" onclick="switchPage('page-dashboard', this)">
+    <span class="dock-ico">📊</span>
+    <span class="dock-lbl">运维看板</span>
+  </button>
+  <button class="dock-item" onclick="switchPage('page-list', this)">
+    <span class="dock-ico">🛠️</span>
+    <span class="dock-lbl">工单控制</span>
+  </button>
+  <button class="dock-item" onclick="switchPage('page-create', this)">
+    <span class="dock-ico">📝</span>
+    <span class="dock-lbl">新建工单</span>
+  </button>
+</nav>
+
+<script>
+  // 1. 内存工单数据库 (模拟企业本地系统数据)
+  const workOrders = [
+    {
+      id: "WO-2026-003",
+      title: "设备 A3 电机过热报警",
+      desc: "3号车间 A3 电机轴承持续超温 85 度，需立刻进行润滑或更换轴承。",
+      priority: "high",
+      status: "progress", // new, progress, done
+      creator: "系统自检",
+      time: "10:15"
+    },
+    {
+      id: "WO-2026-004",
+      title: "五号库房卷帘门电机阻滞",
+      desc: "卷帘门降到一半时有摩擦噪音并卡住，疑似传动齿轮变形。",
+      priority: "medium",
+      status: "new",
+      creator: "仓库组长",
+      time: "10:32"
+    },
+    {
+      id: "WO-2026-005",
+      title: "配电房绝缘垫铺设检查",
+      desc: "季度例行安全检查，需核验所有安全绝缘垫的铺设完整度。",
+      priority: "low",
+      status: "new",
+      creator: "安环部",
+      time: "11:00"
+    }
+  ];
+
+  // 2. 页面流切换逻辑
+  function switchPage(pageId, btn) {
+    document.querySelectorAll('.app-page').forEach(p => p.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+
+    document.querySelectorAll('.dock-item').forEach(i => i.classList.remove('on'));
+    btn.classList.add('on');
+  }
+
+  // 3. 优先级状态映射
+  const priorityMap = {
+    high: { text: "紧急", color: "var(--red-critical)" },
+    medium: { text: "一般", color: "var(--amber-alert)" },
+    low: { text: "次要", color: "var(--tech-blue)" }
+  };
+
+  // 4. 渲染工单列表
+  let currentFilter = 'all';
+
+  function renderTicketList() {
+    const wrapper = document.getElementById('ticketListWrapper');
+    wrapper.innerHTML = '';
+
+    const filtered = workOrders.filter(order => {
+      if (currentFilter === 'all') return true;
+      return order.status === currentFilter;
+    });
+
+    if (filtered.length === 0) {
+      wrapper.innerHTML = `<div style="text-align:center; padding: 40px; color:var(--steel-gray); font-size:12px;">暂无该类别的工单任务</div>`;
+      return;
+    }
+
+    filtered.forEach(order => {
+      const card = document.createElement('div');
+      card.className = 'ticket-card';
+      
+      // 状态标签
+      let statusClass = 'status-new';
+      let statusText = '待处理';
+      let actionBtnHTML = `<button class="action-btn" onclick="startWork('${order.id}')">开始处理</button>`;
+
+      if (order.status === 'progress') {
+        statusClass = 'status-progress';
+        statusText = '处理中';
+        actionBtnHTML = `<button class="action-btn" style="background:var(--green-done)" onclick="completeWork('${order.id}')">闭环工单</button>`;
+      } else if (order.status === 'done') {
+        statusClass = 'status-done';
+        statusText = '已闭环';
+        actionBtnHTML = `<button class="action-btn btn-disabled" disabled>已完成</button>`;
+      }
+
+      card.innerHTML = `
+        <div class="ticket-top">
+          <span class="ticket-id">${order.id}</span>
+          <span class="status-pill ${statusClass}">${statusText}</span>
+        </div>
+        <h3 class="ticket-title">${order.title}</h3>
+        <p class="ticket-desc">${order.desc}</p>
+        <div class="ticket-meta">
+          <div class="meta-item">程度: <strong style="color:${priorityMap[order.priority].color}">${priorityMap[order.priority].text}</strong></div>
+          ${actionBtnHTML}
+        </div>
+      `;
+      wrapper.appendChild(card);
+    });
+
+    // 联动更新数据看板的数据
+    updateDashboardStats();
+  }
+
+  // 5. 接单与闭环交互
+  function startWork(id) {
+    const order = workOrders.find(o => o.id === id);
+    if (order) {
+      order.status = 'progress';
+      renderTicketList();
+    }
+  }
+
+  function completeWork(id) {
+    const order = workOrders.find(o => o.id === id);
+    if (order) {
+      order.status = 'done';
+      renderTicketList();
+    }
+  }
+
+  // 6. 列表过滤控制
+  function filterTickets(filterType, btn) {
+    document.querySelectorAll('.filter-row .filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = filterType;
+    renderTicketList();
+  }
+
+  // 7. 更新看板核心数据
+  function updateDashboardStats() {
+    const newCount = workOrders.filter(o => o.status === 'new').length;
+    const progressCount = workOrders.filter(o => o.status === 'progress').length;
+    const doneCount = workOrders.filter(o => o.status === 'done').length;
+
+    document.getElementById('stat-new').textContent = newCount;
+    document.getElementById('stat-progress').textContent = progressCount;
+    // 基础闭环数 14，加上当前闭环的
+    document.getElementById('stat-done').textContent = 14 + doneCount;
+
+    // SLA警示条逻辑
+    const urgentNew = workOrders.filter(o => o.priority === 'high' && o.status !== 'done').length;
+    const alertBar = document.getElementById('slaAlert');
+    if (urgentNew > 0) {
+      alertBar.style.display = 'block';
+      alertBar.textContent = `${urgentNew} 项高优工单待处理`;
+    } else {
+      alertBar.style.display = 'none';
+    }
+  }
+
+  // 8. 创建表单单选
+  let selectedPriorityVal = 'high';
+  function selectPriority(chip) {
+    document.querySelectorAll('.priority-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    selectedPriorityVal = chip.getAttribute('data-val');
+  }
+
+  // 9. 提交新工单（数据动态流向看板和列表，打通闭环）
+  function submitTicketForm() {
+    const title = document.getElementById('form-title').value;
+    const desc = document.getElementById('form-desc').value;
+
+    if (!title || !desc) {
+      alert("请填写完整的工单主题与故障描述。");
+      return;
+    }
+
+    // 生成流 ID
+    const randomId = "WO-2026-" + Math.floor(100 + Math.random() * 900);
+    const newOrder = {
+      id: randomId,
+      title: title,
+      desc: desc,
+      priority: selectedPriorityVal,
+      status: "new",
+      creator: "李工",
+      time: "当前时间"
+    };
+
+    // 写入数据库
+    workOrders.unshift(newOrder);
+
+    // 清空表单
+    document.getElementById('form-title').value = '';
+    document.getElementById('form-desc').value = '';
+
+    // 重新渲染
+    renderTicketList();
+
+    // 自动跳转至工单列表页，并点亮对应 Tab
+    const listTabBtn = document.querySelectorAll('.dock-item')[1];
+    switchPage('page-list', listTabBtn);
+  }
+
+  // 初始化首次渲染列表
+  renderTicketList();
+</script>
+
+</body>
+</html>

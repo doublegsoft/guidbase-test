@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Aether 高级帧播放引擎</title>
+  <style>
+    body { background: #050811; color: #fff; min-height: 250vh; font-family: sans-serif; margin: 0; }
+    .viewport { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; z-index: 1; }
+    canvas { width: 100%; height: 100%; object-fit: cover; }
+    .overlay-ui { position: fixed; top: 20px; left: 20px; z-index: 10; background: rgba(0,0,0,0.6); padding: 16px; border-radius: 12px; backdrop-filter: blur(8px); }
+    .progress-bar { width: 200px; height: 4px; background: #333; border-radius: 2px; margin-top: 8px; overflow: hidden; }
+    .progress-fill { width: 0%; height: 100%; background: #00F2FE; transition: width 0.1s; }
+  </style>
+</head>
+<body>
+
+<div class="overlay-ui">
+  <div id="status">正在初始化引擎...</div>
+  <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+</div>
+
+<div class="viewport">
+  <canvas id="animationCanvas"></canvas>
+</div>
+
+<script>
+class HyperFrameEngine {
+  constructor(canvas, totalFrames, frameUrlPattern) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.totalFrames = totalFrames;
+    this.frameUrlPattern = frameUrlPattern;
+    
+    this.images = [];
+    this.targetFrame = 0;   // 目标帧 (基于滚动位置算出的帧)
+    this.currentFrame = 0;  // 当前帧 (带阻尼缓动过渡的帧)
+    this.easing = 0.08;     // 缓动阻尼系数 (越小惯性越强，苹果感越足)
+    this.isLoaded = false;
+
+    this.initResize();
+  }
+
+  // 1. Retina 高清屏自适应适配
+  initResize() {
+    const resize = () => {
+      const dpr = window.devicePixelRatio || 1;
+      this.canvas.width = window.innerWidth * dpr;
+      this.canvas.height = window.innerHeight * dpr;
+      this.ctx.scale(dpr, dpr);
+      this.render(Math.round(this.currentFrame));
+    };
+    window.addEventListener('resize', resize);
+    resize();
+  }
+
+  // 2. 异步并行预加载队列（带进度回调）
+  async load(onProgress) {
+    const loadQueue = [];
+    for (let i = 1; i <= this.totalFrames; i++) {
+      loadQueue.push(this.preloadImage(this.frameUrlPattern(i)));
+    }
+
+    let loadedCount = 0;
+    for (const promise of loadQueue) {
+      this.images.push(await promise);
+      loadedCount++;
+      onProgress(loadedCount / this.totalFrames);
+    }
+    this.isLoaded = true;
+    this.startLoop();
+  }
+
+  preloadImage(url) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = () => resolve(null); // 容错处理
+      img.src = url;
+    });
+  }
+
+  // 3. 核心：带缓动的渲染循环
+  startLoop() {
+    const update = () => {
+      if (!this.isLoaded) return;
+
+      // 惯性缓动数学公式: Current = Current + (Target - Current) * Easing
+      const diff = this.targetFrame - this.currentFrame;
+      
+      // 如果差异极小，则直接对齐，减少不必要的 Canvas 重绘开销
+      if (Math.abs(diff) < 0.01) {
+        this.currentFrame = this.targetFrame;
+      } else {
+        this.currentFrame += diff * this.easing;
+      }
+
+      this.render(Math.round(this.currentFrame));
+      requestAnimationFrame(update);
+    };
+    requestAnimationFrame(update);
+  }
+
+  // 4. 高效 Canvas 渲染绘制
+  render(frameIndex) {
+    const img = this.images[frameIndex - 1];
+    if (!img) return;
+
+    const canvasWidth = this.canvas.width / (window.devicePixelRatio || 1);
+    const canvasHeight = this.canvas.height / (window.devicePixelRatio || 1);
+
+    this.ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+    // 保持大图等比例 Cover 填充（防变形拉伸算法）
+    const imgRatio = img.width / img.height;
+    const canvasRatio = canvasWidth / canvasHeight;
+    let drawWidth, drawHeight, offsetX, offsetY;
+
+    if (imgRatio > canvasRatio) {
+      drawHeight = canvasHeight;
+      drawWidth = canvasHeight * imgRatio;
+      offsetX = (canvasWidth - drawWidth) / 2;
+      offsetY = 0;
+    } else {
+      drawWidth = canvasWidth;
+      drawHeight = canvasWidth / imgRatio;
+      offsetX = 0;
+      offsetY = (canvasHeight - drawHeight) / 2;
+    }
+
+    this.ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+  }
+
+  // 5. 更新目标帧 (由外部滚动、洗牌算法触发)
+  setTargetProgress(progress) {
+    // 进度在 0 - 1 之间
+    const target = Math.max(1, Math.min(this.totalFrames, Math.round(progress * this.totalFrames)));
+    this.targetFrame = target;
+  }
+}
+
+// ==========================================
+// 6. 初始化并绑定页面滚动条
+// ==========================================
+const canvasElement = document.getElementById('animationCanvas');
+const statusText = document.getElementById('status');
+const progressFill = document.getElementById('progress');
+
+// 虚拟 30 张高解析彩色 SVG 图片作为帧
+const pattern = (index) => `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080"><rect width="100%" height="100%" fill="hsl(${(index * 12) % 360}, 60%, 40%)"/><text x="50%" y="50%" fill="white" font-size="80" font-family="sans-serif" font-weight="bold" text-anchor="middle">SCROLLING FRAME ${index}</text></svg>`;
+
+const engine = new HyperFrameEngine(canvasElement, 30, pattern);
+
+// 执行异步加载
+engine.load((progress) => {
+  const percent = Math.round(progress * 100);
+  statusText.textContent = `图像解密中... ${percent}%`;
+  progressFill.style.width = `${percent}%`;
+}).then(() => {
+  statusText.textContent = `Ready. 缓慢向下滚动屏幕 ⬇️`;
+  
+  // 绑定滚动事件
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPercent = scrollTop / maxScroll;
+    
+    // 触发引擎的目标帧更新
+    engine.setTargetProgress(scrollPercent);
+  });
+});
+</script>
+
+</body>
+</html>

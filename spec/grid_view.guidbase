@@ -1,0 +1,19 @@
+grid/grid_view_page:page(title:"瓦片列表页面", main:"true")<
+  demo_grid:grid_view(title:"瓦片列表", data:"demo", cols:"3", next:"display_form_page?person_id")<
+    person_id:hidden,
+    image:image(title:"头像", property:"image"),
+    date1:date(title:"日期", property:"secondary"),
+    text1:text(title:"文本", property:"primary"),
+    num1:number(title:"数字", property:"status")
+  >
+>
+
+grid/display_form_page:page(title:"详情页面")<
+  demo_form:entry_form(title:"编辑表单", data:"demo", cols:"3")<
+    person_id:hidden,
+    image:image(title:"图片", group:"分组1"),
+    date1:date(title:"日期", required:"true"),
+    text1:text(title:"文本", required:"true"),
+    num1:number(title:"数字", required:"true")
+  >
+>

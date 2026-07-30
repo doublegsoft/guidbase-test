@@ -1,0 +1,270 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:var(--font-sans)}
+.phone{width:320px;margin:0 auto;background:#FFF8F0;border:0.5px solid var(--border);border-radius:40px;overflow:hidden;padding:0 0 0}
+.statusbar{height:40px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 22px 7px;background:#FFF8F0}
+.stime{font-size:13px;font-weight:500;color:#3C2A10}
+.sicons{display:flex;align-items:center;gap:4px;color:#3C2A10}
+.sicons i{font-size:14px}
+.header{padding:6px 18px 14px;background:#FFF8F0}
+.h-row{display:flex;align-items:center;justify-content:space-between}
+.h-left{display:flex;align-items:center;gap:10px}
+.kid-avatar{width:38px;height:38px;border-radius:50%;background:#FAEEDA;display:flex;align-items:center;justify-content:center;font-size:18px;border:2px solid #FAC775}
+.h-greeting{font-size:12px;color:#854F0B}
+.h-name{font-size:15px;font-weight:500;color:#3C2A10}
+.h-right{display:flex;gap:12px;align-items:center}
+.h-right i{font-size:21px;color:#854F0B}
+.streak-bar{margin:0 18px 12px;background:#FAEEDA;border-radius:14px;padding:9px 13px;display:flex;align-items:center;justify-content:space-between;border:0.5px solid #FAC775}
+.streak-left{display:flex;align-items:center;gap:8px}
+.streak-icon{font-size:20px;color:#854F0B}
+.streak-text{font-size:12px;color:#633806}
+.streak-num{font-size:16px;font-weight:500;color:#3C2A10}
+.streak-dots{display:flex;gap:4px}
+.dot{width:22px;height:22px;border-radius:50%;background:#FAC775;display:flex;align-items:center;justify-content:center;font-size:11px;color:#633806;font-weight:500}
+.dot.done{background:#639922;color:#fff}
+.dot.today{background:#EF9F27;color:#fff}
+.subject-row{padding:0 18px 12px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.subj-card{border-radius:16px;padding:13px 13px 11px;border:0.5px solid rgba(0,0,0,.06)}
+.subj-icon-wrap{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+.subj-icon-wrap i{font-size:19px}
+.subj-name{font-size:13px;font-weight:500;margin-bottom:3px}
+.subj-prog-bar{height:5px;border-radius:3px;margin-bottom:4px;overflow:hidden}
+.subj-prog-fill{height:100%;border-radius:3px}
+.subj-meta{font-size:11px}
+.banner{margin:0 18px 12px;border-radius:18px;background:#5DCAA5;padding:14px 14px 12px;display:flex;align-items:center;gap:12px;border:0.5px solid #1D9E75}
+.banner-text-wrap{flex:1;min-width:0}
+.banner-eyebrow{font-size:11px;color:#E1F5EE;margin-bottom:3px}
+.banner-title{font-size:14px;font-weight:500;color:#fff;line-height:1.35}
+.banner-btn{background:#fff;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:500;color:#0F6E56;white-space:nowrap;flex-shrink:0}
+.banner-deco{font-size:36px;flex-shrink:0;color:rgba(255,255,255,.4);line-height:1}
+.section-hd{display:flex;align-items:center;justify-content:space-between;padding:0 18px 8px}
+.sec-title{font-size:14px;font-weight:500;color:#3C2A10}
+.sec-more{font-size:12px;color:#854F0B}
+.course-list{padding:0 18px 12px;display:flex;flex-direction:column;gap:8px}
+.course-card{background:#fff;border-radius:16px;border:0.5px solid rgba(0,0,0,.07);padding:11px 13px;display:flex;align-items:center;gap:11px}
+.course-thumb{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
+.course-info{flex:1;min-width:0}
+.course-name{font-size:13px;font-weight:500;color:#3C2A10;margin-bottom:2px}
+.course-sub{font-size:11px;color:#854F0B}
+.course-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.prog-pill{font-size:11px;padding:3px 8px;border-radius:20px;font-weight:500}
+.play-btn{width:28px;height:28px;border-radius:50%;background:#EF9F27;display:flex;align-items:center;justify-content:center}
+.play-btn i{font-size:14px;color:#fff}
+.tools-grid{padding:0 18px 14px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.tool-item{display:flex;flex-direction:column;align-items:center;gap:5px}
+.tool-icon{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center}
+.tool-icon i{font-size:20px}
+.tool-lbl{font-size:11px;text-align:center;color:#633806;line-height:1.3}
+.tabbar{display:flex;background:#fff;border-top:0.5px solid rgba(0,0,0,.08);padding:8px 0 10px}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.tab i{font-size:22px;color:#B4B2A9}
+.tab.active i{color:#EF9F27}
+.tab-lbl{font-size:10px;color:#B4B2A9}
+.tab.active .tab-lbl{color:#EF9F27}
+</style>
+
+<h2 class="sr-only">儿童教育应用首页 — 含学习打卡、科目进度、推荐课程和工具入口</h2>
+
+<div class="phone">
+  <div class="statusbar">
+    <div class="stime">9:15</div>
+    <div class="sicons">
+      <i class="ti ti-wifi" aria-hidden="true"></i>
+      <i class="ti ti-battery" aria-hidden="true"></i>
+    </div>
+  </div>
+
+  <div class="header">
+    <div class="h-row">
+      <div class="h-left">
+        <div class="kid-avatar" aria-hidden="true"><i class="ti ti-mood-smile" style="font-size:20px;color:#854F0B"></i></div>
+        <div>
+          <div class="h-greeting">今天学了吗？</div>
+          <div class="h-name">小明同学</div>
+        </div>
+      </div>
+      <div class="h-right">
+        <i class="ti ti-search" aria-label="搜索"></i>
+        <i class="ti ti-bell" aria-label="通知"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="streak-bar">
+    <div class="streak-left">
+      <i class="ti ti-flame" class="streak-icon" style="font-size:20px;color:#D85A30" aria-hidden="true"></i>
+      <div>
+        <div class="streak-text">连续学习</div>
+        <div class="streak-num">12 天</div>
+      </div>
+    </div>
+    <div class="streak-dots">
+      <div class="dot done">一</div>
+      <div class="dot done">二</div>
+      <div class="dot done">三</div>
+      <div class="dot done">四</div>
+      <div class="dot today">五</div>
+      <div class="dot">六</div>
+      <div class="dot">日</div>
+    </div>
+  </div>
+
+  <div class="subject-row">
+    <div class="subj-card" style="background:#FFF3E0">
+      <div class="subj-icon-wrap" style="background:#FAC775">
+        <i class="ti ti-math-symbols" style="color:#633806" aria-hidden="true"></i>
+      </div>
+      <div class="subj-name" style="color:#3C2A10">数学</div>
+      <div class="subj-prog-bar" style="background:#FAC77540">
+        <div class="subj-prog-fill" style="width:72%;background:#EF9F27"></div>
+      </div>
+      <div class="subj-meta" style="color:#854F0B">72% · 今日剩 2 题</div>
+    </div>
+    <div class="subj-card" style="background:#E8F5E9">
+      <div class="subj-icon-wrap" style="background:#C0DD97">
+        <i class="ti ti-book" style="color:#27500A" aria-hidden="true"></i>
+      </div>
+      <div class="subj-name" style="color:#1a3a0a">语文</div>
+      <div class="subj-prog-bar" style="background:#C0DD9740">
+        <div class="subj-prog-fill" style="width:88%;background:#639922"></div>
+      </div>
+      <div class="subj-meta" style="color:#3B6D11">88% · 已完成</div>
+    </div>
+    <div class="subj-card" style="background:#E8EAF6">
+      <div class="subj-icon-wrap" style="background:#AFA9EC">
+        <i class="ti ti-language" style="color:#26215C" aria-hidden="true"></i>
+      </div>
+      <div class="subj-name" style="color:#26215C">英语</div>
+      <div class="subj-prog-bar" style="background:#AFA9EC40">
+        <div class="subj-prog-fill" style="width:45%;background:#7F77DD"></div>
+      </div>
+      <div class="subj-meta" style="color:#534AB7">45% · 单词练习</div>
+    </div>
+    <div class="subj-card" style="background:#E0F7FA">
+      <div class="subj-icon-wrap" style="background:#9FE1CB">
+        <i class="ti ti-microscope" style="color:#04342C" aria-hidden="true"></i>
+      </div>
+      <div class="subj-name" style="color:#04342C">科学</div>
+      <div class="subj-prog-bar" style="background:#9FE1CB40">
+        <div class="subj-prog-fill" style="width:30%;background:#1D9E75"></div>
+      </div>
+      <div class="subj-meta" style="color:#0F6E56">30% · 新单元</div>
+    </div>
+  </div>
+
+  <div class="banner">
+    <div style="font-size:34px;color:rgba(255,255,255,.5);line-height:1;flex-shrink:0" aria-hidden="true">
+      <i class="ti ti-trophy" style="font-size:32px;color:#FAEEDA"></i>
+    </div>
+    <div class="banner-text-wrap">
+      <div class="banner-eyebrow">今日挑战</div>
+      <div class="banner-title">完成数学练习<br>赢取 50 颗星星</div>
+    </div>
+    <div class="banner-btn">去挑战</div>
+  </div>
+
+  <div class="section-hd">
+    <div class="sec-title">继续学习</div>
+    <div class="sec-more">全部课程 →</div>
+  </div>
+
+  <div class="course-list">
+    <div class="course-card">
+      <div class="course-thumb" style="background:#FAEEDA">
+        <i class="ti ti-calculator" style="font-size:22px;color:#854F0B" aria-hidden="true"></i>
+      </div>
+      <div class="course-info">
+        <div class="course-name">分数的加减法</div>
+        <div class="course-sub">数学 · 第 5 章</div>
+      </div>
+      <div class="course-right">
+        <div class="prog-pill" style="background:#FAEEDA;color:#854F0B">72%</div>
+        <div class="play-btn"><i class="ti ti-player-play" aria-label="继续"></i></div>
+      </div>
+    </div>
+    <div class="course-card">
+      <div class="course-thumb" style="background:#EEEDFE">
+        <i class="ti ti-abc" style="font-size:22px;color:#534AB7" aria-hidden="true"></i>
+      </div>
+      <div class="course-info">
+        <div class="course-name">Unit 4 单词速记</div>
+        <div class="course-sub">英语 · 词汇练习</div>
+      </div>
+      <div class="course-right">
+        <div class="prog-pill" style="background:#EEEDFE;color:#534AB7">45%</div>
+        <div class="play-btn" style="background:#7F77DD"><i class="ti ti-player-play" aria-label="继续"></i></div>
+      </div>
+    </div>
+    <div class="course-card">
+      <div class="course-thumb" style="background:#E1F5EE">
+        <i class="ti ti-atom" style="font-size:22px;color:#0F6E56" aria-hidden="true"></i>
+      </div>
+      <div class="course-info">
+        <div class="course-name">植物的生长过程</div>
+        <div class="course-sub">科学 · 新单元</div>
+      </div>
+      <div class="course-right">
+        <div class="prog-pill" style="background:#E1F5EE;color:#0F6E56">新</div>
+        <div class="play-btn" style="background:#1D9E75"><i class="ti ti-player-play" aria-label="开始"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-hd">
+    <div class="sec-title">学习工具</div>
+  </div>
+
+  <div class="tools-grid">
+    <div class="tool-item">
+      <div class="tool-icon" style="background:#FAEEDA"><i class="ti ti-pencil" style="color:#854F0B" aria-hidden="true"></i></div>
+      <div class="tool-lbl">练习题</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-icon" style="background:#EEEDFE"><i class="ti ti-cards" style="color:#534AB7" aria-hidden="true"></i></div>
+      <div class="tool-lbl">单词卡</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-icon" style="background:#E1F5EE"><i class="ti ti-microphone" style="color:#0F6E56" aria-hidden="true"></i></div>
+      <div class="tool-lbl">口语练习</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-icon" style="background:#FEF3C7"><i class="ti ti-star" style="color:#854F0B" aria-hidden="true"></i></div>
+      <div class="tool-lbl">我的奖励</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-icon" style="background:#FBEAF0"><i class="ti ti-users" style="color:#993556" aria-hidden="true"></i></div>
+      <div class="tool-lbl">好友 PK</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-icon" style="background:#EAF3DE"><i class="ti ti-chart-line" style="color:#3B6D11" aria-hidden="true"></i></div>
+      <div class="tool-lbl">学习报告</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-icon" style="background:#E8EAF6"><i class="ti ti-calendar" style="color:#534AB7" aria-hidden="true"></i></div>
+      <div class="tool-lbl">学习计划</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-icon" style="background:#F1EFE8"><i class="ti ti-dots" style="color:#5F5E5A" aria-hidden="true"></i></div>
+      <div class="tool-lbl">更多</div>
+    </div>
+  </div>
+
+  <div class="tabbar">
+    <div class="tab active">
+      <i class="ti ti-home" aria-hidden="true"></i>
+      <div class="tab-lbl">首页</div>
+    </div>
+    <div class="tab">
+      <i class="ti ti-books" aria-hidden="true"></i>
+      <div class="tab-lbl">课程</div>
+    </div>
+    <div class="tab">
+      <i class="ti ti-shield-star" aria-hidden="true"></i>
+      <div class="tab-lbl">成就</div>
+    </div>
+    <div class="tab">
+      <i class="ti ti-user" aria-hidden="true"></i>
+      <div class="tab-lbl">我的</div>
+    </div>
+  </div>
+</div>

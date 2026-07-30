@@ -12,7 +12,7 @@ export APPNAME=calendar_split_list
 export NAMESPACE=df
 export MOBELBASE_MODEL=
 export GUIDBASE_MODEL=spec/$SPEC.guidbase
-export PROJECT_NAME="$SPEC"@navypitch"#"wechat-1.x
+export PROJECT_NAME="$SPEC"@wechat"#"navypitch-1.x
 export PROJECT_ROOT=$OUTPUT_ROOT/$PROJECT_NAME
 ################################################################################
 ##                                                                            ##
@@ -20,7 +20,7 @@ export PROJECT_ROOT=$OUTPUT_ROOT/$PROJECT_NAME
 ##                                                                            ##
 ################################################################################
 REPOS=("javascript-miniprogram@wechat-1.x" "javascript-sdk@vanilla-1.x" \
-       "../html/html-miniprogram@navypitch#wechat-1.x")
+       "../html/html-miniprogram@wechat#navypitch-1.x")
 
 for repo in "${REPOS[@]}"
 do

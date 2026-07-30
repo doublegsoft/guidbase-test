@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>漫途 · 旅行</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Playfair+Display:ital,wght@1,700;1,900&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy:       #1A2744;
+  --navy-mid:   #2E4070;
+  --navy-lt:    #5A7090;
+  --gold:       #F5C842;
+  --gold-dk:    #D4A820;
+  --sunset:     #E8724A;
+  --fog:        #F7F8FC;
+  --white:      #FFFFFF;
+  --green:      #4A8C7A;
+  --green-lt:   #EAF5F2;
+  --card-bg:    #FFFFFF;
+  --border:     rgba(26,39,68,0.08);
+  --shadow:     rgba(26,39,68,0.10);
+  --shadow-md:  rgba(26,39,68,0.16);
+}
+
+body {
+  font-family: 'Noto Sans SC', 'PingFang SC', sans-serif;
+  background: var(--fog);
+  color: var(--navy);
+  min-height: 100vh;
+  max-width: 420px;
+  margin: 0 auto;
+  overflow-x: hidden;
+}
+
+/* ── 状态栏 ── */
+.statusbar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  z-index: 20;
+  padding: 12px 22px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.sb-time { font-size: 15px; font-weight: 700; color: #fff; }
+.sb-icons { font-size: 13px; color: rgba(255,255,255,0.9); letter-spacing: 2px; }
+
+/* ── 明信片 Hero（签名元素） ── */
+.hero {
+  position: relative;
+  height: 300px;
+  overflow: visible;
+  background: #1A2744;
+  /* clip only the rectangular part, let wave SVG overflow below */
+  clip-path: none;
+}
+
+/* 天空渐变 */
+.sky {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    #0D1B38 0%,
+    #1A2F5E 30%,
+    #2E5088 55%,
+    #4A7AAA 72%,
+    #E8A06A 83%,
+    #F5C842 92%,
+    #F5C842 100%
+  );
+}
+
+/* 星星 */
+.stars {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 55%;
+}
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle var(--d, 3s) ease-in-out infinite var(--delay, 0s);
+}
+@keyframes twinkle {
+  0%, 100% { opacity: var(--op, 0.8); }
+  50%       { opacity: 0.2; }
+}
+
+/* 远山（深色剪影） */
+.mountain-far {
+  position: absolute;
+  bottom: 88px;
+  left: 0; right: 0;
+}
+.mountain-far svg { width: 100%; display: block; }
+
+/* 近山（更深剪影） */
+.mountain-near {
+  position: absolute;
+  bottom: 60px;
+  left: 0; right: 0;
+}
+.mountain-near svg { width: 100%; display: block; }
+
+/* 地面 */
+.ground {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 64px;
+  background: #0D1B30;
+}
+/* 道路 */
+.road {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 26px solid transparent;
+  border-right: 26px solid transparent;
+  border-bottom: 64px solid #1E2E44;
+}
+.road-line {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 22px;
+  background: var(--gold);
+  opacity: 0.7;
+  border-radius: 2px;
+}
+
+/* 波浪过渡层 — 盖在 hero 底部，颜色从地面色渐变到页面底色 */
+.hero-wave {
+  position: absolute;
+  bottom: -2px; left: 0; right: 0;
+  height: 72px;
+  z-index: 8;
+  pointer-events: none;
+}
+.hero-wave svg { width: 100%; height: 100%; display: block; }
+
+/* 月亮 */
+.moon {
+  position: absolute;
+  top: 32px;
+  right: 52px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: #F5E8A0;
+  box-shadow: 0 0 20px rgba(245,232,160,0.5), 0 0 40px rgba(245,232,160,0.25);
+}
+.moon::after {
+  content: '';
+  position: absolute;
+  top: 3px; left: 6px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: #1E3060;
+}
+
+/* 飞机 */
+.plane {
+  position: absolute;
+  top: 58px;
+  left: 30px;
+  font-size: 18px;
+  transform: rotate(-15deg);
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
+  animation: fly 8s ease-in-out infinite;
+}
+@keyframes fly {
+  0%   { transform: rotate(-15deg) translate(0,0); }
+  50%  { transform: rotate(-18deg) translate(12px,-6px); }
+  100% { transform: rotate(-15deg) translate(0,0); }
+}
+
+/* hero 文字 */
+.hero-text {
+  position: absolute;
+  bottom: 76px;
+  left: 22px;
+  right: 22px;
+}
+.hero-eyebrow {
+  font-size: 11px;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.hero-title {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-style: italic;
+  font-weight: 900;
+  font-size: 34px;
+  color: #fff;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+.hero-title em {
+  color: var(--gold);
+  font-style: italic;
+}
+
+/* 搜索浮动框 — 融入 hero 深色调，不再纯白跳脱 */
+.search-float {
+  position: absolute;
+  bottom: 20px;
+  left: 16px; right: 16px;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 18px;
+  padding: 13px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 10;
+  cursor: pointer;
+}
+.search-icon { font-size: 18px; flex-shrink: 0; }
+.search-placeholder {
+  flex: 1;
+  font-size: 14px;
+  color: rgba(255,255,255,0.65);
+  font-weight: 400;
+}
+.search-btn {
+  background: var(--gold);
+  color: var(--navy);
+  border: none;
+  border-radius: 12px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+  letter-spacing: 0.3px;
+}
+
+/* ── 主内容 ── */
+.content {
+  padding: 16px 16px 110px;
+}
+
+/* ── Section header ── */
+.sec-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+  padding: 0 2px;
+}
+.sec-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 0.3px;
+}
+.sec-more {
+  font-size: 12px;
+  color: var(--navy-lt);
+  cursor: pointer;
+}
+
+/* ── 行程卡（进行中） ── */
+.trip-card {
+  background: var(--navy);
+  border-radius: 22px;
+  padding: 20px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.trip-card-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 80% 20%, rgba(245,200,66,0.18) 0%, transparent 55%),
+    radial-gradient(circle at 10% 80%, rgba(74,140,122,0.15) 0%, transparent 50%);
+}
+.trip-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(245,200,66,0.18);
+  border: 1px solid rgba(245,200,66,0.4);
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.8px;
+  margin-bottom: 12px;
+  position: relative;
+}
+.trip-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: blink 1.5s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.trip-dest {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 4px;
+  position: relative;
+}
+.trip-dates {
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 16px;
+  position: relative;
+}
+.trip-progress-wrap {
+  position: relative;
+  margin-bottom: 14px;
+}
+.trip-progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 6px;
+}
+.trip-progress-track {
+  height: 4px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 10px;
+  overflow: visible;
+  position: relative;
+}
+.trip-progress-fill {
+  height: 100%;
+  width: 38%;
+  background: linear-gradient(90deg, var(--gold), #F5A842);
+  border-radius: 10px;
+  position: relative;
+}
+.trip-progress-fill::after {
+  content: '✈';
+  position: absolute;
+  right: -10px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  filter: drop-shadow(0 0 4px rgba(245,200,66,0.6));
+}
+.trip-stats {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 14px;
+  position: relative;
+}
+.trip-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.trip-stat + .trip-stat {
+  border-left: 1px solid rgba(255,255,255,0.1);
+}
+.trip-stat-val {
+  font-size: 20px;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1;
+}
+.trip-stat-label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.3px;
+}
+
+/* ── 分类标签 ── */
+.filter-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 0 2px 4px;
+  margin-bottom: 14px;
+}
+.filter-row::-webkit-scrollbar { display: none; }
+.filter-chip {
+  flex-shrink: 0;
+  padding: 7px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s;
+  letter-spacing: 0.3px;
+}
+.filter-chip.active {
+  background: var(--navy);
+  color: #fff;
+}
+.filter-chip:not(.active) {
+  background: var(--white);
+  color: var(--navy-lt);
+  box-shadow: 0 1px 6px var(--shadow);
+}
+
+/* ── 目的地卡片横滚 ── */
+.dest-scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 4px 2px 8px;
+  margin-bottom: 20px;
+}
+.dest-scroll::-webkit-scrollbar { display: none; }
+.dest-card {
+  flex-shrink: 0;
+  width: 160px;
+  border-radius: 18px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 4px 18px var(--shadow);
+  position: relative;
+  background: var(--white);
+  transition: transform 0.15s;
+}
+.dest-card:active { transform: scale(0.97); }
+
+/* CSS 绘制的目的地场景 */
+.dest-scene {
+  height: 110px;
+  position: relative;
+  overflow: hidden;
+}
+.scene-kyoto {
+  background: linear-gradient(180deg, #FFD4B0 0%, #FFA07A 40%, #C75A3A 65%, #3A1A0A 100%);
+}
+.scene-kyoto::before { /* 鸟居 */
+  content: '';
+  position: absolute;
+  bottom: 18px; left: 50%;
+  transform: translateX(-50%);
+  width: 52px; height: 54px;
+  border-top: 8px solid #C41E3A;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+}
+.scene-kyoto::after {
+  content: '⛩';
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 36px;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
+}
+
+.scene-maldives {
+  background: linear-gradient(180deg, #87CEEB 0%, #5BA8D4 40%, #2E8BB0 55%, #1A6E8A 65%, #F5E4C0 66%, #E8D4A0 100%);
+}
+.scene-maldives::before {
+  content: '🌴';
+  position: absolute;
+  bottom: 22px; right: 22px;
+  font-size: 36px;
+}
+.scene-maldives::after {
+  content: '🏖';
+  position: absolute;
+  bottom: 8px; left: 22px;
+  font-size: 28px;
+}
+
+.scene-alps {
+  background: linear-gradient(180deg, #C8DCF0 0%, #8AAECC 35%, #FFFFFF 50%, #E8EEF4 58%, #6A8C5A 59%, #4A6A3A 100%);
+}
+.scene-alps::before {
+  content: '';
+  position: absolute;
+  bottom: 38px; left: 50%;
+  transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 44px solid transparent;
+  border-right: 44px solid transparent;
+  border-bottom: 64px solid #E8EEF4;
+}
+.scene-alps::after {
+  content: '⛷️';
+  position: absolute;
+  bottom: 38px; right: 20px;
+  font-size: 20px;
+}
+
+.dest-info {
+  padding: 10px 12px 12px;
+}
+.dest-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 2px;
+}
+.dest-sub {
+  font-size: 11px;
+  color: var(--navy-lt);
+  margin-bottom: 6px;
+}
+.dest-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dest-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--sunset);
+}
+.dest-price span { font-size: 10px; font-weight: 400; color: var(--navy-lt); }
+.dest-save {
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* ── 近期收藏 ── */
+.save-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.save-item {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 2px 12px var(--shadow);
+  cursor: pointer;
+}
+.save-thumb {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  flex-shrink: 0;
+}
+.thumb-1 { background: linear-gradient(135deg, #FFD4B0, #E8724A); }
+.thumb-2 { background: linear-gradient(135deg, #B0D4FF, #4A8CC8); }
+.thumb-3 { background: linear-gradient(135deg, #C8F0D4, #4A8C7A); }
+.save-info { flex: 1; }
+.save-name { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
+.save-meta { font-size: 12px; color: var(--navy-lt); }
+.save-tag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.tag-soon  { background: #FEF3E2; color: #D4880A; }
+.tag-saved { background: var(--green-lt); color: var(--green); }
+.tag-hot   { background: #FEE8E8; color: #C43A3A; }
+
+/* ── 底部导航 ── */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 420px;
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border);
+  padding: 10px 0 22px;
+  z-index: 100;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.nav-item {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 3px;
+  cursor: pointer; padding: 4px 14px;
+  border: none; background: transparent;
+}
+.nav-ico { font-size: 22px; }
+.nav-lbl { font-size: 11px; color: var(--navy-lt); font-weight: 500; }
+.nav-item.on .nav-lbl { color: var(--navy); font-weight: 700; }
+.nav-fab {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--navy);
+  border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  box-shadow: 0 4px 18px rgba(26,39,68,0.35);
+  margin-top: -16px;
+  position: relative;
+}
+.nav-fab::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid rgba(245,200,66,0.5);
+}
+</style>
+</head>
+<body>
+
+<!-- Hero 明信片 -->
+<div class="hero">
+  <div class="statusbar">
+    <div class="sb-time">21:15</div>
+    <div class="sb-icons">▲▲▲ 🔋</div>
+  </div>
+
+  <div class="sky"></div>
+
+  <!-- 星星 -->
+  <div class="stars">
+    <div class="star" style="width:2px;height:2px;top:12%;left:15%;--op:0.9;--d:2.8s;--delay:0s"></div>
+    <div class="star" style="width:3px;height:3px;top:8%;left:40%;--op:0.7;--d:3.5s;--delay:0.4s"></div>
+    <div class="star" style="width:2px;height:2px;top:18%;left:65%;--op:0.85;--d:2.2s;--delay:0.8s"></div>
+    <div class="star" style="width:2px;height:2px;top:6%;left:80%;--op:0.6;--d:4s;--delay:1.2s"></div>
+    <div class="star" style="width:3px;height:3px;top:22%;left:28%;--op:0.75;--d:3s;--delay:0.2s"></div>
+    <div class="star" style="width:2px;height:2px;top:14%;left:88%;--op:0.9;--d:2.5s;--delay:1s"></div>
+    <div class="star" style="width:2px;height:2px;top:30%;left:52%;--op:0.5;--d:3.8s;--delay:0.6s"></div>
+  </div>
+
+  <!-- 月亮 -->
+  <div class="moon"></div>
+
+  <!-- 飞机 -->
+  <div class="plane">✈️</div>
+
+  <!-- 远山 -->
+  <div class="mountain-far">
+    <svg viewBox="0 0 420 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,100 60,30 120,65 190,15 260,55 330,25 390,50 420,35 420,100" fill="#162040"/>
+    </svg>
+  </div>
+
+  <!-- 近山 -->
+  <div class="mountain-near">
+    <svg viewBox="0 0 420 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,90 40,40 90,60 150,10 210,45 280,20 350,50 420,30 420,90" fill="#0E1830"/>
+    </svg>
+  </div>
+
+  <!-- 地面 + 公路 -->
+  <div class="ground">
+    <div class="road">
+      <div class="road-line"></div>
+    </div>
+  </div>
+
+  <!-- Hero 文字 -->
+  <div class="hero-text">
+    <div class="hero-eyebrow">下一站，世界</div>
+    <div class="hero-title">去<em>远方</em><br>看看吧</div>
+  </div>
+
+  <!-- 搜索框：融入 hero 色调 -->
+  <div class="search-float">
+    <div class="search-icon">🔍</div>
+    <div class="search-placeholder">你想去哪里？</div>
+    <button class="search-btn">搜索</button>
+  </div>
+
+  <!-- 波浪过渡 -->
+  <div class="hero-wave">
+    <svg viewBox="0 0 420 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="waveGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#0D1B30"/>
+          <stop offset="100%" stop-color="#F7F8FC"/>
+        </linearGradient>
+      </defs>
+      <!-- filled wave shape from top edge down to curved bottom -->
+      <path d="M0,0 L420,0 L420,32 Q340,72 210,52 Q80,32 0,60 Z" fill="url(#waveGrad)"/>
+    </svg>
+  </div>
+</div>
+
+<!-- 主内容 -->
+<div class="content">
+
+  <!-- 进行中的行程 -->
+  <div class="trip-card">
+    <div class="trip-card-bg"></div>
+    <div class="trip-tag">
+      <div class="trip-dot"></div>
+      进行中
+    </div>
+    <div class="trip-dest">京都 · 奈良</div>
+    <div class="trip-dates">2026 年 7 月 28 日 — 8 月 3 日 · 7天6夜</div>
+    <div class="trip-progress-wrap">
+      <div class="trip-progress-label">
+        <span>出发</span>
+        <span>第 3 天 / 共 7 天</span>
+        <span>返程</span>
+      </div>
+      <div class="trip-progress-track">
+        <div class="trip-progress-fill"></div>
+      </div>
+    </div>
+    <div class="trip-stats">
+      <div class="trip-stat">
+        <div class="trip-stat-val">4</div>
+        <div class="trip-stat-label">待打卡景点</div>
+      </div>
+      <div class="trip-stat">
+        <div class="trip-stat-val">¥2.3k</div>
+        <div class="trip-stat-label">剩余预算</div>
+      </div>
+      <div class="trip-stat">
+        <div class="trip-stat-val">4</div>
+        <div class="trip-stat-label">剩余天数</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 发现目的地 -->
+  <div class="sec-head">
+    <div class="sec-title">发现目的地</div>
+    <div class="sec-more">查看全部</div>
+  </div>
+
+  <div class="filter-row">
+    <button class="filter-chip active">全部</button>
+    <button class="filter-chip">亚洲</button>
+    <button class="filter-chip">欧洲</button>
+    <button class="filter-chip">海岛</button>
+    <button class="filter-chip">自然</button>
+    <button class="filter-chip">美食</button>
+  </div>
+
+  <div class="dest-scroll">
+    <div class="dest-card">
+      <div class="dest-scene scene-kyoto"></div>
+      <div class="dest-info">
+        <div class="dest-name">京都</div>
+        <div class="dest-sub">日本 · 古都风情</div>
+        <div class="dest-footer">
+          <div class="dest-price">¥4,200 <span>起/人</span></div>
+          <div class="dest-save">🧡</div>
+        </div>
+      </div>
+    </div>
+    <div class="dest-card">
+      <div class="dest-scene scene-maldives"></div>
+      <div class="dest-info">
+        <div class="dest-name">马尔代夫</div>
+        <div class="dest-sub">印度洋 · 奢华水屋</div>
+        <div class="dest-footer">
+          <div class="dest-price">¥12,800 <span>起/人</span></div>
+          <div class="dest-save">🤍</div>
+        </div>
+      </div>
+    </div>
+    <div class="dest-card">
+      <div class="dest-scene scene-alps"></div>
+      <div class="dest-info">
+        <div class="dest-name">阿尔卑斯</div>
+        <div class="dest-sub">瑞士 · 徒步天堂</div>
+        <div class="dest-footer">
+          <div class="dest-price">¥9,500 <span>起/人</span></div>
+          <div class="dest-save">🤍</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 收藏 / 心愿单 -->
+  <div class="sec-head">
+    <div class="sec-title">我的心愿单</div>
+    <div class="sec-more">管理</div>
+  </div>
+
+  <div class="save-list">
+    <div class="save-item">
+      <div class="save-thumb thumb-1">🗼</div>
+      <div class="save-info">
+        <div class="save-name">巴黎 · 铁塔之旅</div>
+        <div class="save-meta">法国 · 预计 2027 年春节</div>
+      </div>
+      <div class="save-tag tag-soon">计划中</div>
+    </div>
+    <div class="save-item">
+      <div class="save-thumb thumb-2">🐋</div>
+      <div class="save-info">
+        <div class="save-name">冰岛极光摄影</div>
+        <div class="save-meta">冰岛 · 9–11月最佳</div>
+      </div>
+      <div class="save-tag tag-saved">已收藏</div>
+    </div>
+    <div class="save-item">
+      <div class="save-thumb thumb-3">🌿</div>
+      <div class="save-info">
+        <div class="save-name">清迈丛林慢行</div>
+        <div class="save-meta">泰国 · 本周特价 -30%</div>
+      </div>
+      <div class="save-tag tag-hot">热卖</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 底部导航 -->
+<div class="bottom-nav">
+  <button class="nav-item on">
+    <div class="nav-ico">🧭</div>
+    <div class="nav-lbl">探索</div>
+  </button>
+  <button class="nav-item">
+    <div class="nav-ico">🗺️</div>
+    <div class="nav-lbl">行程</div>
+  </button>
+  <button class="nav-fab">✈️</button>
+  <button class="nav-item">
+    <div class="nav-ico">🔖</div>
+    <div class="nav-lbl">收藏</div>
+  </button>
+  <button class="nav-item">
+    <div class="nav-ico">👤</div>
+    <div class="nav-lbl">我的</div>
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+    });
+  });
+  document.querySelectorAll('.dest-save').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      btn.textContent = btn.textContent === '🤍' ? '🧡' : '🤍';
+    });
+  });
+</script>
+
+</body>
+</html>

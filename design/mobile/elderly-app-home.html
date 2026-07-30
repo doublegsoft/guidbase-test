@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>夕阳伴 · 首页</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --orange:    #E8814A;
+    --orange-lt: #F5A876;
+    --orange-bg: #FEF3EB;
+    --cream:     #FDF8F3;
+    --brown:     #4A2E1A;
+    --brown-mid: #7A5038;
+    --brown-lt:  #B8896A;
+    --red-sos:   #D94040;
+    --green:     #4A9E6B;
+    --sky:       #4A8EC2;
+    --card-bg:   #FFFFFF;
+    --shadow:    rgba(74,46,26,0.10);
+  }
+
+  body {
+    font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: var(--cream);
+    color: var(--brown);
+    min-height: 100vh;
+    max-width: 420px;
+    margin: 0 auto;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* ─── 状态栏 ─── */
+  .statusbar {
+    background: var(--orange);
+    padding: 10px 20px 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .statusbar-time {
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 1px;
+  }
+  .statusbar-icons {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .statusbar-icons span {
+    font-size: 14px;
+    color: #fff;
+  }
+
+  /* ─── 顶部问候区 ─── */
+  .header {
+    background: linear-gradient(160deg, var(--orange) 0%, var(--orange-lt) 100%);
+    padding: 18px 22px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -24px;
+    left: 0; right: 0;
+    height: 48px;
+    background: var(--cream);
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+  }
+  .greeting-tag {
+    background: rgba(255,255,255,0.28);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+  .notif-btn {
+    width: 38px; height: 38px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 50%;
+    border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    position: relative;
+  }
+  .notif-btn svg { width: 20px; height: 20px; }
+  .notif-dot {
+    position: absolute;
+    top: 6px; right: 6px;
+    width: 8px; height: 8px;
+    background: #fff;
+    border-radius: 50%;
+    border: 2px solid var(--orange);
+  }
+  .greeting-main {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .avatar {
+    width: 62px; height: 62px;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.6);
+    overflow: hidden;
+    background: var(--orange-lt);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .avatar-emoji { font-size: 34px; }
+  .greeting-text { color: #fff; }
+  .greeting-sub {
+    font-size: 13px;
+    opacity: 0.88;
+    margin-bottom: 2px;
+    letter-spacing: 0.3px;
+  }
+  .greeting-name {
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    line-height: 1.1;
+  }
+  .greeting-sub2 {
+    font-size: 14px;
+    opacity: 0.85;
+    margin-top: 3px;
+    font-weight: 500;
+  }
+
+  /* ─── 今日健康卡 ─── */
+  .section-wrap {
+    padding: 0 16px;
+    margin-top: 12px;
+  }
+
+  .health-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 18px 20px;
+    box-shadow: 0 4px 20px var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .health-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 5px;
+    background: var(--green);
+    border-radius: 20px 0 0 20px;
+  }
+  .health-icon {
+    width: 56px; height: 56px;
+    background: #EAF7EE;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+  .health-info { flex: 1; }
+  .health-label {
+    font-size: 13px;
+    color: var(--brown-lt);
+    margin-bottom: 2px;
+    font-weight: 500;
+  }
+  .health-status {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--green);
+    line-height: 1.1;
+  }
+  .health-detail {
+    font-size: 13px;
+    color: var(--brown-mid);
+    margin-top: 2px;
+  }
+  .health-arrow {
+    width: 32px; height: 32px;
+    background: var(--orange-bg);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .health-arrow svg { width: 16px; height: 16px; }
+
+  /* ─── 功能宫格 ─── */
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--brown);
+    margin-bottom: 12px;
+    padding-left: 2px;
+  }
+
+  .grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .grid-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+  .grid-icon {
+    width: 64px; height: 64px;
+    border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px;
+    box-shadow: 0 3px 12px var(--shadow);
+    transition: transform 0.15s;
+  }
+  .grid-item:active .grid-icon { transform: scale(0.93); }
+  .grid-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--brown);
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .color-health { background: #EAF7EE; }
+  .color-pill   { background: #FEF0EB; }
+  .color-family { background: #EAF1FB; }
+  .color-video  { background: #F3EAFB; }
+  .color-food   { background: #FFFBEA; }
+  .color-walk   { background: #EAFBF7; }
+  .color-news   { background: #FFF0F0; }
+  .color-more   { background: #F4F4F4; }
+
+  /* ─── 提醒横条 ─── */
+  .remind-card {
+    background: #FFF8E8;
+    border: 1.5px solid #F5D47A;
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    cursor: pointer;
+  }
+  .remind-icon { font-size: 26px; flex-shrink: 0; }
+  .remind-text { flex: 1; }
+  .remind-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--brown);
+    margin-bottom: 1px;
+  }
+  .remind-sub {
+    font-size: 13px;
+    color: var(--brown-mid);
+  }
+  .remind-time {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--orange);
+    flex-shrink: 0;
+  }
+
+  /* ─── 亲情动态 ─── */
+  .family-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    margin-bottom: 16px;
+    scrollbar-width: none;
+  }
+  .family-scroll::-webkit-scrollbar { display: none; }
+  .family-item {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+  }
+  .family-avatar {
+    width: 58px; height: 58px;
+    border-radius: 50%;
+    background: var(--orange-bg);
+    border: 3px solid var(--orange-lt);
+    font-size: 26px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .family-avatar.has-msg {
+    border-color: var(--orange);
+  }
+  .family-avatar.has-msg::after {
+    content: '';
+    position: absolute;
+    top: 1px; right: 1px;
+    width: 12px; height: 12px;
+    background: var(--red-sos);
+    border-radius: 50%;
+    border: 2px solid white;
+  }
+  .family-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--brown-mid);
+  }
+  .family-status {
+    font-size: 11px;
+    color: var(--orange);
+    font-weight: 500;
+  }
+
+  /* ─── 天气+步数 ─── */
+  .mini-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 100px;
+  }
+  .mini-card {
+    background: var(--card-bg);
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: 0 3px 14px var(--shadow);
+  }
+  .mini-label {
+    font-size: 13px;
+    color: var(--brown-lt);
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .mini-value {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--brown);
+    line-height: 1;
+  }
+  .mini-unit {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--brown-mid);
+    margin-left: 2px;
+  }
+  .mini-sub {
+    font-size: 13px;
+    color: var(--brown-lt);
+    margin-top: 4px;
+  }
+  .mini-icon { font-size: 22px; margin-bottom: 4px; }
+
+  /* ─── SOS 浮动按钮 ─── */
+  .sos-bar {
+    position: fixed;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 420px;
+    background: var(--cream);
+    padding: 12px 16px 24px;
+    border-top: 1px solid rgba(74,46,26,0.08);
+    z-index: 100;
+  }
+  .sos-btn {
+    width: 100%;
+    background: var(--red-sos);
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 18px 0;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 6px 24px rgba(217,64,64,0.35);
+    transition: transform 0.12s, box-shadow 0.12s;
+  }
+  .sos-btn:active {
+    transform: scale(0.97);
+    box-shadow: 0 3px 12px rgba(217,64,64,0.25);
+  }
+  .sos-pulse {
+    width: 14px; height: 14px;
+    background: #fff;
+    border-radius: 50%;
+    animation: pulse 1.4s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(0.7); }
+  }
+
+  /* ─── 底部导航 ─── */
+  /* (隐去，聚焦首页内容) */
+
+</style>
+</head>
+<body>
+
+<!-- 状态栏 -->
+<div class="statusbar">
+  <div class="statusbar-time">09:28</div>
+  <div class="statusbar-icons">
+    <span>📶</span>
+    <span>🔋</span>
+  </div>
+</div>
+
+<!-- 顶部问候 -->
+<div class="header">
+  <div class="header-top">
+    <div class="greeting-tag">☀️ 今天天气不错</div>
+    <button class="notif-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+      </svg>
+      <div class="notif-dot"></div>
+    </button>
+  </div>
+  <div class="greeting-main">
+    <div class="avatar"><span class="avatar-emoji">👴</span></div>
+    <div class="greeting-text">
+      <div class="greeting-sub">早上好，</div>
+      <div class="greeting-name">王爷爷</div>
+      <div class="greeting-sub2">今天也要开开心心的 😊</div>
+    </div>
+  </div>
+</div>
+
+<!-- 主内容 -->
+<div class="section-wrap" style="margin-top: 28px;">
+
+  <!-- 今日健康 -->
+  <div class="health-card">
+    <div class="health-icon">❤️</div>
+    <div class="health-info">
+      <div class="health-label">今日健康状态</div>
+      <div class="health-status">良好</div>
+      <div class="health-detail">血压 · 血糖 · 心率 均正常</div>
+    </div>
+    <div class="health-arrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#E8814A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18l6-6-6-6"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- 用药提醒 -->
+  <div class="remind-card">
+    <div class="remind-icon">💊</div>
+    <div class="remind-text">
+      <div class="remind-title">吃药提醒</div>
+      <div class="remind-sub">降压药 · 餐后服用</div>
+    </div>
+    <div class="remind-time">12:00</div>
+  </div>
+
+  <!-- 功能宫格 -->
+  <div class="section-title">常用功能</div>
+  <div class="grid-4">
+    <div class="grid-item">
+      <div class="grid-icon color-health">🩺</div>
+      <div class="grid-label">健康<br>记录</div>
+    </div>
+    <div class="grid-item">
+      <div class="grid-icon color-pill">💊</div>
+      <div class="grid-label">用药<br>管理</div>
+    </div>
+    <div class="grid-item">
+      <div class="grid-icon color-family">📞</div>
+      <div class="grid-label">联系<br>家人</div>
+    </div>
+    <div class="grid-item">
+      <div class="grid-icon color-video">📹</div>
+      <div class="grid-label">视频<br>通话</div>
+    </div>
+    <div class="grid-item">
+      <div class="grid-icon color-food">🍱</div>
+      <div class="grid-label">订餐<br>送餐</div>
+    </div>
+    <div class="grid-item">
+      <div class="grid-icon color-walk">🚶</div>
+      <div class="grid-label">运动<br>打卡</div>
+    </div>
+    <div class="grid-item">
+      <div class="grid-icon color-news">📰</div>
+      <div class="grid-label">新闻<br>资讯</div>
+    </div>
+    <div class="grid-item">
+      <div class="grid-icon color-more">⋯</div>
+      <div class="grid-label">更多<br>服务</div>
+    </div>
+  </div>
+
+  <!-- 亲情动态 -->
+  <div class="section-title">家人动态</div>
+  <div class="family-scroll">
+    <div class="family-item">
+      <div class="family-avatar has-msg">👩</div>
+      <div class="family-name">女儿</div>
+      <div class="family-status">有消息</div>
+    </div>
+    <div class="family-item">
+      <div class="family-avatar">👦</div>
+      <div class="family-name">小孙子</div>
+      <div class="family-status">在线</div>
+    </div>
+    <div class="family-item">
+      <div class="family-avatar has-msg">👨</div>
+      <div class="family-name">儿子</div>
+      <div class="family-status">有消息</div>
+    </div>
+    <div class="family-item">
+      <div class="family-avatar">👩‍⚕️</div>
+      <div class="family-name">家庭医生</div>
+      <div class="family-status">离线</div>
+    </div>
+    <div class="family-item">
+      <div class="family-avatar">👨‍🦳</div>
+      <div class="family-name">老伴</div>
+      <div class="family-status">在线</div>
+    </div>
+  </div>
+
+  <!-- 天气 + 步数 -->
+  <div class="mini-row">
+    <div class="mini-card">
+      <div class="mini-icon">⛅</div>
+      <div class="mini-label">今日天气</div>
+      <div class="mini-value">23<span class="mini-unit">°C</span></div>
+      <div class="mini-sub">多云转晴 · 宜外出</div>
+    </div>
+    <div class="mini-card">
+      <div class="mini-icon">👟</div>
+      <div class="mini-label">今日步数</div>
+      <div class="mini-value">3,241<span class="mini-unit">步</span></div>
+      <div class="mini-sub">目标 5000步 · 加油！</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SOS 一键呼叫 -->
+<div class="sos-bar">
+  <button class="sos-btn">
+    <div class="sos-pulse"></div>
+    🆘 一键呼叫家人
+    <div class="sos-pulse"></div>
+  </button>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>小狮子足球 · 教练端首页</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest-deep:#0f2e20;
+    --forest:#1a4a34;
+    --forest-mid:#245c42;
+    --grass:#5fd88a;
+    --grass-deep:#2fae63;
+    --gold:#f3b23c;
+    --coral:#ef7a5f;
+    --paper:#f6f2e8;
+    --card:#ffffff;
+    --ink:#132419;
+    --ink-soft:#5c6c62;
+    --line:#e7e1d2;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;background:#d9d3c2;font-family:'Manrope','PingFang SC','Microsoft YaHei',sans-serif;color:var(--ink);}
+  .display{font-family:'Baloo 2','PingFang SC',sans-serif;}
+
+  #stage{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px 12px;}
+  #phone{
+    width:390px;height:844px;background:var(--paper);border-radius:44px;overflow:hidden;position:relative;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,.45), 0 0 0 10px #17140f, 0 0 0 11px #3a352b;
+  }
+  #notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:150px;height:26px;background:#17140f;border-radius:0 0 16px 16px;z-index:50;}
+  #scroll{height:100%;overflow-y:auto;padding-bottom:96px;scrollbar-width:none;}
+  #scroll::-webkit-scrollbar{display:none;}
+  .statusbar{display:flex;justify-content:space-between;align-items:center;padding:16px 22px 4px;font-size:13px;font-weight:700;color:#fff;}
+
+  /* ---- hero ---- */
+  .hero{
+    position:relative;background:radial-gradient(120% 100% at 15% 0%, var(--forest-mid), var(--forest-deep) 65%);
+    padding:6px 20px 30px;
+  }
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin:10px 0 16px;}
+  .greet .hi{font-size:12.5px;color:#bfe3cd;font-weight:600;letter-spacing:.3px;}
+  .greet .name{font-size:21px;font-weight:800;color:#fff;margin-top:2px;}
+  .avatar-wrap{display:flex;align-items:center;gap:10px;}
+  .bell{width:38px;height:38px;border-radius:12px;background:#ffffff17;display:flex;align-items:center;justify-content:center;position:relative;}
+  .bell .dot{position:absolute;top:8px;right:8px;width:7px;height:7px;background:var(--gold);border-radius:50%;}
+  .avatar{width:40px;height:40px;border-radius:13px;background:linear-gradient(145deg,#8fd6ac,#3f9c68);display:flex;align-items:center;justify-content:center;font-weight:800;color:#0f2e20;font-size:15px;}
+
+  /* today load summary strip inside hero */
+  .load-strip{display:flex;gap:10px;}
+  .load-chip{
+    flex:1;background:#ffffff14;border:1px solid #ffffff22;border-radius:16px;padding:12px 10px;text-align:center;
+  }
+  .load-chip .num{font-family:'Baloo 2';font-size:20px;font-weight:800;color:#fff;}
+  .load-chip .lbl{font-size:10.5px;color:#bfe3cd;font-weight:700;margin-top:2px;}
+
+  /* ---- today classes ---- */
+  .section{padding:22px 20px 0;}
+  .section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .section-head h2{font-size:16px;font-weight:800;margin:0;display:flex;align-items:center;gap:6px;}
+  .section-head .more{font-size:12px;color:var(--grass-deep);font-weight:700;}
+
+  .class-card{
+    background:var(--card);border-radius:18px;padding:14px;margin-bottom:12px;
+    box-shadow:0 8px 20px -14px rgba(20,40,30,.4);display:flex;gap:12px;align-items:center;
+  }
+  .class-card .time-col{
+    width:56px;text-align:center;flex-shrink:0;border-right:1.5px dashed var(--line);padding-right:12px;
+  }
+  .class-card .time-col .t1{font-family:'Baloo 2';font-size:16px;font-weight:800;color:var(--forest);}
+  .class-card .time-col .t2{font-size:10.5px;color:var(--ink-soft);font-weight:600;margin-top:2px;}
+  .class-card .body{flex:1;min-width:0;}
+  .class-card .nm{font-size:14px;font-weight:800;}
+  .class-card .meta{font-size:11.5px;color:var(--ink-soft);font-weight:600;margin-top:3px;}
+  .class-card .avatars{display:flex;margin-top:8px;}
+  .class-card .avatars span{
+    width:22px;height:22px;border-radius:50%;background:#cfe9d8;border:2px solid #fff;margin-left:-6px;
+    font-size:10px;display:flex;align-items:center;justify-content:center;color:var(--forest);font-weight:700;
+  }
+  .class-card .avatars span:first-child{margin-left:0;}
+  .class-card .avatars .cnt{background:var(--forest);color:#fff;}
+  .checkin-btn{
+    flex-shrink:0;background:var(--grass-deep);color:#fff;font-weight:800;font-size:12px;
+    padding:9px 14px;border-radius:11px;border:none;white-space:nowrap;
+  }
+  .checkin-btn.done{background:#e7e1d2;color:var(--ink-soft);}
+
+  /* ---- quick actions ---- */
+  .actions-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+  .action-item{
+    background:var(--card);border-radius:16px;padding:14px 6px;text-align:center;
+    box-shadow:0 8px 18px -14px rgba(20,40,30,.35);
+  }
+  .action-item .ic{
+    width:38px;height:38px;border-radius:12px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:17px;
+  }
+  .action-item .lbl{font-size:11px;font-weight:700;color:var(--ink);}
+  .ic-a{background:#e4f5ea;}
+  .ic-b{background:#fdecdd;}
+  .ic-c{background:#e8ecfb;}
+  .ic-d{background:#fde6e0;}
+
+  /* ---- todo list ---- */
+  .todo-card{
+    background:var(--card);border-radius:16px;padding:4px 4px;box-shadow:0 8px 18px -14px rgba(20,40,30,.35);
+  }
+  .todo-item{
+    display:flex;align-items:center;gap:12px;padding:12px 12px;border-bottom:1px solid var(--line);
+  }
+  .todo-item:last-child{border-bottom:none;}
+  .todo-item .ic{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+  .todo-item .tt{font-size:13px;font-weight:700;flex:1;}
+  .todo-item .sb{font-size:11px;color:var(--ink-soft);font-weight:600;margin-top:1px;}
+  .todo-item .badge{
+    background:var(--coral);color:#fff;font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:999px;
+  }
+
+  /* ---- team stats ---- */
+  .stats-row{display:flex;gap:10px;}
+  .stat-chip{flex:1;background:var(--card);border-radius:16px;padding:12px 10px;box-shadow:0 8px 18px -14px rgba(20,40,30,.35);text-align:center;}
+  .stat-chip .num{font-family:'Baloo 2';font-size:19px;font-weight:800;color:var(--forest);}
+  .stat-chip .num small{font-size:11px;font-weight:700;color:var(--ink-soft);}
+  .stat-chip .lbl{font-size:11px;color:var(--ink-soft);font-weight:600;margin-top:2px;}
+
+  /* ---- student moments ---- */
+  .h-scroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none;}
+  .h-scroll::-webkit-scrollbar{display:none;}
+  .moment-card{min-width:118px;}
+  .moment-card .pic{
+    height:118px;border-radius:14px;background:linear-gradient(150deg,#cfe9d8,#a9d3b9);
+    display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:6px;position:relative;
+  }
+  .moment-card .pic .draft{position:absolute;top:6px;right:6px;background:#00000055;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:6px;}
+  .moment-card .nm{font-size:12px;font-weight:700;}
+
+  .upload-fab-row{margin-top:22px;padding:0 20px 26px;}
+  .upload-card{
+    border-radius:20px;padding:18px;text-align:center;background:var(--forest-deep);position:relative;overflow:hidden;
+  }
+  .upload-card::after{content:'';position:absolute;right:-30px;bottom:-30px;width:120px;height:120px;border-radius:50%;background:#ffffff08;}
+  .upload-card h3{color:#fff;font-size:15.5px;font-weight:800;margin:0 0 6px;position:relative;}
+  .upload-card p{color:#bfe3cd;font-size:11.5px;margin:0 0 14px;font-weight:600;position:relative;}
+  .upload-card button{position:relative;background:var(--grass);color:#0f2e20;border:none;font-weight:800;font-size:13px;padding:10px 24px;border-radius:12px;}
+
+  #tabbar{position:absolute;left:0;right:0;bottom:0;height:82px;background:#ffffffee;backdrop-filter:blur(10px);display:flex;padding-top:10px;border-top:1px solid var(--line);}
+  .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;color:#9aa79f;}
+  .tab .ic{font-size:19px;}
+  .tab span{font-size:10.5px;font-weight:700;}
+  .tab.active{color:var(--forest);}
+  .tab.active .ic{color:var(--grass-deep);}
+  .fab{width:52px;height:52px;border-radius:16px;margin-top:-26px;background:linear-gradient(150deg,var(--grass),var(--grass-deep));display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;font-weight:800;box-shadow:0 10px 20px -6px rgba(47,174,99,.6);}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="phone">
+    <div id="notch"></div>
+    <div id="scroll">
+
+      <div class="hero">
+        <div class="statusbar"><span>9:41</span><span>●●●●  Wi‑Fi  100%</span></div>
+        <div class="topbar">
+          <div class="greet">
+            <div class="hi">早上好，教练</div>
+            <div class="name display">王磊 教练</div>
+          </div>
+          <div class="avatar-wrap">
+            <div class="bell">🔔<span class="dot"></span></div>
+            <div class="avatar display">王</div>
+          </div>
+        </div>
+        <div class="load-strip">
+          <div class="load-chip"><div class="num display">3</div><div class="lbl">今日课程</div></div>
+          <div class="load-chip"><div class="num display">42</div><div class="lbl">在训学员</div></div>
+          <div class="load-chip"><div class="num display">2</div><div class="lbl">待处理事项</div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <h2>📋 今日课程</h2>
+          <span class="more">完整课表 ›</span>
+        </div>
+
+        <div class="class-card">
+          <div class="time-col"><div class="t1 display">16:30</div><div class="t2">18:00前</div></div>
+          <div class="body">
+            <div class="nm">U10 传控基础</div>
+            <div class="meta">📍 一号天然草场 · 12 人</div>
+            <div class="avatars"><span>明</span><span>浩</span><span>宇</span><span class="cnt">+9</span></div>
+          </div>
+          <button class="checkin-btn">开始签到</button>
+        </div>
+
+        <div class="class-card">
+          <div class="time-col"><div class="t1 display">14:00</div><div class="t2">已结束</div></div>
+          <div class="body">
+            <div class="nm">U8 兴趣启蒙班</div>
+            <div class="meta">📍 二号室内场 · 15 人</div>
+            <div class="avatars"><span>豆</span><span>安</span><span>可</span><span class="cnt">+12</span></div>
+          </div>
+          <button class="checkin-btn done">已签到</button>
+        </div>
+
+        <div class="class-card">
+          <div class="time-col"><div class="t1 display">19:00</div><div class="t2">晚间</div></div>
+          <div class="body">
+            <div class="nm">守门员专项特训</div>
+            <div class="meta">📍 一号天然草场 · 6 人</div>
+            <div class="avatars"><span>辰</span><span>阳</span><span class="cnt">+4</span></div>
+          </div>
+          <button class="checkin-btn">开始签到</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h2>⚡ 快捷工具</h2></div>
+        <div class="actions-grid">
+          <div class="action-item"><div class="ic ic-a">🧑‍🤝‍🧑</div><div class="lbl">学员管理</div></div>
+          <div class="action-item"><div class="ic ic-b">📝</div><div class="lbl">训练计划</div></div>
+          <div class="action-item"><div class="ic ic-c">🎬</div><div class="lbl">发布集锦</div></div>
+          <div class="action-item"><div class="ic ic-d">✅</div><div class="lbl">请假审批</div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <h2>🔔 待处理事项</h2>
+          <span class="more">全部 ›</span>
+        </div>
+        <div class="todo-card">
+          <div class="todo-item">
+            <div class="ic" style="background:#fde6e0;">📄</div>
+            <div style="flex:1;"><div class="tt">请假申请</div><div class="sb">陈昊 · U10 传控基础 · 明日</div></div>
+            <span class="badge">待批</span>
+          </div>
+          <div class="todo-item">
+            <div class="ic" style="background:#e8ecfb;">📊</div>
+            <div style="flex:1;"><div class="tt">训练反馈待填写</div><div class="sb">U8 兴趣启蒙班 · 15 名学员</div></div>
+            <span class="badge">2</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h2>📈 本月带训数据</h2></div>
+        <div class="stats-row">
+          <div class="stat-chip"><div class="num display">96<small>%</small></div><div class="lbl">平均出勤率</div></div>
+          <div class="stat-chip"><div class="num display">4.9</div><div class="lbl">家长好评分</div></div>
+          <div class="stat-chip"><div class="num display">18</div><div class="lbl">本月训练课时</div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <h2>🎬 学员近期动态</h2>
+          <span class="more">动态管理 ›</span>
+        </div>
+        <div class="h-scroll">
+          <div class="moment-card"><div class="pic">🏃‍♂️<span class="draft">草稿</span></div><div class="nm">明同学 · 带球训练</div></div>
+          <div class="moment-card"><div class="pic">⚽</div><div class="nm">浩同学 · 射门练习</div></div>
+          <div class="moment-card"><div class="pic">🧤</div><div class="nm">辰同学 · 扑救训练</div></div>
+        </div>
+      </div>
+
+      <div class="upload-fab-row">
+        <div class="upload-card">
+          <h3 class="display">记录今天的训练高光</h3>
+          <p>上传照片或视频，家长可实时查看</p>
+          <button>上传集锦</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="tabbar">
+      <div class="tab active"><div class="ic">🏠</div><span>首页</span></div>
+      <div class="tab"><div class="ic">📅</div><span>课表</span></div>
+      <div class="fab">＋</div>
+      <div class="tab"><div class="ic">🧑‍🤝‍🧑</div><span>学员</span></div>
+      <div class="tab"><div class="ic">👤</div><span>我的</span></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

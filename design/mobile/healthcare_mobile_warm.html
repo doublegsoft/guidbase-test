@@ -1,0 +1,295 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:var(--font-sans)}
+.ph{width:320px;margin:0 auto;background:var(--surface-0);border:0.5px solid var(--border);border-radius:40px;overflow:hidden}
+.sb{height:40px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 22px 7px;background:#F7F3EF}
+.sb-t{font-size:13px;font-weight:500;color:#2C2015}
+.sb-r{display:flex;gap:4px;align-items:center;color:#2C2015}
+.sb-r i{font-size:14px}
+.hero{background:#3B6D11;padding:14px 18px 18px}
+.hero-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.hero-hi{font-size:11px;color:#C0DD97;margin-bottom:2px}
+.hero-name{font-size:16px;font-weight:500;color:#fff}
+.doc-av{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:#fff;border:1.5px solid rgba(255,255,255,.35)}
+.vitals-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
+.vital{background:rgba(255,255,255,.13);border-radius:10px;padding:8px 9px;border:0.5px solid rgba(255,255,255,.15)}
+.vital-icon{font-size:14px;color:#9FE1CB;margin-bottom:3px}
+.vital-val{font-size:14px;font-weight:500;color:#fff;line-height:1.1}
+.vital-unit{font-size:10px;color:#9FE1CB;font-weight:400}
+.vital-lbl{font-size:10px;color:#9FE1CB;margin-top:2px}
+.vital-ok{font-size:10px;color:#C0DD97;margin-top:2px;display:flex;align-items:center;gap:2px}
+.vital-warn{font-size:10px;color:#FAC775;margin-top:2px;display:flex;align-items:center;gap:2px}
+.content{background:#F7F3EF;padding:12px 14px}
+.alert-bar{display:flex;align-items:center;gap:8px;padding:9px 12px;background:#FEF6EA;border:0.5px solid #FAC775;border-radius:12px;margin-bottom:12px}
+.alert-bar i{font-size:16px;color:#854F0B;flex-shrink:0}
+.alert-text{flex:1;font-size:12px;color:#633806;line-height:1.4}
+.alert-btn{font-size:11px;font-weight:500;color:#854F0B;background:#FAC77530;border:0.5px solid #FAC775;border-radius:6px;padding:3px 8px;white-space:nowrap;flex-shrink:0}
+.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.sec-title{font-size:13px;font-weight:500;color:#2C2015}
+.sec-more{font-size:12px;color:#3B6D11}
+.appt-card{background:#fff;border:0.5px solid #D3D1C7;border-radius:12px;padding:11px 13px;display:flex;align-items:center;gap:11px;margin-bottom:8px}
+.appt-date{display:flex;flex-direction:column;align-items:center;justify-content:center;width:38px;height:42px;background:#EAF3DE;border-radius:9px;flex-shrink:0}
+.appt-month{font-size:10px;color:#3B6D11;font-weight:500}
+.appt-day{font-size:18px;font-weight:500;color:#27500A;line-height:1.1}
+.appt-name{font-size:13px;font-weight:500;color:#2C2015;margin-bottom:2px}
+.appt-sub{font-size:11px;color:#5F5E5A}
+.appt-time{font-size:12px;font-weight:500;color:#2C2015}
+.appt-badge{font-size:10px;padding:3px 7px;border-radius:20px;font-weight:500}
+.b-green{background:#EAF3DE;color:#3B6D11}
+.b-sage{background:#F1EFE8;color:#5F5E5A;border:0.5px solid #D3D1C7}
+.shortcuts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.sc-card{background:#fff;border:0.5px solid #D3D1C7;border-radius:12px;padding:11px 13px;display:flex;align-items:center;gap:10px}
+.sc-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sc-icon i{font-size:17px}
+.sc-name{font-size:12px;font-weight:500;color:#2C2015}
+.sc-sub{font-size:11px;color:#5F5E5A;margin-top:1px}
+.med-row{background:#fff;border:0.5px solid #D3D1C7;border-radius:12px;overflow:hidden;margin-bottom:12px}
+.med-item{display:flex;align-items:center;gap:10px;padding:9px 13px;border-bottom:0.5px solid #E8E6E0}
+.med-item:last-child{border-bottom:none}
+.med-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.med-name{font-size:12px;font-weight:500;color:#2C2015}
+.med-sub{font-size:11px;color:#5F5E5A;margin-top:1px}
+.med-right{font-size:11px;color:#888780;text-align:right;flex-shrink:0}
+.med-status{font-size:10px;padding:2px 6px;border-radius:4px;font-weight:500;margin-top:3px;display:inline-block}
+.health-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.health-card{background:#fff;border:0.5px solid #D3D1C7;border-radius:12px;padding:11px 13px}
+.hc-label{font-size:11px;color:#5F5E5A;margin-bottom:4px;display:flex;align-items:center;gap:5px}
+.hc-label i{font-size:13px}
+.hc-val{font-size:18px;font-weight:500;color:#2C2015;line-height:1.2}
+.hc-unit{font-size:11px;color:#888780;font-weight:400;margin-left:2px}
+.mini-bar{height:4px;border-radius:2px;margin-top:6px;background:#E8E6E0;overflow:hidden}
+.mini-fill{height:100%;border-radius:2px}
+.hc-sub{font-size:11px;margin-top:4px;display:flex;align-items:center;gap:3px}
+.tabbar{display:flex;background:#fff;border-top:0.5px solid #D3D1C7;padding:8px 0 10px}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.tab i{font-size:21px;color:#B4B2A9}
+.tab.active i{color:#3B6D11}
+.tab-lbl{font-size:10px;color:#B4B2A9}
+.tab.active .tab-lbl{color:#3B6D11}
+</style>
+
+<h2 class="sr-only">医疗健康手机应用首页暖色版 — 含体征指标、预约提醒、用药管理和健康趋势</h2>
+
+<div class="ph">
+  <div class="sb">
+    <div class="sb-t">9:41</div>
+    <div class="sb-r">
+      <i class="ti ti-wifi" aria-hidden="true"></i>
+      <i class="ti ti-battery" aria-hidden="true"></i>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-row">
+      <div>
+        <div class="hero-hi">早上好</div>
+        <div class="hero-name">李华，您好</div>
+      </div>
+      <div class="doc-av">李</div>
+    </div>
+    <div class="vitals-row">
+      <div class="vital">
+        <div class="vital-icon"><i class="ti ti-heart-rate-monitor" aria-hidden="true"></i></div>
+        <div class="vital-val">72<span class="vital-unit"> bpm</span></div>
+        <div class="vital-lbl">心率</div>
+        <div class="vital-ok"><i class="ti ti-check" style="font-size:10px" aria-hidden="true"></i>正常</div>
+      </div>
+      <div class="vital">
+        <div class="vital-icon"><i class="ti ti-activity" aria-hidden="true"></i></div>
+        <div class="vital-val">118<span class="vital-unit">/76</span></div>
+        <div class="vital-lbl">血压</div>
+        <div class="vital-ok"><i class="ti ti-check" style="font-size:10px" aria-hidden="true"></i>正常</div>
+      </div>
+      <div class="vital">
+        <div class="vital-icon"><i class="ti ti-droplet" aria-hidden="true"></i></div>
+        <div class="vital-val">7.2<span class="vital-unit"> %</span></div>
+        <div class="vital-lbl">血糖 HbA1c</div>
+        <div class="vital-warn"><i class="ti ti-alert-triangle" style="font-size:10px" aria-hidden="true"></i>偏高</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <div class="alert-bar">
+      <i class="ti ti-pill" aria-hidden="true"></i>
+      <div class="alert-text">二甲双胍 500mg 今日早餐后还未服用</div>
+      <div class="alert-btn">记录服药</div>
+    </div>
+
+    <div class="sec-hd">
+      <div class="sec-title">近期预约</div>
+      <div class="sec-more">全部 →</div>
+    </div>
+
+    <div class="appt-card">
+      <div class="appt-date">
+        <div class="appt-month">7月</div>
+        <div class="appt-day">31</div>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div class="appt-name">内分泌科复诊</div>
+        <div class="appt-sub">王医生 · 协和医院</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">
+        <div class="appt-time">10:30</div>
+        <div class="appt-badge b-sage">3天后</div>
+      </div>
+    </div>
+
+    <div class="appt-card">
+      <div class="appt-date" style="background:#FEF6EA">
+        <div class="appt-month" style="color:#854F0B">8月</div>
+        <div class="appt-day" style="color:#633806">14</div>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div class="appt-name">年度体检</div>
+        <div class="appt-sub">体检中心 · 全套检查</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">
+        <div class="appt-time">09:00</div>
+        <div class="appt-badge b-green">已预约</div>
+      </div>
+    </div>
+
+    <div class="sec-hd" style="margin-top:4px">
+      <div class="sec-title">快捷入口</div>
+    </div>
+
+    <div class="shortcuts">
+      <div class="sc-card">
+        <div class="sc-icon" style="background:#EAF3DE">
+          <i class="ti ti-stethoscope" style="color:#3B6D11" aria-hidden="true"></i>
+        </div>
+        <div>
+          <div class="sc-name">在线问诊</div>
+          <div class="sc-sub">医生实时回复</div>
+        </div>
+      </div>
+      <div class="sc-card">
+        <div class="sc-icon" style="background:#FEF6EA">
+          <i class="ti ti-calendar-plus" style="color:#854F0B" aria-hidden="true"></i>
+        </div>
+        <div>
+          <div class="sc-name">预约挂号</div>
+          <div class="sc-sub">线上选号</div>
+        </div>
+      </div>
+      <div class="sc-card">
+        <div class="sc-icon" style="background:#EEEDFE">
+          <i class="ti ti-file-text" style="color:#534AB7" aria-hidden="true"></i>
+        </div>
+        <div>
+          <div class="sc-name">检查报告</div>
+          <div class="sc-sub">查看历史报告</div>
+        </div>
+      </div>
+      <div class="sc-card">
+        <div class="sc-icon" style="background:#FCEBEB">
+          <i class="ti ti-ambulance" style="color:#A32D2D" aria-hidden="true"></i>
+        </div>
+        <div>
+          <div class="sc-name">急诊导航</div>
+          <div class="sc-sub">附近急诊室</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-hd">
+      <div class="sec-title">今日用药</div>
+      <div class="sec-more">用药计划 →</div>
+    </div>
+
+    <div class="med-row">
+      <div class="med-item">
+        <div class="med-dot" style="background:#EF9F27"></div>
+        <div style="flex:1;min-width:0">
+          <div class="med-name">二甲双胍 500mg</div>
+          <div class="med-sub">早餐后 · 降血糖</div>
+        </div>
+        <div class="med-right">
+          早 08:00
+          <div class="med-status" style="background:#FEF6EA;color:#854F0B;border:0.5px solid #FAC775">未服</div>
+        </div>
+      </div>
+      <div class="med-item">
+        <div class="med-dot" style="background:#639922"></div>
+        <div style="flex:1;min-width:0">
+          <div class="med-name">缬沙坦 80mg</div>
+          <div class="med-sub">每日一次 · 降血压</div>
+        </div>
+        <div class="med-right">
+          早 07:30
+          <div class="med-status" style="background:#EAF3DE;color:#3B6D11">已服</div>
+        </div>
+      </div>
+      <div class="med-item">
+        <div class="med-dot" style="background:#D3D1C7"></div>
+        <div style="flex:1;min-width:0">
+          <div class="med-name">阿托伐他汀 20mg</div>
+          <div class="med-sub">晚餐后 · 调节血脂</div>
+        </div>
+        <div class="med-right">
+          晚 20:00
+          <div class="med-status" style="background:#F1EFE8;color:#888780;border:0.5px solid #D3D1C7">待服</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-hd">
+      <div class="sec-title">健康趋势</div>
+      <div class="sec-more">详情 →</div>
+    </div>
+
+    <div class="health-row">
+      <div class="health-card">
+        <div class="hc-label"><i class="ti ti-walk" aria-hidden="true"></i>今日步数</div>
+        <div class="hc-val">6,248<span class="hc-unit">步</span></div>
+        <div class="mini-bar"><div class="mini-fill" style="width:62%;background:#639922"></div></div>
+        <div class="hc-sub" style="color:#888780">目标 10,000 步</div>
+      </div>
+      <div class="health-card">
+        <div class="hc-label"><i class="ti ti-moon" aria-hidden="true"></i>昨夜睡眠</div>
+        <div class="hc-val">7.2<span class="hc-unit">h</span></div>
+        <div class="mini-bar"><div class="mini-fill" style="width:80%;background:#7F77DD"></div></div>
+        <div class="hc-sub" style="color:#3B6D11"><i class="ti ti-check" style="font-size:11px" aria-hidden="true"></i>质量良好</div>
+      </div>
+      <div class="health-card">
+        <div class="hc-label"><i class="ti ti-flame" aria-hidden="true"></i>今日热量</div>
+        <div class="hc-val">1,340<span class="hc-unit">kcal</span></div>
+        <div class="mini-bar"><div class="mini-fill" style="width:67%;background:#EF9F27"></div></div>
+        <div class="hc-sub" style="color:#888780">目标 2,000</div>
+      </div>
+      <div class="health-card">
+        <div class="hc-label"><i class="ti ti-droplet-half" aria-hidden="true"></i>饮水量</div>
+        <div class="hc-val">1,200<span class="hc-unit">ml</span></div>
+        <div class="mini-bar"><div class="mini-fill" style="width:48%;background:#5DCAA5"></div></div>
+        <div class="hc-sub" style="color:#854F0B"><i class="ti ti-alert-triangle" style="font-size:11px" aria-hidden="true"></i>需补充</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="tabbar">
+    <div class="tab active">
+      <i class="ti ti-home" aria-hidden="true"></i>
+      <div class="tab-lbl">首页</div>
+    </div>
+    <div class="tab">
+      <i class="ti ti-calendar" aria-hidden="true"></i>
+      <div class="tab-lbl">预约</div>
+    </div>
+    <div class="tab">
+      <i class="ti ti-pill" aria-hidden="true"></i>
+      <div class="tab-lbl">用药</div>
+    </div>
+    <div class="tab">
+      <i class="ti ti-chart-line" aria-hidden="true"></i>
+      <div class="tab-lbl">健康</div>
+    </div>
+    <div class="tab">
+      <i class="ti ti-user" aria-hidden="true"></i>
+      <div class="tab-lbl">我的</div>
+    </div>
+  </div>
+</div>

@@ -1,3 +1,5 @@
+export MODELBASE_DATA_ROOT=/Users/christian/export/local/works/doublegsoft.io/modelbase/03.Development/modelbase-data
+export MODELBASE_JAR=/Users/christian/export/opt/modelbase/protosys-plugin-modelbase-7.0-shaded.jar
 export GUIDBASE_DATA_ROOT=/Users/christian/export/local/works/doublegsoft.io/guidbase/03.Development/guidbase-data
 export GUIDBASE_JAR=/Users/christian/export/opt/guidbase/protosys-plugin-guidbase-7.0-shaded.jar
 export PROJBASE_DATA_ROOT=/Users/christian/export/local/works/doublegsoft.io/projbase/03.Development/projbase-data
@@ -7,24 +9,24 @@ export TATABASE_JAR=/Users/christian/export/opt/tatabase/protosys-plugin-tatabas
 
 export OUTPUT_ROOT=out
 
-export SPEC=display_form
-export APPNAME=display_form
+export SPEC=entry_form
+export APPNAME=entry_form
 export NAMESPACE=df
 export MOBELBASE_MODEL=
 export GUIDBASE_MODEL=spec/$SPEC.guidbase
-export PROJECT_NAME="$SPEC"@wechat"#"navypitch-1.x
+export PROJECT_NAME="$SPEC"@android"#"navypitch-1.x
 export PROJECT_ROOT=$OUTPUT_ROOT/$PROJECT_NAME
 ################################################################################
 ##                                                                            ##
-##                             WECHAT MINI PROGRAM                            ##
+##                              ANDROID (KOTLIN)                              ##
 ##                                                                            ##
 ################################################################################
-REPOS=("javascript-miniprogram@wechat-1.x" "javascript-sdk@vanilla-1.x" \
-       "../html/html-miniprogram@wechat#navypitch-1.x")
+REPOS=("kotlin-mobile@android-1.x" "kotlin-mobile@android#navypitch-1.x" \
+       "kotlin-sdk@http-1.x")
 
 for repo in "${REPOS[@]}"
 do
-export TEMPLATE_ROOT=$GUIDBASE_DATA_ROOT/javascript/$repo
+export TEMPLATE_ROOT=$GUIDBASE_DATA_ROOT/kotlin/$repo
 
 java -jar $GUIDBASE_JAR \
 --modelbase-model=$MOBELBASE_MODEL \
@@ -39,8 +41,8 @@ java -jar $GUIDBASE_JAR \
 \"artifact\":\"$APPNAME\",\
 \"version\":\"1.0.0\",\
 \"description\":\"\",\
-\"naming\":\"com.doublegsoft.jcommons.programming.javascript.JavaScriptConventions\",\
-\"globalNamingConvention\":\"com.doublegsoft.jcommons.programming.javascript.JavaScriptNamingConvention\",\
+\"naming\":\"com.doublegsoft.jcommons.programming.java.JavaConventions\",\
+\"globalNamingConvention\":\"com.doublegsoft.jcommons.programming.java.JavaNamingConvention\",\
 \"language\":\"javascript\",\
 \"imports\":\
 \[\],\
@@ -54,10 +56,10 @@ done
 
 ################################################################################
 ##                                                                            ##
-##                             WECHAT MINI PROGRAM                            ##
+##                              ANDROID (KOTLIN)                              ##
 ##                                                                            ##
 ################################################################################
-export TEMPLATE_ROOT=$PROJBASE_DATA_ROOT/javascript/javascript-miniprogram@wechat-1.x
+export TEMPLATE_ROOT=$PROJBASE_DATA_ROOT/kotlin/kotlin-mobile@android-1.x
 
 java -jar $PROJBASE_JAR \
 --template-root=$TEMPLATE_ROOT \
@@ -71,8 +73,8 @@ java -jar $PROJBASE_JAR \
 \"artifact\":\"$APPNAME\",\
 \"version\":\"1.0.0\",\
 \"description\":\"\",\
-\"naming\":\"com.doublegsoft.jcommons.programming.javascript.JavaScriptConventions\",\
-\"globalNamingConvention\":\"com.doublegsoft.jcommons.programming.javascript.JavaScriptNamingConvention\",\
+\"naming\":\"com.doublegsoft.jcommons.programming.java.JavaConventions\",\
+\"globalNamingConvention\":\"com.doublegsoft.jcommons.programming.java.JavaNamingConvention\",\
 \"language\":\"javascript\",\
 \"imports\":\
 \[\],\
@@ -82,33 +84,32 @@ java -jar $PROJBASE_JAR \
 
 ################################################################################
 ##                                                                            ##
-##                                    TEST                                    ##
+##                                      SDK                                   ##
 ##                                                                            ##
 ################################################################################
-REPOS=("markdown/markdown-dataspec@llm-1.x" \
-       "javascript/javascript-sdk@vanilla-1.x")
+REPOS=("kotlin/kotlin-sdk@dto-1.x" "kotlin/kotlin-poco@gui-1.x")
+
+export MOBELBASE_MODEL=spec/modelbase/$SPEC.modelbase
 
 for repo in "${REPOS[@]}"
 do
-export TEMPLATE_ROOT=$TATABASE_DATA_ROOT/$repo
+export TEMPLATE_ROOT=$MODELBASE_DATA_ROOT/$repo
 
-java -jar $TATABASE_JAR \
---modelbase-model=$MOBELBASE_MODEL \
---guidbase-model=$GUIDBASE_MODEL \
+java -jar $MODELBASE_JAR \
+--model=$MOBELBASE_MODEL \
 --template-root=$TEMPLATE_ROOT \
---output-root=$PROJECT_ROOT \
+--output-root=$PROJECT_ROOT/app \
 --license=LICENSE \
 --globals=\
 \{\
-\"projectRoot\":\"$PROJECT_ROOT\",\
 \"application\":\"$APPNAME\",\
 \"namespace\":\"$NAMESPACE\",\
 \"artifact\":\"$APPNAME\",\
 \"version\":\"1.0.0\",\
 \"description\":\"\",\
-\"naming\":\"com.doublegsoft.jcommons.programming.javascript.JavaScriptConventions\",\
-\"globalNamingConvention\":\"com.doublegsoft.jcommons.programming.javascript.JavaScriptNamingConvention\",\
-\"language\":\"javascript\",\
+\"naming\":\"com.doublegsoft.jcommons.programming.java.JavaConventions\",\
+\"globalNamingConvention\":\"com.doublegsoft.jcommons.programming.java.JavaNamingConvention\",\
+\"language\":\"java\",\
 \"imports\":\
 \[\],\
 \"dependencies\":\
@@ -116,15 +117,3 @@ java -jar $TATABASE_JAR \
 \} 2>&1
 done
 
-
-mkdir -p $PROJECT_ROOT/utils
-rm -rf $PROJECT_ROOT/sdk
-mv $PROJECT_ROOT/src/sdk $PROJECT_ROOT
-rm -rf $PROJECT_ROOT/src
-
-#export DYLD_LIBRARY_PATH=~/export/opt/goolib
-#~/export/opt/goolib/goo-sftp-upload \
-#--server=10.12.100.82 --port=22 \
-#--username=christian --password=ganguo \
-#-l $PROJECT_ROOT \
-#-r /home/christian/projs/wechat-miniprogram-gen/$PROJECT_NAME
