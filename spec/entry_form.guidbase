@@ -1,5 +1,5 @@
 form/entry_form_page:page(title:"输入表单页面")<
-  demo_entry:entry_form(title:"输入表单", data:"demo", cols:"3", init:"demo?person_id")<
+  demo_entry:entry_form(title:"输入表单", data:"demo?person_id", cols:"3")<
     person_id:hidden,
     avatar:avatar(title:"头像", group:"分组1", span:"3"),
     date1:date(title:"日期", required:"true", group:"分组1"),

@@ -9,8 +9,8 @@ export TATABASE_JAR=/Users/christian/export/opt/tatabase/protosys-plugin-tatabas
 
 export OUTPUT_ROOT=out
 
-export SPEC=list_view
-export APPNAME=list_view
+export SPEC=segments
+export APPNAME=segments
 export NAMESPACE=com.doublegsoft
 export MOBELBASE_MODEL=spec/modelbase/$SPEC.modelbase
 export GUIDBASE_MODEL=spec/$SPEC.guidbase

@@ -9,11 +9,11 @@ list/list_view_page:page(title:"瓦片列表页面", main:"true")<
 >
 
 list/list_form_page:page(title:"列表详情页面")<
-  demo_form:display_form(title:"瓦片列表", data:"demo", cols:"3")<
+  demo_form:display_form(title:"瓦片列表", data:"demo?personId", cols:"3")<
     person_id:hidden,
     avatar:avatar(title:"头像", group:"分组1"),
-    date1:date(title:"日期", required:"true"),
-    text1:text(title:"文本", required:"true"),
-    num1:number(title:"数字", required:"true")
+    date1:date(title:"日期", group:"分组2"),
+    text1:text(title:"文本", group:"分组2"),
+    num1:number(title:"数字", group:"分组2")
   >
 >
