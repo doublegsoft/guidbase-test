@@ -1,0 +1,92 @@
+@persistence(name='demo')
+@name(label='瓦片对象', plural='demos')
+demo<
+  
+  @persistence(name='person_id')
+  @name(label='人员标识')
+  person_id!!: long,
+  
+  @persistence(name='avatar')
+  @name(label='头像')
+  avatar: string(100),
+  
+  @persistence(name='date1')
+  @name(label='日期')
+  date1: date,
+  
+  @persistence(name='text1')
+  @name(label='文本')
+  text1: string,
+  
+  @persistence(name='num1')
+  @name(label='数字')
+  num1: number(10,2),
+  
+  @persistence(name='sel10')
+  @name(label='下拉框')
+  sel10: enum[Y:是,N:否,U:未知],
+  
+  @persistence(name='cas1')
+  @name(label='级联选择')
+  cas1: string,
+  
+  @persistence(name='mul1')
+  @name(label='多选框')
+  mul1: string,
+  
+  @persistence(name='time1')
+  @name(label='时间')
+  time1: datetime,
+  
+  @persistence(name='tags1')
+  @name(label='标签')
+  tags1: string,
+  
+  @persistence(name='longtext1')
+  @name(label='长文本')
+  longtext1: string,
+  
+  @persistence(name='date2')
+  @name(label='日期')
+  date2: date,
+  
+  @persistence(name='text2')
+  @name(label='文本')
+  text2: string,
+  
+  @persistence(name='num2')
+  @name(label='只读数字')
+  num2: number(10,2),
+  
+  @persistence(name='cas2')
+  @name(label='级联选择')
+  cas2: string,
+  
+  @persistence(name='sel2')
+  @name(label='下拉框')
+  sel2: string,
+  
+  @persistence(name='longtext2')
+  @name(label='长文本')
+  longtext2: string,
+  
+  @persistence(name='date3')
+  @name(label='日期')
+  date3: date,
+  
+  @persistence(name='text3')
+  @name(label='只读文本')
+  text3: string,
+  
+  @persistence(name='num3')
+  @name(label='数字')
+  num3: number(10,2),
+  
+  @persistence(name='sel31')
+  @name(label='下拉框')
+  sel31: enum[Y:大瓜,N:二瓜,U:三瓜],
+  
+  @persistence(name='longtext3')
+  @name(label='长文本')
+  longtext3: string
+>

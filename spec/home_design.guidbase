@@ -1,0 +1,29 @@
+nav/demo_scroll_navigator:page(title:"滚动导航")<
+  demo_buttons:scroll_navigator(title: "滚动导航")<
+    button1:button(title:"按钮A", action:"@nav/page1"),
+    button2:button(title:"按钮B", action:"@nav/page2"),
+    button3:button(title:"按钮C", action:"@nav/page3"),
+    button4:button(title:"按钮D", action:"@nav/page4"),
+    button5:button(title:"按钮E", action:"@nav/page5")
+  >
+>
+
+nav/page1:page(title:"page1")<
+  text1:text(title:"测试")
+>
+
+nav/page2:page(title:"page2")<
+  text1:text(title:"测试")
+>
+
+nav/page3:page(title:"page3")<
+  text1:text(title:"测试")
+>
+
+nav/page4:page(title:"page4")<
+  text1:text(title:"测试")
+>
+
+nav/page5:page(title:"page5")<
+  text1:text(title:"测试")
+>

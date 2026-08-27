@@ -7,8 +7,8 @@ export TATABASE_JAR=/Users/christian/export/opt/tatabase/protosys-plugin-tatabas
 
 export OUTPUT_ROOT=out
 
-export SPEC=calendar_split_list
-export APPNAME=calendar_split_list
+export SPEC=segments
+export APPNAME=segments
 export NAMESPACE=df
 export MOBELBASE_MODEL=spec/modelbase/$SPEC.modelbase
 export GUIDBASE_MODEL=spec/$SPEC.guidbase

@@ -1,5 +1,5 @@
 grid/grid_view_page:page(title:"瓦片列表页面", main:"true")<
-  demo_grid:grid_view(title:"瓦片列表", data:"demo", cols:"3", next:"display_form_page?person_id")<
+  demo_grid:grid_view(title:"瓦片列表", data:"demo", cols:"3", next:"@grid/display_form_page?person_id")<
     person_id:hidden,
     image:image(title:"头像", property:"image"),
     date1:date(title:"日期", property:"secondary"),

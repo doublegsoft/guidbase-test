@@ -1,0 +1,49 @@
+@persistence(name='event_type')
+@name(label='事件类型', plural='event_types')
+event_type<
+  
+  @persistence(name='code')
+  @name(label='类型编码')
+  id!!: long,
+  
+  @persistence(name='name')
+  @name(label='类型名称')
+  name: string(100),
+  
+  @persistence(name='color')
+  @name(label='主题颜色')
+  color: string(20),
+  
+  @persistence(name='icon')
+  @name(label='图标')
+  icon: string(100)
+>
+
+@persistence(name='schedule_event')
+@name(label='日程事件', plural='schedule_events')
+schedule_event<
+  
+  @persistence(name='event_id')
+  @name(label='事件标识')
+  id!!: long,
+  
+  @persistence(name='event_type_code')
+  @name(label='事件类型编码')
+  event_type: &event_type(id),
+  
+  @persistence(name='title')
+  @name(label='事件标题')
+  title: string(200),
+  
+  @persistence(name='vs_team')
+  @name(label='对手球队')
+  vs_team: string(100),
+  
+  @persistence(name='start_date')
+  @name(label='开始时间')
+  start_date: datetime,
+  
+  @persistence(name='location')
+  @name(label='地点')
+  location: string(200)
+>

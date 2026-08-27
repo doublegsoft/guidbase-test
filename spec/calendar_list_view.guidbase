@@ -7,8 +7,7 @@ team/schedule:page(title: "球队日程")<
   ),
   event_list:list_view(
     data: "schedule_event?event_date=selected_date",
-    init: "schedule_event?event_date",
-    page: "$team/event",
+    next: "@grid/detail_page",
     title: "$selected_date"
   )<
     eventId!!: hidden,
@@ -17,5 +16,54 @@ team/schedule:page(title: "球队日程")<
     vsTeam: text(property:"secondary"),
     time: text(property:"start_date"),
     location: text(property:"tertiary")
+  >
+>
+
+grid/detail_page:page(title:"详情页面", data:"demo?person_id")<
+  images:media_carousel(data:"demo.images"),
+  demo_card:card(data:"demo")<
+    person_id:hidden,
+    date1:date(title:"日期", property:"start_date"),
+    text1:text(title:"文本", property:"primary"),
+    num1:number(title:"数字", property:"status")
+  >,
+  demo_tabs:tabs(data:"demo")<
+    first_tab:tab(title:"第一点")<
+      event_list:list_view(
+        data: "schedule_event?event_date=selected_date",
+        next: "@grid/detail_card",
+        title: "$selected_date"
+      )<
+        eventId!!: hidden,
+        eventType: dict(property:"status"),
+        title: text(property:"primary"),
+        vsTeam: text(property:"secondary"),
+        time: text(property:"start_date"),
+        location: text(property:"tertiary")
+      >
+    >,
+    second_tab:tab(title:"第二点")<
+      event_grid:grid_view(
+        data: "schedule_event?event_date=selected_date",
+        next: "@grid/detail_card",
+        title: "$selected_date"
+      )<
+        eventId!!: hidden,
+        eventType: dict(property:"status"),
+        title: text(property:"primary"),
+        vsTeam: text(property:"secondary"),
+        time: text(property:"start_date"),
+        location: text(property:"tertiary")
+      >
+    >
+  >
+>
+
+grid/detail_card:page(title:"第一点页面", data:"demo?person_id")<
+  demo_card:card(data:"demo")<
+    person_id:hidden,
+    date1:date(title:"日期", property:"start_date"),
+    text1:text(title:"文本", property:"primary"),
+    num1:number(title:"数字", property:"status")
   >
 >

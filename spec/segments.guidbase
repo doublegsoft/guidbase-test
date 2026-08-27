@@ -1,11 +1,11 @@
-demo_segs_page:page(title:"分段查询")<
-  demo_segs:segments(title: "分段查询")<
+segs/demo_segs_page:page(title:"分段查询")<
+  demo_segs:segments(title: "分段查询", placement:"top")<
     seg1:text(title:"激情"),
     seg2:text(title:"刺激"),
     seg3:text(title:"牛逼"),
     seg4:text(title:"英勇")
   >,
-  demo_list:list_view(title:"瓦片列表", data:"demo", cols:"3", next:"list_form_page?person_id")<
+  demo_list:list_view(title:"瓦片列表", data:"demo", init:"demo", cols:"3", next:"list_form_page?person_id")<
     person_id:hidden,
     avatar:avatar(title:"头像", property:"avatar"),
     text1:text(title:"姓名/文本", property:"primary"),
@@ -17,8 +17,8 @@ demo_segs_page:page(title:"分段查询")<
   >
 >
 
-list_form_page:page(title:"列表详情页面")<
-  demo_form:display_form(title:"瓦片列表", data:"demo?personId", cols:"3")<
+list/list_form_page:page(title:"列表详情页面")<
+  demo_form:display_form(title:"瓦片列表", data:"demo?personId=123")<
     person_id:hidden,
     avatar:avatar(title:"头像", group:"分组1"),
     date1:date(title:"日期", group:"分组2"),
