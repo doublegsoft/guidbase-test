@@ -34,3 +34,4 @@ form/entry_form_page:page(title:"输入表单页面")<
     demo_entry_reset:button(action:"@demo_entry.reset", title:"重置")
   >
 >
+
